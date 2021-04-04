@@ -1,0 +1,12 @@
+{
+  "name": "HabbitTrackerApp",
+  "displayName": "HabbitTrackerApp",
+  "expo": {
+    "name": "HabbitTrackerApp",
+    "slug": "HabbitTrackerApp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
