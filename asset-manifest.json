@@ -4,17 +4,17 @@
     "app.js.map": "/ahealthyhabit/static/js/app.9016f635.chunk.js.map",
     "runtime~app.js": "/ahealthyhabit/static/js/runtime~app.f30dc048.js",
     "runtime~app.js.map": "/ahealthyhabit/static/js/runtime~app.f30dc048.js.map",
-    "static/js/2.a7b820b8.chunk.js": "/ahealthyhabit/static/js/2.a7b820b8.chunk.js",
-    "static/js/2.a7b820b8.chunk.js.map": "/ahealthyhabit/static/js/2.a7b820b8.chunk.js.map",
+    "static/js/2.3aebc6f5.chunk.js": "/ahealthyhabit/static/js/2.3aebc6f5.chunk.js",
+    "static/js/2.3aebc6f5.chunk.js.map": "/ahealthyhabit/static/js/2.3aebc6f5.chunk.js.map",
     "fonts/MaterialCommunityIcons.ttf": "/ahealthyhabit/./fonts/MaterialCommunityIcons.ttf",
     "index.html": "/ahealthyhabit/index.html",
     "manifest.json": "/ahealthyhabit/manifest.json",
     "serve.json": "/ahealthyhabit/serve.json",
-    "static/js/2.a7b820b8.chunk.js.LICENSE.txt": "/ahealthyhabit/static/js/2.a7b820b8.chunk.js.LICENSE.txt"
+    "static/js/2.3aebc6f5.chunk.js.LICENSE.txt": "/ahealthyhabit/static/js/2.3aebc6f5.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime~app.f30dc048.js",
-    "static/js/2.a7b820b8.chunk.js",
+    "static/js/2.3aebc6f5.chunk.js",
     "static/js/app.9016f635.chunk.js"
   ]
 }

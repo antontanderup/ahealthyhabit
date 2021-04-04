@@ -1,7 +1,15 @@
 {
   "display": "standalone",
   "lang": "en",
-  "name": "HabbitTrackerApp",
-  "short_name": "HabbitTrackerApp",
-  "start_url": "/?utm_source=web_app_manifest"
+  "name": "AHealthyHabit",
+  "short_name": "AHealthyHabit",
+  "start_url": "/?utm_source=web_app_manifest",
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "http://play.google.com/store/apps/details?id=com.aneficent.ahealthyhabit",
+      "id": "com.aneficent.ahealthyhabit"
+    }
+  ],
+  "prefer_related_applications": true
 }
