@@ -1,4 +1,4 @@
-package com.habbittrackerapp;
+package com.ahealthyhabit;
 
 import android.os.Bundle;
 

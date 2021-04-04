@@ -1,4 +1,4 @@
-rootProject.name = 'HabbitTrackerApp'
+rootProject.name = 'AHealthyHabit'
 
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'
 includeUnimodulesProjects()

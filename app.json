@@ -1,9 +1,9 @@
 {
-  "name": "HabbitTrackerApp",
-  "displayName": "HabbitTrackerApp",
+  "name": "AHealthyHabit",
+  "displayName": "AHealthyHabit",
   "expo": {
-    "name": "HabbitTrackerApp",
-    "slug": "HabbitTrackerApp",
+    "name": "AHealthyHabit",
+    "slug": "AHealthyHabit",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
