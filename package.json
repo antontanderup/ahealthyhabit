@@ -1,12 +1,15 @@
 {
   "main": "index.js",
+  "homepage": "http://antontanderup.github.io/ahealthyhabit",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
     "test": "jest",
-    "test-watch": "jest --watchAll"
+    "test-watch": "jest --watchAll",
+    "deploy": "gh-pages -d web-build",
+    "predeploy": "expo build:web"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.1",
@@ -43,6 +46,7 @@
     "@types/react-native": "~0.63.2",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-preset-expo": "~8.3.0",
+    "gh-pages": "^3.1.0",
     "jest-expo": "~40.0.0",
     "typescript": "~4.0.0"
   },
