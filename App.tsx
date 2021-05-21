@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, View } from 'react-native';
+import { StatusBar } from "expo-status-bar"
 import { Provider } from 'react-redux';
 import { persistor, store } from './src/store';
 import Habbits from './src/components/screens/Habbits';
@@ -34,6 +34,7 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor}>
         <PaperProvider theme={theme}>
           <View style={styles.container}>
+            <StatusBar style="light" />
             <Habbits />
           </View>
         </PaperProvider>
