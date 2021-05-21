@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSlice, configureStore, PayloadAction, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { isToday } from 'date-fns';
+import 'react-native-get-random-values'
 import { nanoid } from 'nanoid';
-import { State } from 'react-native-gesture-handler';
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 
 type HabbitDate = string;

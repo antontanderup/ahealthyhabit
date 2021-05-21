@@ -92,7 +92,7 @@ export default ({ habbit }: { habbit: Habbit }) => {
         )}
       />
       <Card.Content style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {longestStreak && (
+        {longestStreak > 0 && (
           <Chip style={styles.chip}>
             {i18n.t("habbit.longest.count", { count: longestStreak })}
           </Chip>
