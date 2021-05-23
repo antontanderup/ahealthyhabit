@@ -33,7 +33,7 @@ const habbitsSlice = createSlice({
       const habbit = state.habbits[action.payload.id];
       habbit.name = action.payload.name;
       habbit.goals = action.payload.goals;
-      habbit.goals.sort((a, b) => {
+      habbit.goals = habbit.goals.slice().sort((a, b) => {
         return a - b;
       });
     },
