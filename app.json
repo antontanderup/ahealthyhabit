@@ -1,18 +1,4 @@
 {
   "name": "AHealthyHabit",
-  "displayName": "A Healthy Habit",
-  "icon": "./src/assets/logo.png",
-  "version": "0.1.0",
-  "expo": {
-    "name": "AHealthyHabit",
-    "slug": "AHealthyHabit",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "android": {
-      "package": "com.aneficent.ahealthyhabit",
-      "versionCode": 1
-    }
-  }
+  "displayName": "AHealthyHabit"
 }
