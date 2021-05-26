@@ -65,7 +65,7 @@ export default ({ habbit }: { habbit: Habbit }) => {
     <Card style={{ marginHorizontal: 16, marginTop: 10, paddingBottom: 12 }}>
       <Card.Title
         title={habbit.name}
-        subtitle={i18n.t("habbit.current.count", { count: currentStreak })}
+        subtitle={i18n.t(doneToday ? "habbit.currentTodayDone.count" : "habbit.current.count", { count: currentStreak })}
         right={() => (
           <View
             style={{

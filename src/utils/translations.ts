@@ -21,7 +21,14 @@ i18n.translations = {
             current: {
                 count: {
                     one: "1 day. Lets keep it going!",
-                    other: "You are on day {{count}}. Good job!",
+                    other: "You are on day {{count}}. Keep it up!",
+                    zero: 'Lets go!'
+                }
+            },
+            currentTodayDone: {
+                count: {
+                    one: "1 day. See you tomorrow!",
+                    other: "Day {{count}}. Good job!",
                     zero: 'Lets go!'
                 }
             },
@@ -56,8 +63,15 @@ i18n.translations = {
             current: {
                 count: {
                     one: "1 dag. Go go go!",
-                    other: "Du er på dag {{count}}. Godt klaret!",
-                    zero: 'Kom igang!'
+                    other: "Du er på dag {{count}}. Hold gejsten oppe!",
+                    zero: 'Sæt igang!'
+                }
+            },
+            currentTodayDone: {
+                count: {
+                    one: "1 day. Ses i morgen!",
+                    other: "Dag {{count}}. Godt klaret!",
+                    zero: 'Sæt igang!'
                 }
             },
             longest: {
