@@ -28,6 +28,7 @@ const Habbits = ({ habbits }: { habbits: RootState['habbits'] }) => {
             <FlatList
                 data={flatListData}
                 renderItem={renderHabbit}
+                ListFooterComponent={<View style={{height: 100}}/>}
             />
             { !showAddHabbit ? (
                 <FAB
