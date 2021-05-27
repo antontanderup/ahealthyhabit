@@ -1,26 +1,18 @@
-import React, { useEffect, useReducer, useState } from "react";
-import i18n from "i18n-js";
+import React, {useState} from 'react';
+import i18n from 'i18n-js';
 import {
   Button,
   Checkbox,
   Dialog,
   Divider,
-  Paragraph,
   Portal,
   Subheading,
   TextInput,
   useTheme,
-} from "react-native-paper";
-import {
-  addHabbit,
-  editHabbit,
-  Habbit,
-  removeHabbit,
-  store,
-} from "../../store";
-import { State } from "react-native-gesture-handler";
-import produce from "immer";
-import { View } from "react-native";
+} from 'react-native-paper';
+import {addHabbit, editHabbit, Habbit, removeHabbit, store} from '../../store';
+import produce from 'immer';
+import {View} from 'react-native';
 
 const EditHabbit = ({
   habbit,
@@ -31,16 +23,16 @@ const EditHabbit = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   // Habbit editor state
   const initialEditState = {
-    name: habbit?.name || "",
+    name: habbit?.name || '',
     goals: habbit?.goals || [],
   };
 
   const [editState, setEditState] = useState({
-    name: habbit?.name || "",
+    name: habbit?.name || '',
     goals: habbit?.goals || [],
   });
 
@@ -49,20 +41,22 @@ const EditHabbit = ({
     payload,
   }: {
     type: string;
-    payload?: { name?: string; save?: boolean; goal?: number };
+    payload?: {name?: string; save?: boolean; goal?: number};
   }) => {
     const newState = produce(editState, (draft: typeof initialEditState) => {
       switch (type) {
-        case "INPUT_NAME":
-          draft.name = payload?.name || "";
+        case 'INPUT_NAME':
+          draft.name = payload?.name || '';
           break;
-        case "ADD_GOAL": {
-          if (payload?.goal) draft.goals.push(payload.goal);
+        case 'ADD_GOAL': {
+          if (payload?.goal) {
+            draft.goals.push(payload.goal);
+          }
           break;
         }
-        case "REMOVE_GOAL": {
+        case 'REMOVE_GOAL': {
           draft.goals = draft.goals.filter(
-            (value: number) => value !== payload?.goal
+            (value: number) => value !== payload?.goal,
           );
           break;
         }
@@ -78,7 +72,7 @@ const EditHabbit = ({
           id: habbit.id,
           name: editState.name,
           goals: editState.goals,
-        })
+        }),
       );
     } else {
       store.dispatch(addHabbit(editState.name, editState.goals));
@@ -89,20 +83,20 @@ const EditHabbit = ({
   const renderGoalCheckbox = (goalValue: number, index: number) => {
     return (
       <View key={`goal${goalValue}`}>
-        { index > 0 && <Divider /> }
+        {index > 0 && <Divider />}
         <Checkbox.Item
-          label={i18n.t("Days.count", { count: goalValue })}
-          status={editState.goals.includes(goalValue) ? "checked" : "unchecked"}
+          label={i18n.t('Days.count', {count: goalValue})}
+          status={editState.goals.includes(goalValue) ? 'checked' : 'unchecked'}
           onPress={() => {
             if (editState.goals.includes(goalValue)) {
               dispatchEditState({
-                type: "REMOVE_GOAL",
-                payload: { goal: goalValue },
+                type: 'REMOVE_GOAL',
+                payload: {goal: goalValue},
               });
             } else {
               dispatchEditState({
-                type: "ADD_GOAL",
-                payload: { goal: goalValue },
+                type: 'ADD_GOAL',
+                payload: {goal: goalValue},
               });
             }
           }}
@@ -115,21 +109,21 @@ const EditHabbit = ({
     <Portal>
       <Dialog visible={isOpen} onDismiss={closeEditor}>
         <Dialog.Title>
-          {i18n.t("Edit")} {habbit?.name || i18n.t("Add habbit")}
+          {i18n.t('Edit')} {habbit?.name || i18n.t('Add habbit')}
         </Dialog.Title>
         <Dialog.Content>
           <TextInput
             mode="outlined"
-            label={i18n.t("Habbit name")}
+            label={i18n.t('Habbit name')}
             value={editState.name}
-            onChangeText={(name) =>
+            onChangeText={name =>
               dispatchEditState({
-                type: "INPUT_NAME",
-                payload: { name: name || "" },
+                type: 'INPUT_NAME',
+                payload: {name: name || ''},
               })
             }
           />
-          <Subheading style={{ marginTop: 10 }}>{i18n.t("Goals")}</Subheading>
+          <Subheading style={{marginTop: 10}}>{i18n.t('Goals')}</Subheading>
           {[7, 30, 90, 180, 365].map(renderGoalCheckbox)}
         </Dialog.Content>
         <Dialog.Actions>
@@ -137,20 +131,18 @@ const EditHabbit = ({
             <Button
               mode="contained"
               compact
-              style={{ marginRight: 8 }}
+              style={{marginRight: 8}}
               color={colors.warn}
-              onPress={() => store.dispatch(removeHabbit(habbit.id))}
-            >
-              {i18n.t("Delete")}
+              onPress={() => store.dispatch(removeHabbit(habbit.id))}>
+              {i18n.t('Delete')}
             </Button>
           )}
           <Button
             mode="contained"
             compact
             color={colors.primary}
-            onPress={closeEditor}
-          >
-            {i18n.t(!habbit ? "Done" : "Save")}
+            onPress={closeEditor}>
+            {i18n.t(!habbit ? 'Done' : 'Save')}
           </Button>
         </Dialog.Actions>
       </Dialog>
