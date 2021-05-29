@@ -74,7 +74,7 @@ const EditHabbit = ({
           goals: editState.goals,
         }),
       );
-    } else {
+    } else if (editState.name && editState.name !== '') {
       store.dispatch(addHabbit(editState.name, editState.goals));
     }
     onClose();
