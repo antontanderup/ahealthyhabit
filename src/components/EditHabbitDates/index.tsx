@@ -55,11 +55,9 @@ const EditHabitDates = ({
               selectedDayBackgroundColor: colors.primary,
               selectedDayTextColor: colors.text,
               dayTextColor: colors.text,
-              textDisabledColor: '#d9e1e8',
-              dotColor: '#00adf5',
-              selectedDotColor: '#ffffff',
               arrowColor: colors.primary,
               monthTextColor: colors.text,
+              todayTextColor: colors.primary,
             }}
             maxDate={format(new Date(), 'yyyy-LL-dd')}
           />
