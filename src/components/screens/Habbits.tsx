@@ -10,7 +10,7 @@ import {getDate} from 'date-fns';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
-  const {colors} = useTheme();
+  const {colors, dark} = useTheme();
 
   // current date is used in keyextractor so we refresh the components
   // when a fresh day arives :)
@@ -47,7 +47,7 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
         height: '100%',
         backgroundColor: colors.background,
       }}>
-      <Appbar.Header style={{marginTop: insets.top}}>
+      <Appbar.Header dark statusBarHeight={insets.top}>
         <Appbar.Content title={i18n.t('appName')} />
       </Appbar.Header>
       <FlatList
