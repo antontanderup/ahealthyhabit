@@ -54,6 +54,7 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
         data={flatListData}
         renderItem={renderHabbit}
         keyExtractor={item => item.id + currentDate}
+        ListHeaderComponent={<View style={{height: 5}}/>}
         ListFooterComponent={<View style={{height: 100}} />}
       />
       {!showAddHabbit ? (
