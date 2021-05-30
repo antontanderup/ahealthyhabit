@@ -4,13 +4,14 @@ import {Calendar} from 'react-native-calendars';
 import {Portal, Dialog, Button, useTheme} from 'react-native-paper';
 import {store, toggleDate, Habbit} from '../../store';
 import {format} from 'date-fns';
+import {getStreaks} from '../../utils/calculateStreaks';
 
 const EditHabitDates = ({
   isOpen,
   onClose,
   habbit,
 }: {
-  habbit?: Habbit;
+  habbit: Habbit;
   onClose: () => void;
   isOpen: boolean;
 }) => {
@@ -20,14 +21,21 @@ const EditHabitDates = ({
     onClose();
   };
 
+  const streaksDateArray = getStreaks(habbit.recordedDates);
+
   const markedDates = () => {
     const dates: {[key: string]: any} = {};
-    habbit?.recordedDates.forEach(date => {
-      dates[format(new Date(date), 'yyyy-LL-dd')] = {
-        selected: true,
-        color: colors.primary,
-      };
+    streaksDateArray.forEach(streak => {
+      streak.dates.forEach((date, index, array) => {
+        dates[format(new Date(date), 'yyyy-LL-dd')] = {
+          selected: true,
+          color: colors.primary,
+          startingDay: index === array.length - 1,
+          endingDay: index === 0,
+        };
+      });
     });
+
     return dates;
   };
 
@@ -60,6 +68,7 @@ const EditHabitDates = ({
               todayTextColor: colors.primary,
             }}
             maxDate={format(new Date(), 'yyyy-LL-dd')}
+            markingType="period"
           />
         </Dialog.Content>
         <Dialog.Actions>
