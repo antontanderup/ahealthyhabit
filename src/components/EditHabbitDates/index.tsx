@@ -59,7 +59,7 @@ const EditHabitDates = ({
             theme={{
               backgroundColor: 'transparent',
               calendarBackground: 'transparent',
-              textSectionTitleColor: colors.accent,
+              textSectionTitleColor: colors.onSurface,
               selectedDayBackgroundColor: colors.primary,
               selectedDayTextColor: colors.text,
               dayTextColor: colors.text,
