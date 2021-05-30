@@ -7,7 +7,7 @@ import {Habbit as HabbitType, RootState} from '../../store';
 import Habbit from '../Habbit';
 import EditHabbit from '../EditHabbit';
 import {getDate} from 'date-fns';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
   const {colors} = useTheme();
@@ -48,8 +48,7 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
         backgroundColor: colors.background,
       }}>
       <Appbar.Header style={{marginTop: insets.top}}>
-
-          <Appbar.Content title={i18n.t('appName')} />
+        <Appbar.Content title={i18n.t('appName')} />
       </Appbar.Header>
       <FlatList
         data={flatListData}
