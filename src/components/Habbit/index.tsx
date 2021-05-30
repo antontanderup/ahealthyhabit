@@ -63,7 +63,7 @@ export default ({habbit}: {habbit: Habbit}) => {
   };
 
   return (
-    <Card style={{marginHorizontal: 10, marginTop: 10, paddingBottom: 12}}>
+    <Card style={{marginHorizontal: 13, marginTop: 10, paddingBottom: 12}}>
       <Card.Title
         title={habbit.name}
         subtitle={i18n.t(
