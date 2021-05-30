@@ -13,6 +13,7 @@ import {
 import {Habbit, markTodayDone, markTodayUndone, store} from '../../store';
 import {getStreaks} from '../../utils/calculateStreaks';
 import EditHabbit from '../EditHabbit';
+import EditHabitDates from '../EditHabbitDates';
 
 export default ({habbit}: {habbit: Habbit}) => {
   // Process streaks
@@ -37,6 +38,7 @@ export default ({habbit}: {habbit: Habbit}) => {
 
   // Habbit editor state
   const [editorOpen, setEditorOpen] = useState(false);
+  const [dateEditorOpen, setDateEditorOpen] = useState(false);
 
   const goalChip = (goal: number, index: number, goals: number[]) => {
     const isDisabled =
@@ -73,11 +75,20 @@ export default ({habbit}: {habbit: Habbit}) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              justifyContent: 'center',
               marginRight: 10,
             }}>
             <IconButton
               icon="dots-vertical"
               onPress={() => setEditorOpen(true)}
+              size={20}
+              style={{marginRight: 0}}
+            />
+            <IconButton
+              icon="calendar-range"
+              onPress={() => setDateEditorOpen(true)}
+              size={20}
+              style={{marginLeft: 0, marginRight: 15}}
             />
             <Checkbox
               status={doneToday ? 'checked' : 'unchecked'}
@@ -104,6 +115,11 @@ export default ({habbit}: {habbit: Habbit}) => {
         isOpen={editorOpen}
         habbit={habbit}
         onClose={() => setEditorOpen(false)}
+      />
+      <EditHabitDates
+        isOpen={dateEditorOpen}
+        habbit={habbit}
+        onClose={() => setDateEditorOpen(false)}
       />
     </Card>
   );

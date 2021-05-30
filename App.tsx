@@ -7,7 +7,7 @@ import {PersistGate} from 'redux-persist/lib/integration/react';
 import {Provider as PaperProvider, DarkTheme} from 'react-native-paper';
 
 import './src/utils/translations';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 declare global {
   namespace ReactNativePaper {

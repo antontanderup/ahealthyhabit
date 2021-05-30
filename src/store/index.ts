@@ -1,23 +1,37 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createSlice, configureStore, PayloadAction, getDefaultMiddleware } from '@reduxjs/toolkit'
-import { isToday } from 'date-fns';
-import 'react-native-get-random-values'
-import { nanoid } from 'nanoid';
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
+import {
+  createSlice,
+  configureStore,
+  PayloadAction,
+  getDefaultMiddleware,
+} from '@reduxjs/toolkit';
+import {isToday} from 'date-fns';
+import 'react-native-get-random-values';
+import {nanoid} from 'nanoid';
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist';
 
 type HabbitDate = string;
 
 export type Habbit = {
   name: string;
   id: string;
-  recordedDates: HabbitDate[],
-  goals?: number[],
+  recordedDates: HabbitDate[];
+  goals?: number[];
 };
 
 const habbitsSlice = createSlice({
   name: 'habbits',
   initialState: {
-    habbits: {} as { [key: string]: Habbit },
+    habbits: {} as {[key: string]: Habbit},
   },
   reducers: {
     addHabbit: {
@@ -26,10 +40,13 @@ const habbitsSlice = createSlice({
       },
       prepare: (name: string, goals?: Habbit['goals']) => {
         const id = nanoid();
-        return { payload: { name, id, recordedDates: [], goals: goals || [] } }
-      }
+        return {payload: {name, id, recordedDates: [], goals: goals || []}};
+      },
     },
-    editHabbit(state, action: PayloadAction<{id: string, name: string, goals: number[]}>) {
+    editHabbit(
+      state,
+      action: PayloadAction<{id: string; name: string; goals: number[]}>,
+    ) {
       const habbit = state.habbits[action.payload.id];
       habbit.name = action.payload.name;
       habbit.goals = action.payload.goals;
@@ -37,11 +54,29 @@ const habbitsSlice = createSlice({
         return a - b;
       });
     },
+    toggleDate(state, action: PayloadAction<{id: string; date: string}>) {
+      const habbit = state.habbits[action.payload.id];
+      const dateString = new Date(action.payload.date).toDateString();
+      if (habbit.recordedDates.includes(dateString)) {
+        habbit.recordedDates = habbit.recordedDates.filter(
+          date => date !== dateString,
+        );
+      } else {
+        habbit.recordedDates.push(dateString);
+        habbit.recordedDates.sort((a, b) => {
+          const dateA = new Date(a);
+          const dateB = new Date(b);
+          return dateB - dateA;
+        });
+      }
+    },
     removeHabbit(state, action: PayloadAction<string>) {
       delete state.habbits[action.payload];
     },
     markTodayDone(state, action: PayloadAction<string>) {
-      state.habbits[action.payload].recordedDates.unshift(new Date().toDateString())
+      state.habbits[action.payload].recordedDates.unshift(
+        new Date().toDateString(),
+      );
     },
     markTodayUndone(state, action: PayloadAction<string>) {
       const today = state.habbits[action.payload];
@@ -49,27 +84,33 @@ const habbitsSlice = createSlice({
       if (isToday(latestDate)) {
         today.recordedDates.splice(0, 1);
       }
-    }
-  }
-})
+    },
+  },
+});
 
-export const { addHabbit, removeHabbit, markTodayDone, markTodayUndone, editHabbit } = habbitsSlice.actions;
+export const {
+  addHabbit,
+  toggleDate,
+  removeHabbit,
+  markTodayDone,
+  markTodayUndone,
+  editHabbit,
+} = habbitsSlice.actions;
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-}
+};
 
 const persistedReducer = persistReducer(persistConfig, habbitsSlice.reducer);
-
 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware({
     serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-    }
-  })
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
 });
 
 export const persistor = persistStore(store);
