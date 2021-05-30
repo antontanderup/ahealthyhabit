@@ -44,7 +44,7 @@ export default ({habbit}: {habbit: Habbit}) => {
     const isDisabled =
       goals[index - 1] && longestStreak / goals[index - 1] < 1 ? true : false;
     const progress = longestStreak / goal;
-    const goalReached = progress > 1;
+    const goalReached = progress >= 1;
     return (
       <Chip
         disabled={isDisabled}
