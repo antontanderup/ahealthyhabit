@@ -12,7 +12,6 @@ import {
 
 import './src/utils/translations';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import { Theme } from 'react-native-paper/lib/typescript/types';
 
 declare global {
   namespace ReactNativePaper {
