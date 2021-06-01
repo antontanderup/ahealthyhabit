@@ -66,7 +66,11 @@ export default ({habbit}: {habbit: Habbit}) => {
     <Card
       elevation={6}
       mode="elevated"
-      style={{marginHorizontal: 13, marginTop: 15, paddingBottom: 11}}>
+      style={{
+        marginHorizontal: 13,
+        marginTop: 15,
+        paddingBottom: 11,
+      }}>
       <Card.Title
         title={habbit.name}
         subtitle={i18n.t(
