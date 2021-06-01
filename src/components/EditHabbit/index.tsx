@@ -109,7 +109,9 @@ const EditHabbit = ({
     <Portal>
       <Dialog visible={isOpen} onDismiss={closeEditor}>
         <Dialog.Title>
-          {i18n.t('Edit')} {habbit?.name || i18n.t('Add habbit')}
+          {habbit?.name
+            ? i18n.t('Edit') + ' ' + habbit.name
+            : i18n.t('Add habbit')}
         </Dialog.Title>
         <Dialog.Content>
           <TextInput
