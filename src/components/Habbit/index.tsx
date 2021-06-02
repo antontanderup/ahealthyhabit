@@ -64,7 +64,7 @@ export default ({habbit}: {habbit: Habbit}) => {
 
   return (
     <Card
-      elevation={6}
+      elevation={4}
       mode="elevated"
       style={{
         marginHorizontal: 13,
