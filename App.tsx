@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar, StyleSheet, useColorScheme, View} from 'react-native';
+import RNBootSplash from 'react-native-bootsplash';
 import {Provider} from 'react-redux';
 import {persistor, store} from './src/store';
 import Habbits from './src/components/screens/Habbits';
@@ -58,6 +59,10 @@ export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   const theme = isDarkMode ? darkTheme : lightTheme;
+
+  useEffect(() => {
+    RNBootSplash.hide({fade: true});
+  });
 
   return (
     <Provider store={store}>
