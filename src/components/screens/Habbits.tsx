@@ -1,5 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {View, FlatList, AppState, AppStateStatus} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  View,
+  FlatList,
+  AppState,
+  AppStateStatus,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from 'react-native';
 import {Appbar, FAB, useTheme} from 'react-native-paper';
 import {connect} from 'react-redux';
 import i18n from 'i18n-js';
@@ -40,6 +47,22 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
 
   const insets = useSafeAreaInsets();
 
+  const [showFab, setShowFab] = useState(true);
+  const scrollY = useRef(0);
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const {y} = event.nativeEvent.contentOffset;
+    if (y > scrollY.current) {
+      if (showFab) {
+        setShowFab(false);
+      }
+    } else {
+      if (!showFab) {
+        setShowFab(true);
+      }
+    }
+    scrollY.current = y;
+  };
+
   return (
     <View
       style={{
@@ -54,21 +77,23 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
         data={flatListData}
         renderItem={renderHabbit}
         keyExtractor={item => item.id + currentDate}
-        ListHeaderComponent={<View style={{height: 5}}/>}
+        ListHeaderComponent={<View style={{height: 5}} />}
         ListFooterComponent={<View style={{height: 100}} />}
+        onScroll={onScroll}
       />
       {!showAddHabbit ? (
         <FAB
+          visible={showFab}
           style={{position: 'absolute', bottom: 0, right: 0, margin: 16}}
           icon="plus"
           onPress={() => setShowAddHabbit(true)}
         />
-      ) : (
+      ) : showAddHabbit ? (
         <EditHabbit
           isOpen={showAddHabbit}
           onClose={() => setShowAddHabbit(false)}
         />
-      )}
+      ) : null}
     </View>
   );
 };
