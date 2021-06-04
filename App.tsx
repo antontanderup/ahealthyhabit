@@ -13,6 +13,7 @@ import {
 
 import './src/utils/translations';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 declare global {
   namespace ReactNativePaper {
@@ -62,7 +63,12 @@ export default function App() {
 
   useEffect(() => {
     RNBootSplash.hide({fade: true});
+    changeNavigationBarColor(theme.colors.background, !isDarkMode, false);
   });
+
+  useEffect(() => {
+    changeNavigationBarColor(theme.colors.background, !isDarkMode, false);
+  }, [isDarkMode, theme]);
 
   return (
     <Provider store={store}>
