@@ -53,23 +53,25 @@ const EditHabitDates = ({
     <Portal>
       <Dialog visible={isOpen} onDismiss={closeEditor}>
         <Dialog.Content>
-          <Calendar
-            markedDates={markedDates()}
-            onDayPress={dayPressed}
-            theme={{
-              backgroundColor: 'transparent',
-              calendarBackground: 'transparent',
-              textSectionTitleColor: colors.onSurface,
-              selectedDayBackgroundColor: colors.primary,
-              selectedDayTextColor: colors.text,
-              dayTextColor: colors.text,
-              arrowColor: colors.primary,
-              monthTextColor: colors.text,
-              todayTextColor: colors.primary,
-            }}
-            maxDate={format(new Date(), 'yyyy-LL-dd')}
-            markingType="period"
-          />
+          {isOpen && (
+            <Calendar
+              markedDates={markedDates()}
+              onDayPress={dayPressed}
+              theme={{
+                backgroundColor: 'transparent',
+                calendarBackground: 'transparent',
+                textSectionTitleColor: colors.onSurface,
+                selectedDayBackgroundColor: colors.primary,
+                selectedDayTextColor: colors.text,
+                dayTextColor: colors.text,
+                arrowColor: colors.primary,
+                monthTextColor: colors.text,
+                todayTextColor: colors.primary,
+              }}
+              maxDate={format(new Date(), 'yyyy-LL-dd')}
+              markingType="period"
+            />
+          )}
         </Dialog.Content>
         <Dialog.Actions>
           <Button
