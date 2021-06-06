@@ -116,7 +116,11 @@ export default ({habbit}: {habbit: Habbit}) => {
             {i18n.t('habbit.longest.count', {count: longestStreak})}
           </Chip>
         )}
-        {habbit?.goals?.map(goalChip)}
+        {habbit.goals && habbit.goals.length > 0 ? (
+          habbit.goals.map(goalChip)
+        ) : (
+          <Chip onPress={() => setEditorOpen(true)} style={styles.chip}>{i18n.t('Add goals')}</Chip>
+        )}
       </Card.Content>
       <EditHabbit
         isOpen={editorOpen}

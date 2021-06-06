@@ -10,6 +10,7 @@ i18n.translations = {
     Save: 'Save',
     'Add habbit': 'Add habbit',
     Goals: 'Goals',
+    'Add goals': 'Add goals',
     Days: {
       count: {
         one: '1 day',
@@ -50,6 +51,7 @@ i18n.translations = {
     Save: 'Gem',
     'Add habbit': 'Tilføj vane',
     Goals: 'Mål',
+    'Add goals': 'Tilføj mål',
     Days: {
       count: {
         one: '1 dag',
