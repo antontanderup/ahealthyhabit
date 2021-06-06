@@ -111,15 +111,19 @@ export default ({habbit}: {habbit: Habbit}) => {
         )}
       />
       <Card.Content style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-        {streaksDateArray.length > 1 && longestStreak > 0 && (
-          <Chip style={styles.chip}>
-            {i18n.t('habbit.longest.count', {count: longestStreak})}
-          </Chip>
-        )}
+        {streaksDateArray.length > 1 &&
+          longestStreak > 0 &&
+          currentStreak !== longestStreak && (
+            <Chip style={styles.chip}>
+              {i18n.t('habbit.longest.count', {count: longestStreak})}
+            </Chip>
+          )}
         {habbit.goals && habbit.goals.length > 0 ? (
           habbit.goals.map(goalChip)
         ) : (
-          <Chip onPress={() => setEditorOpen(true)} style={styles.chip}>{i18n.t('Add goals')}</Chip>
+          <Chip onPress={() => setEditorOpen(true)} style={styles.chip}>
+            {i18n.t('Add goals')}
+          </Chip>
         )}
       </Card.Content>
       <EditHabbit
