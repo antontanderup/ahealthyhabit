@@ -128,25 +128,27 @@ const EditHabbit = ({
           <Subheading style={{marginTop: 10}}>{i18n.t('Goals')}</Subheading>
           {[7, 30, 90, 180, 365].map(renderGoalCheckbox)}
         </Dialog.Content>
-        <Dialog.Actions>
-          {habbit && (
+        {isOpen && (
+          <Dialog.Actions>
+            {habbit && (
+              <Button
+                mode="contained"
+                compact
+                style={{marginRight: 8}}
+                color={colors.warn}
+                onPress={() => store.dispatch(removeHabbit(habbit.id))}>
+                {i18n.t('Delete')}
+              </Button>
+            )}
             <Button
               mode="contained"
               compact
-              style={{marginRight: 8}}
-              color={colors.warn}
-              onPress={() => store.dispatch(removeHabbit(habbit.id))}>
-              {i18n.t('Delete')}
+              color={colors.primary}
+              onPress={closeEditor}>
+              {i18n.t(!habbit ? 'Done' : 'Save')}
             </Button>
-          )}
-          <Button
-            mode="contained"
-            compact
-            color={colors.primary}
-            onPress={closeEditor}>
-            {i18n.t(!habbit ? 'Done' : 'Save')}
-          </Button>
-        </Dialog.Actions>
+          </Dialog.Actions>
+        )}
       </Dialog>
     </Portal>
   );

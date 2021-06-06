@@ -73,15 +73,17 @@ const EditHabitDates = ({
             />
           )}
         </Dialog.Content>
-        <Dialog.Actions>
-          <Button
-            mode="contained"
-            compact
-            color={colors.primary}
-            onPress={closeEditor}>
-            {i18n.t('Done')}
-          </Button>
-        </Dialog.Actions>
+        {isOpen && (
+          <Dialog.Actions>
+            <Button
+              mode="contained"
+              compact
+              color={colors.primary}
+              onPress={closeEditor}>
+              {i18n.t('Done')}
+            </Button>
+          </Dialog.Actions>
+        )}
       </Dialog>
     </Portal>
   );
