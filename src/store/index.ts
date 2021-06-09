@@ -20,23 +20,33 @@ import {
 } from 'redux-persist';
 
 type HabbitDate = string;
+type HabbitId = string;
 
 export type Habbit = {
   name: string;
-  id: string;
+  id: HabbitId;
   recordedDates: HabbitDate[];
   goals?: number[];
+};
+
+type Settings = {
+  sortBy: 'default' | 'custom';
 };
 
 const habbitsSlice = createSlice({
   name: 'habbits',
   initialState: {
     habbits: {} as {[key: string]: Habbit},
+    customOrder: [] as HabbitId[],
+    settings: {
+      sortBy: 'default',
+    } as Settings,
   },
   reducers: {
     addHabbit: {
       reducer: (state, action: PayloadAction<Habbit>) => {
         state.habbits[action.payload.id] = action.payload;
+        state.customOrder.push(action.payload.id);
       },
       prepare: (name: string, goals?: Habbit['goals']) => {
         const id = nanoid();
@@ -64,14 +74,15 @@ const habbitsSlice = createSlice({
       } else {
         habbit.recordedDates.push(dateString);
         habbit.recordedDates.sort((a, b) => {
-          const dateA = new Date(a);
-          const dateB = new Date(b);
+          const dateA = new Date(a).valueOf();
+          const dateB = new Date(b).valueOf();
           return dateB - dateA;
         });
       }
     },
     removeHabbit(state, action: PayloadAction<string>) {
       delete state.habbits[action.payload];
+      state.customOrder = state.customOrder.filter(id => id !== action.payload);
     },
     markTodayDone(state, action: PayloadAction<string>) {
       state.habbits[action.payload].recordedDates.unshift(
@@ -85,6 +96,12 @@ const habbitsSlice = createSlice({
         today.recordedDates.splice(0, 1);
       }
     },
+    reorderCustomOrder(state, action: PayloadAction<string[]>) {
+      state.customOrder = action.payload;
+    },
+    changeSortBy(state, action: PayloadAction<Settings['sortBy']>) {
+      state.settings.sortBy = action.payload;
+    },
   },
 });
 
@@ -95,6 +112,8 @@ export const {
   markTodayDone,
   markTodayUndone,
   editHabbit,
+  reorderCustomOrder,
+  changeSortBy,
 } = habbitsSlice.actions;
 
 const persistConfig = {

@@ -1,23 +1,38 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
-  FlatList,
   AppState,
   AppStateStatus,
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
-import {Appbar, FAB, useTheme} from 'react-native-paper';
+import {Appbar, Divider, FAB, Menu, useTheme} from 'react-native-paper';
 import {connect} from 'react-redux';
 import i18n from 'i18n-js';
-import {Habbit as HabbitType, RootState} from '../../store';
+import DraggableFlatlist from 'react-native-draggable-flatlist';
+import {
+  Habbit as HabbitType,
+  RootState,
+  reorderCustomOrder,
+  store,
+  changeSortBy,
+} from '../../store';
 import Habbit from '../Habbit';
 import EditHabbit from '../EditHabbit';
 import {getDate} from 'date-fns';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import ReorderingHabbit from '../ReorderingHabbit';
 
-const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
-  const {colors, dark} = useTheme();
+const Habbits = ({
+  habbits,
+  customOrder,
+  settings,
+}: {
+  habbits: RootState['habbits'];
+  customOrder: RootState['customOrder'];
+  settings: RootState['settings'];
+}) => {
+  const {colors} = useTheme();
 
   // current date is used in keyextractor so we refresh the components
   // when a fresh day arives :)
@@ -39,11 +54,35 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
 
   const [showAddHabbit, setShowAddHabbit] = useState(false);
 
-  const renderHabbit = ({item}: {item: HabbitType}) => {
+  const renderHabbit = ({
+    item,
+    drag,
+    isActive,
+  }: {
+    item: HabbitType;
+    drag: () => void;
+    isActive: boolean;
+  }) => {
+    if (reordering) {
+      return <ReorderingHabbit habbit={item} drag={drag} isActive={isActive} />;
+    }
     return <Habbit habbit={item} />;
   };
 
-  const flatListData = Object.values(habbits);
+  const flatListData = () => {
+    switch (settings.sortBy) {
+      case 'custom':
+        return customOrder.map(id => {
+          return habbits[id];
+        });
+      case 'default':
+        return Object.values(habbits);
+      default:
+        return Object.values(habbits);
+    }
+  };
+
+  const [reordering, setReordering] = useState(false);
 
   const insets = useSafeAreaInsets();
 
@@ -63,6 +102,8 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
     scrollY.current = y;
   };
 
+  const [showHeaderMenu, setShowHeaderMenu] = useState(false);
+
   return (
     <View
       style={{
@@ -70,16 +111,75 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
         height: '100%',
         backgroundColor: colors.background,
       }}>
-      <Appbar.Header dark statusBarHeight={insets.top}>
+      <Appbar.Header statusBarHeight={insets.top}>
         <Appbar.Content title={i18n.t('appName')} />
+        {settings.sortBy === 'custom' && (
+          <>
+            {reordering ? (
+              <Appbar.Action
+                onPress={() => setReordering(false)}
+                icon="check"
+              />
+            ) : (
+              <Appbar.Action
+                onPress={() => setReordering(true)}
+                icon="reorder-horizontal"
+              />
+            )}
+          </>
+        )}
+        <Menu
+          style={{marginTop: insets.top}}
+          visible={showHeaderMenu}
+          onDismiss={() => setShowHeaderMenu(false)}
+          anchor={
+            <Appbar.Action
+              onPress={() => setShowHeaderMenu(true)}
+              icon="dots-vertical"
+            />
+          }>
+          <Menu.Item title="Sort by" titleStyle={{fontWeight: 'bold'}} />
+          <Divider />
+          <Menu.Item
+            icon="sort-ascending"
+            onPress={() => {
+              setShowHeaderMenu(false);
+              setTimeout(() => {
+                store.dispatch(changeSortBy('default'));
+              }, 0);
+            }}
+            title="Created"
+          />
+          <Menu.Item
+            icon="sort"
+            onPress={() => {
+              setShowHeaderMenu(false);
+              setTimeout(() => {
+                store.dispatch(changeSortBy('custom'));
+                if (customOrder.length === 0) {
+                  const newOrder = Object.values(habbits).map(
+                    habbit => habbit.id,
+                  );
+                  store.dispatch(reorderCustomOrder(newOrder));
+                  setReordering(true);
+                }
+              }, 0);
+            }}
+            title="Manually"
+          />
+        </Menu>
       </Appbar.Header>
-      <FlatList
-        data={flatListData}
+      <DraggableFlatlist
+        data={flatListData()}
         renderItem={renderHabbit}
         keyExtractor={item => item.id + currentDate}
         ListHeaderComponent={<View style={{height: 5}} />}
         ListFooterComponent={<View style={{height: 100}} />}
         onScroll={onScroll}
+        onDragEnd={({data}) => {
+          const newOrder = Object.values(data).map(habbit => habbit.id);
+          store.dispatch(reorderCustomOrder(newOrder));
+        }}
       />
       {!showAddHabbit ? (
         <FAB
@@ -101,6 +201,8 @@ const Habbits = ({habbits}: {habbits: RootState['habbits']}) => {
 const mapStateToProps = (state: RootState) => {
   return {
     habbits: state.habbits,
+    customOrder: state.customOrder,
+    settings: state.settings,
   };
 };
 
