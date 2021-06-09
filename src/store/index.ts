@@ -80,6 +80,16 @@ const habbitsSlice = createSlice({
         });
       }
     },
+    editDates(state, action: PayloadAction<{id: string; dates: HabbitDate[]}>) {
+      const habbit = state.habbits[action.payload.id];
+
+      habbit.recordedDates = action.payload.dates;
+      habbit.recordedDates.sort((a, b) => {
+        const dateA = new Date(a).valueOf();
+        const dateB = new Date(b).valueOf();
+        return dateB - dateA;
+      });
+    },
     removeHabbit(state, action: PayloadAction<string>) {
       delete state.habbits[action.payload];
       state.customOrder = state.customOrder.filter(id => id !== action.payload);
@@ -114,6 +124,7 @@ export const {
   editHabbit,
   reorderCustomOrder,
   changeSortBy,
+  editDates,
 } = habbitsSlice.actions;
 
 const persistConfig = {

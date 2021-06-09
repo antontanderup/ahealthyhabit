@@ -1,10 +1,6 @@
 import React from 'react';
-import i18n from 'i18n-js';
-import {Calendar} from 'react-native-calendars';
-import {Portal, Dialog, Button, useTheme} from 'react-native-paper';
-import {store, toggleDate, Habbit} from '../../store';
-import {format} from 'date-fns';
-import {getStreaks} from '../../utils/calculateStreaks';
+import {store, Habbit, editDates} from '../../store';
+import {DatePickerModal} from 'react-native-paper-dates';
 
 const EditHabitDates = ({
   isOpen,
@@ -15,77 +11,33 @@ const EditHabitDates = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const {colors} = useTheme();
+  const streaksDateArray = React.useMemo(
+    () => habbit.recordedDates.map(stringDate => new Date(stringDate)),
+    [habbit.recordedDates],
+  );
 
-  const closeEditor = () => {
+  const onConfirm = ({dates}: {dates: Date[]}) => {
+    store.dispatch(
+      editDates({
+        id: habbit.id,
+        dates: dates.map(date => date.toDateString()),
+      }),
+    );
     onClose();
   };
 
-  const streaksDateArray = getStreaks(habbit.recordedDates);
-
-  const markedDates = () => {
-    const dates: {[key: string]: any} = {};
-    streaksDateArray.forEach(streak => {
-      streak.dates.forEach((date, index, array) => {
-        dates[format(new Date(date), 'yyyy-LL-dd')] = {
-          selected: true,
-          color: colors.primary,
-          startingDay: index === array.length - 1,
-          endingDay: index === 0,
-        };
-      });
-    });
-
-    return dates;
-  };
-
-  const dayPressed = (day: {dateString: string}) => {
-    if (habbit) {
-      store.dispatch(
-        toggleDate({
-          id: habbit.id,
-          date: day.dateString,
-        }),
-      );
-    }
-  };
   return (
-    <Portal>
-      <Dialog visible={isOpen} onDismiss={closeEditor}>
-        <Dialog.Content>
-          {isOpen && (
-            <Calendar
-              markedDates={markedDates()}
-              onDayPress={dayPressed}
-              theme={{
-                backgroundColor: 'transparent',
-                calendarBackground: 'transparent',
-                textSectionTitleColor: colors.onSurface,
-                selectedDayBackgroundColor: colors.primary,
-                selectedDayTextColor: colors.text,
-                dayTextColor: colors.text,
-                arrowColor: colors.primary,
-                monthTextColor: colors.text,
-                todayTextColor: colors.primary,
-              }}
-              maxDate={format(new Date(), 'yyyy-LL-dd')}
-              markingType="period"
-            />
-          )}
-        </Dialog.Content>
-        {isOpen && (
-          <Dialog.Actions>
-            <Button
-              mode="contained"
-              compact
-              color={colors.primary}
-              onPress={closeEditor}>
-              {i18n.t('Done')}
-            </Button>
-          </Dialog.Actions>
-        )}
-      </Dialog>
-    </Portal>
+    <DatePickerModal
+      mode="multiple"
+      visible={isOpen}
+      onDismiss={onClose}
+      dates={streaksDateArray}
+      onConfirm={onConfirm}
+      validRange={{
+        endDate: new Date(), // optional
+      }}
+      animationType="fade"
+    />
   );
 };
 
