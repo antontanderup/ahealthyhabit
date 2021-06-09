@@ -26,7 +26,6 @@
     "react-native-navigation-bar-color": "^2.0.1",
     "react-native-paper": "^4.9.1",
     "react-native-safe-area-context": "^3.2.0",
-    "react-native-v8": "^0.64.0-patch.0",
     "react-native-vector-icons": "^8.1.0",
     "react-redux": "^7.2.4",
     "redux-persist": "^6.0.0"
