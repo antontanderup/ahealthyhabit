@@ -5,6 +5,7 @@ import {
   AppStateStatus,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  StatusBar,
 } from 'react-native';
 import {Appbar, Divider, FAB, Menu, useTheme} from 'react-native-paper';
 import {connect} from 'react-redux';
@@ -22,6 +23,7 @@ import EditHabbit from '../EditHabbit';
 import {getDate} from 'date-fns';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ReorderingHabbit from '../ReorderingHabbit';
+import Hsla, {hexToHsla} from '../../utils/hsla';
 
 const Habbits = ({
   habbits,
@@ -32,7 +34,7 @@ const Habbits = ({
   customOrder: RootState['customOrder'];
   settings: RootState['settings'];
 }) => {
-  const {colors} = useTheme();
+  const {colors, dark} = useTheme();
 
   // current date is used in keyextractor so we refresh the components
   // when a fresh day arives :)
@@ -104,6 +106,12 @@ const Habbits = ({
 
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
 
+  const headerColor = new Hsla(
+    hexToHsla(dark ? colors.surface : colors.primary),
+  );
+  const headerIsDark = headerColor.isDark();
+  const headerIconColor = headerColor.getHexString({l: headerIsDark ? 95 : 5});
+
   return (
     <View
       style={{
@@ -111,7 +119,12 @@ const Habbits = ({
         height: '100%',
         backgroundColor: colors.background,
       }}>
-      <Appbar.Header statusBarHeight={insets.top}>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={headerIsDark ? 'light-content' : 'dark-content'}
+      />
+      <Appbar.Header dark={headerIsDark} statusBarHeight={insets.top}>
         <Appbar.Content title={i18n.t('appName')} />
         {settings.sortBy === 'custom' && (
           <>
@@ -119,11 +132,13 @@ const Habbits = ({
               <Appbar.Action
                 onPress={() => setReordering(false)}
                 icon="check"
+                color={headerIconColor}
               />
             ) : (
               <Appbar.Action
                 onPress={() => setReordering(true)}
                 icon="reorder-horizontal"
+                color={headerIconColor}
               />
             )}
           </>
@@ -136,6 +151,7 @@ const Habbits = ({
             <Appbar.Action
               onPress={() => setShowHeaderMenu(true)}
               icon="dots-vertical"
+              color={headerIconColor}
             />
           }>
           <Menu.Item title="Sort by" titleStyle={{fontWeight: 'bold'}} />
