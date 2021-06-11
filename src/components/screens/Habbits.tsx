@@ -1,13 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   AppState,
   AppStateStatus,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   StatusBar,
+  FlatList,
+  FlatListProps,
 } from 'react-native';
 import {Appbar, Divider, FAB, Menu, useTheme} from 'react-native-paper';
+import {DEFAULT_APPBAR_HEIGHT} from 'react-native-paper/src/components/Appbar/Appbar';
+import Animated, {
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import {connect} from 'react-redux';
 import i18n from 'i18n-js';
 import DraggableFlatlist from 'react-native-draggable-flatlist';
@@ -25,6 +31,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ReorderingHabbit from '../ReorderingHabbit';
 import Hsla, {hexToHsla} from '../../utils/hsla';
 
+const AnimatedFlatList = Animated.createAnimatedComponent(
+  FlatList,
+) as unknown as <T>(props: FlatListProps<T>) => React.ReactElement;
+
 const Habbits = ({
   habbits,
   customOrder,
@@ -34,7 +44,7 @@ const Habbits = ({
   customOrder: RootState['customOrder'];
   settings: RootState['settings'];
 }) => {
-  const {colors, dark} = useTheme();
+  const {colors} = useTheme();
 
   // current date is used in keyextractor so we refresh the components
   // when a fresh day arives :)
@@ -56,7 +66,7 @@ const Habbits = ({
 
   const [showAddHabbit, setShowAddHabbit] = useState(false);
 
-  const renderHabbit = ({
+  const renderSortableHabbit = ({
     item,
     drag,
     isActive,
@@ -65,9 +75,10 @@ const Habbits = ({
     drag: () => void;
     isActive: boolean;
   }) => {
-    if (reordering) {
-      return <ReorderingHabbit habbit={item} drag={drag} isActive={isActive} />;
-    }
+    return <ReorderingHabbit habbit={item} drag={drag} isActive={isActive} />;
+  };
+
+  const renderHabbit = ({item}: {item: HabbitType}) => {
     return <Habbit habbit={item} />;
   };
 
@@ -88,29 +99,32 @@ const Habbits = ({
 
   const insets = useSafeAreaInsets();
 
-  const [showFab, setShowFab] = useState(true);
-  const scrollY = useRef(0);
-  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const {y} = event.nativeEvent.contentOffset;
-    if (y > scrollY.current) {
-      if (showFab) {
-        setShowFab(false);
-      }
-    } else {
-      if (!showFab) {
-        setShowFab(true);
-      }
-    }
-    scrollY.current = y;
-  };
-
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
 
-  const headerColor = new Hsla(
-    hexToHsla(dark ? colors.surface : colors.primary),
-  );
+  const headerColor = new Hsla(hexToHsla(colors.background));
   const headerIsDark = headerColor.isDark();
-  const headerIconColor = headerColor.getHexString({l: headerIsDark ? 95 : 5});
+  const headerIconColor = colors.onSurface;
+  const appBarInset = insets.top + 10;
+
+  const headerOffset = useSharedValue(0);
+  const headerWrapperStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{translateY: headerOffset.value}],
+    };
+  });
+  const scrollOffset = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: event => {
+      headerOffset.value = Math.max(
+        -(DEFAULT_APPBAR_HEIGHT + appBarInset),
+        Math.min(
+          0,
+          headerOffset.value + (scrollOffset.value - event.contentOffset.y),
+        ),
+      );
+      scrollOffset.value = event.contentOffset.y;
+    },
+  });
 
   return (
     <View
@@ -124,8 +138,25 @@ const Habbits = ({
         backgroundColor="transparent"
         barStyle={headerIsDark ? 'light-content' : 'dark-content'}
       />
-      <Appbar.Header dark={headerIsDark} statusBarHeight={insets.top}>
-        <Appbar.Content title={i18n.t('appName')} />
+      <Animated.View
+        style={[
+          {
+            paddingTop: appBarInset,
+            position: 'absolute',
+            zIndex: 1,
+            width: '100%',
+            paddingLeft: 5,
+            backgroundColor: headerColor.getHexString(),
+            flexDirection: 'row',
+            alignItems: 'center',
+            height: DEFAULT_APPBAR_HEIGHT + appBarInset,
+          },
+          headerWrapperStyle,
+        ]}>
+        <Appbar.Content
+          title={i18n.t('appName')}
+          titleStyle={{color: headerIconColor}}
+        />
         {settings.sortBy === 'custom' && (
           <>
             {reordering ? (
@@ -184,22 +215,36 @@ const Habbits = ({
             title="Manually"
           />
         </Menu>
-      </Appbar.Header>
-      <DraggableFlatlist
-        data={flatListData()}
-        renderItem={renderHabbit}
-        keyExtractor={item => item.id + currentDate}
-        ListHeaderComponent={<View style={{height: 5}} />}
-        ListFooterComponent={<View style={{height: 100}} />}
-        onScroll={onScroll}
-        onDragEnd={({data}) => {
-          const newOrder = Object.values(data).map(habbit => habbit.id);
-          store.dispatch(reorderCustomOrder(newOrder));
-        }}
-      />
+      </Animated.View>
+      {reordering ? (
+        <DraggableFlatlist
+          data={flatListData()}
+          renderItem={renderSortableHabbit}
+          keyExtractor={item => item.id + currentDate}
+          ListHeaderComponent={
+            <View style={{height: DEFAULT_APPBAR_HEIGHT + appBarInset}} />
+          }
+          ListFooterComponent={<View style={{height: 100}} />}
+          onDragEnd={({data}) => {
+            const newOrder = Object.values(data).map(habbit => habbit.id);
+            store.dispatch(reorderCustomOrder(newOrder));
+          }}
+        />
+      ) : (
+        <AnimatedFlatList
+          data={flatListData()}
+          renderItem={renderHabbit}
+          keyExtractor={item => item.id + currentDate}
+          ListHeaderComponent={
+            <View style={{height: DEFAULT_APPBAR_HEIGHT + appBarInset}} />
+          }
+          ListFooterComponent={<View style={{height: 100}} />}
+          onScroll={scrollHandler}
+        />
+      )}
+
       {!showAddHabbit ? (
         <FAB
-          visible={showFab}
           style={{position: 'absolute', bottom: 0, right: 0, margin: 16}}
           icon="plus"
           onPress={() => setShowAddHabbit(true)}
