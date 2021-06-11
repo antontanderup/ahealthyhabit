@@ -104,7 +104,7 @@ const Habbits = ({
   const headerColor = new Hsla(hexToHsla(colors.background));
   const headerIsDark = headerColor.isDark();
   const headerIconColor = colors.onSurface;
-  const appBarInset = insets.top + 10;
+  const appBarInset = insets.top + 20;
 
   const headerOffset = useSharedValue(0);
   const headerWrapperStyle = useAnimatedStyle(() => {
@@ -118,7 +118,7 @@ const Habbits = ({
       headerOffset.value = Math.max(
         -(DEFAULT_APPBAR_HEIGHT + appBarInset),
         Math.min(
-          0,
+          scrollOffset.value > 20 ? -20 : 0,
           headerOffset.value + (scrollOffset.value - event.contentOffset.y),
         ),
       );
