@@ -13,7 +13,6 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
-  withDecay,
   withTiming,
 } from 'react-native-reanimated';
 import {connect} from 'react-redux';
