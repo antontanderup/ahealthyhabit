@@ -13,6 +13,8 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
+  withDecay,
+  withTiming,
 } from 'react-native-reanimated';
 import {connect} from 'react-redux';
 import i18n from 'i18n-js';
@@ -115,13 +117,18 @@ const Habbits = ({
   const scrollOffset = useSharedValue(0);
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: event => {
-      headerOffset.value = Math.max(
-        -(DEFAULT_APPBAR_HEIGHT + appBarInset),
-        Math.min(
-          scrollOffset.value > 20 ? -20 : 0,
-          headerOffset.value + (scrollOffset.value - event.contentOffset.y),
-        ),
-      );
+      const scrollY = event.contentOffset.y;
+      headerOffset.value =
+        scrollY <= 0
+          ? withTiming(0)
+          : Math.max(
+              -(DEFAULT_APPBAR_HEIGHT + appBarInset),
+              Math.min(
+                scrollOffset.value > 20 ? -20 : 0,
+                headerOffset.value +
+                  (scrollOffset.value - event.contentOffset.y),
+              ),
+            );
       scrollOffset.value = event.contentOffset.y;
     },
   });
