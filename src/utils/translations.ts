@@ -3,6 +3,7 @@ import i18n from 'i18n-js';
 i18n.translations = {
   en: {
     appName: 'A Healthy Habit',
+    'Your Habits': 'Your Habits',
     Edit: 'Edit',
     'Habbit name': 'Habbit name',
     Done: 'Done',
@@ -44,6 +45,7 @@ i18n.translations = {
   },
   da: {
     appName: 'En God Vane',
+    'Your Habits': 'Dine vaner',
     Edit: 'Rediger',
     'Habbit name': 'Navn på vane',
     Done: 'Færdig',

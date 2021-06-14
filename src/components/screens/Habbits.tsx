@@ -14,6 +14,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
+  Extrapolate,
+  interpolate,
 } from 'react-native-reanimated';
 import {connect} from 'react-redux';
 import i18n from 'i18n-js';
@@ -45,7 +47,7 @@ const Habbits = ({
   customOrder: RootState['customOrder'];
   settings: RootState['settings'];
 }) => {
-  const {colors} = useTheme();
+  const {colors, fonts} = useTheme();
 
   // current date is used in keyextractor so we refresh the components
   // when a fresh day arives :)
@@ -108,12 +110,29 @@ const Habbits = ({
   const appBarInset = insets.top + 20;
 
   const headerOffset = useSharedValue(0);
+  const scrollOffset = useSharedValue(0);
+  const headerTitleFontStyle = useAnimatedStyle(() => {
+    return {
+      fontSize: interpolate(
+        scrollOffset.value,
+        [0, 20],
+        [30, 20],
+        Extrapolate.CLAMP,
+      ),
+      marginBottom: interpolate(
+        scrollOffset.value,
+        [0, 20],
+        [6, 0],
+        Extrapolate.CLAMP,
+      ),
+    };
+  });
   const headerWrapperStyle = useAnimatedStyle(() => {
     return {
       transform: [{translateY: headerOffset.value}],
     };
   });
-  const scrollOffset = useSharedValue(0);
+
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: event => {
       const scrollY = event.contentOffset.y;
@@ -151,18 +170,27 @@ const Habbits = ({
             position: 'absolute',
             zIndex: 1,
             width: '100%',
-            paddingLeft: 5,
+            paddingLeft: 18,
             backgroundColor: headerColor.getHexString(),
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'center',
             height: DEFAULT_APPBAR_HEIGHT + appBarInset,
           },
           headerWrapperStyle,
         ]}>
-        <Appbar.Content
-          title={i18n.t('appName')}
-          titleStyle={{color: headerIconColor}}
-        />
+        <Animated.Text
+          style={[
+            {
+              fontFamily: fonts.medium.fontFamily,
+              color: headerIconColor,
+              flex: 1,
+            },
+            headerTitleFontStyle,
+          ]}>
+          {i18n.t('Your Habits')}
+        </Animated.Text>
+
         {settings.sortBy === 'custom' && (
           <>
             {reordering ? (
