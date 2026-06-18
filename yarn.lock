@@ -5721,10 +5721,10 @@ react-native-paper-dates@^0.9.2:
     caniuse-lite "^1.0.30001383"
     color "^3.2.1"
 
-react-native-paper@^5.12.5:
-  version "5.15.3"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.15.3.tgz#7eda85b920b60c2157b42d9dd4d7d291229fb277"
-  integrity sha512-GEyNTmWElIZgnYw09AjjCNupRYzCmP79uAAyGSyCEUZz7KBz1wtJcC0wVUkozR1Rn3PK/td/9LlR6+F1hzmYvA==
+react-native-paper@5.14.5:
+  version "5.14.5"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.14.5.tgz#7995a2f8171c8355c1cb55c81a6d2074a7dd5abb"
+  integrity sha512-eaIH5bUQjJ/mYm4AkI6caaiyc7BcHDwX6CqNDi6RIxfxfWxROsHpll1oBuwn/cFvknvA8uEAkqLk/vzVihI3AQ==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.9"
     color "^3.1.2"

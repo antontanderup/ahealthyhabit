@@ -11,8 +11,9 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {addHabbit, editHabbit, Habbit, removeHabbit, store} from '../../store';
-import produce from 'immer';
+import {produce} from 'immer';
 import {View} from 'react-native';
+import {AppTheme} from '../../types/paper';
 
 const EditHabbit = ({
   habbit,
@@ -23,7 +24,7 @@ const EditHabbit = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const {colors} = useTheme();
+  const {colors} = useTheme<AppTheme>();
 
   const initialEditState = {
     name: habbit?.name || '',

@@ -9,12 +9,6 @@ import './src/utils/translations';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import App from './src/components/App';
 
-declare module 'react-native-paper' {
-  interface MD3Colors {
-    warn: string;
-  }
-}
-
 export default () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>

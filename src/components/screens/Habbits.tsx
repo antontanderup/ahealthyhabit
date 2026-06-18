@@ -219,7 +219,7 @@ const Habbits = ({
           <Menu.Item title="Sort by" titleStyle={{fontWeight: 'bold'}} />
           <Divider />
           <Menu.Item
-            icon="sort-ascending"
+            leadingIcon="sort-ascending"
             onPress={() => {
               setShowHeaderMenu(false);
               setTimeout(() => {
@@ -229,7 +229,7 @@ const Habbits = ({
             title="Created"
           />
           <Menu.Item
-            icon="sort"
+            leadingIcon="sort"
             onPress={() => {
               setShowHeaderMenu(false);
               setTimeout(() => {

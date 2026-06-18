@@ -18,11 +18,6 @@ registerTranslation('en', {
   typeInDate: 'Type in date',
   pickDateFromCalendar: 'Pick date from calendar',
   close: 'Close',
-  hour24h: 'Hour (24h)',
-  hours: 'Hours',
-  minutes: 'Minutes',
-  second: 'Second',
-  dateFormat: '',
 });
 
 i18n.translations = {
