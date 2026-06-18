@@ -38,9 +38,6 @@ jobs:
           key: gradle-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties', 'android/**/*.gradle*') }}
           restore-keys: gradle-
 
-      - name: Install NDK
-        run: sdkmanager "ndk;26.1.10909125"
-
       - name: Build debug APK
         working-directory: android
         run: |
