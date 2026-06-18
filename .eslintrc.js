@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: '@react-native-community',
+  extends: '@react-native',
   rules: {
     'prettier/prettier': ['error', {endOfLine: 'auto'}],
     'react-native/no-inline-styles': 0,

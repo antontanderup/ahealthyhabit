@@ -6,7 +6,7 @@ import {
   Dialog,
   Divider,
   Portal,
-  Subheading,
+  Text,
   TextInput,
   useTheme,
 } from 'react-native-paper';
@@ -25,7 +25,6 @@ const EditHabbit = ({
 }) => {
   const {colors} = useTheme();
 
-  // Habbit editor state
   const initialEditState = {
     name: habbit?.name || '',
     goals: habbit?.goals || [],
@@ -125,7 +124,9 @@ const EditHabbit = ({
               })
             }
           />
-          <Subheading style={{marginTop: 10}}>{i18n.t('Goals')}</Subheading>
+          <Text variant="titleSmall" style={{marginTop: 10}}>
+            {i18n.t('Goals')}
+          </Text>
           {[7, 30, 90, 180, 365].map(renderGoalCheckbox)}
         </Dialog.Content>
         {isOpen && (
@@ -135,7 +136,7 @@ const EditHabbit = ({
                 mode="contained"
                 compact
                 style={{marginRight: 8}}
-                color={colors.warn}
+                buttonColor={colors.warn}
                 onPress={() => store.dispatch(removeHabbit(habbit.id))}>
                 {i18n.t('Delete')}
               </Button>
@@ -143,7 +144,7 @@ const EditHabbit = ({
             <Button
               mode="contained"
               compact
-              color={colors.primary}
+              buttonColor={colors.primary}
               onPress={closeEditor}>
               {i18n.t(!habbit ? 'Done' : 'Save')}
             </Button>

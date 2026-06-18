@@ -8,7 +8,6 @@ import {
   FlatListProps,
 } from 'react-native';
 import {Appbar, Divider, FAB, Menu, useTheme} from 'react-native-paper';
-import {DEFAULT_APPBAR_HEIGHT} from 'react-native-paper/src/components/Appbar/Appbar';
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -19,7 +18,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import {connect} from 'react-redux';
 import i18n from 'i18n-js';
-import DraggableFlatlist from 'react-native-draggable-flatlist';
+import DraggableFlatlist, {
+  RenderItemParams,
+} from 'react-native-draggable-flatlist';
 import {
   Habbit as HabbitType,
   RootState,
@@ -33,6 +34,8 @@ import {getDate} from 'date-fns';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ReorderingHabbit from '../ReorderingHabbit';
 import Hsla, {hexToHsla} from '../../utils/hsla';
+
+const DEFAULT_APPBAR_HEIGHT = 56;
 
 const AnimatedFlatList = Animated.createAnimatedComponent(
   FlatList,
@@ -49,16 +52,14 @@ const Habbits = ({
 }) => {
   const {colors, fonts} = useTheme();
 
-  // current date is used in keyextractor so we refresh the components
-  // when a fresh day arives :)
   const [currentDate, setCurrentDate] = useState(getDate(new Date()));
 
   useEffect(() => {
-    AppState.addEventListener('change', _handleAppStateChange);
-
-    return () => {
-      AppState.removeEventListener('change', _handleAppStateChange);
-    };
+    const subscription = AppState.addEventListener(
+      'change',
+      _handleAppStateChange,
+    );
+    return () => subscription.remove();
   }, []);
 
   const _handleAppStateChange = (nextAppState: AppStateStatus) => {
@@ -73,11 +74,7 @@ const Habbits = ({
     item,
     drag,
     isActive,
-  }: {
-    item: HabbitType;
-    drag: () => void;
-    isActive: boolean;
-  }) => {
+  }: RenderItemParams<HabbitType>) => {
     return <ReorderingHabbit habbit={item} drag={drag} isActive={isActive} />;
   };
 
@@ -182,7 +179,7 @@ const Habbits = ({
         <Animated.Text
           style={[
             {
-              fontFamily: fonts.medium.fontFamily,
+              fontFamily: fonts.titleLarge.fontFamily,
               color: headerIconColor,
               flex: 1,
             },
@@ -197,13 +194,13 @@ const Habbits = ({
               <Appbar.Action
                 onPress={() => setReordering(false)}
                 icon="check"
-                color={headerIconColor}
+                iconColor={headerIconColor}
               />
             ) : (
               <Appbar.Action
                 onPress={() => setReordering(true)}
                 icon="reorder-horizontal"
-                color={headerIconColor}
+                iconColor={headerIconColor}
               />
             )}
           </>
@@ -216,7 +213,7 @@ const Habbits = ({
             <Appbar.Action
               onPress={() => setShowHeaderMenu(true)}
               icon="dots-vertical"
-              color={headerIconColor}
+              iconColor={headerIconColor}
             />
           }>
           <Menu.Item title="Sort by" titleStyle={{fontWeight: 'bold'}} />

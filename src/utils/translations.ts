@@ -1,5 +1,30 @@
 import i18n from 'i18n-js';
-// Set the key-value pairs for the different languages you want to support.
+import {registerTranslation} from 'react-native-paper-dates';
+
+registerTranslation('en', {
+  save: 'Save',
+  selectSingle: 'Select date',
+  selectMultiple: 'Select dates',
+  selectRange: 'Select period',
+  notAccordingToDateFormat: (inputFormat: string) =>
+    `Date format must be ${inputFormat}`,
+  mustBeHigherThan: (date: string) => `Must be later than ${date}`,
+  mustBeLowerThan: (date: string) => `Must be earlier than ${date}`,
+  mustBeBetween: (startDate: string, endDate: string) =>
+    `Must be between ${startDate} - ${endDate}`,
+  dateIsDisabled: 'Day is not allowed',
+  previous: 'Previous',
+  next: 'Next',
+  typeInDate: 'Type in date',
+  pickDateFromCalendar: 'Pick date from calendar',
+  close: 'Close',
+  hour24h: 'Hour (24h)',
+  hours: 'Hours',
+  minutes: 'Minutes',
+  second: 'Second',
+  dateFormat: '',
+});
+
 i18n.translations = {
   en: {
     appName: 'A Healthy Habit',
@@ -86,7 +111,6 @@ i18n.translations = {
     },
   },
 };
-// Set the locale once at the beginning of your app.
-i18n.locale = 'eng';
 
+i18n.locale = 'eng';
 i18n.fallbacks = true;

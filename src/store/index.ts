@@ -3,7 +3,6 @@ import {
   createSlice,
   configureStore,
   PayloadAction,
-  getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import {isToday} from 'date-fns';
 import 'react-native-get-random-values';
@@ -136,11 +135,12 @@ const persistedReducer = persistReducer(persistConfig, habbitsSlice.reducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
-  }),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);

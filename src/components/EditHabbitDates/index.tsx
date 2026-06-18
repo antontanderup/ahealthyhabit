@@ -28,13 +28,14 @@ const EditHabitDates = ({
 
   return (
     <DatePickerModal
+      locale="en"
       mode="multiple"
       visible={isOpen}
       onDismiss={onClose}
       dates={streaksDateArray}
       onConfirm={onConfirm}
       validRange={{
-        endDate: new Date(), // optional
+        endDate: new Date(),
       }}
       animationType="fade"
     />
