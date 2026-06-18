@@ -1,10 +1,12 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View, useColorScheme} from 'react-native';
-import RNBootSplash from 'react-native-bootsplash';
+import * as SplashScreen from 'expo-splash-screen';
 import Habbits from './../screens/Habbits';
 import {Provider as PaperProvider} from 'react-native-paper';
 
 import themeFromColors from '../../utils/themeFromColor';
+
+SplashScreen.preventAutoHideAsync();
 
 export default () => {
   const colorScheme = useColorScheme();
@@ -12,7 +14,7 @@ export default () => {
   const theme = themeFromColors('#03b45f', isDarkMode);
 
   useEffect(() => {
-    RNBootSplash.hide({fade: true});
+    SplashScreen.hideAsync();
   }, []);
 
   return (

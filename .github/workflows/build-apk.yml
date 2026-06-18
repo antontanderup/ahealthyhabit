@@ -26,6 +26,9 @@ jobs:
       - name: Install JS dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Generate native Android project
+        run: npx expo prebuild --clean --platform android
+
       - name: Cache Gradle
         uses: actions/cache@v4
         with:
