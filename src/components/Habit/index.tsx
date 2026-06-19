@@ -141,5 +141,5 @@ const styles = StyleSheet.create({
   iconLeft: {marginRight: 0},
   iconRight: {marginLeft: 0, marginRight: 15},
   content: {flexDirection: 'row', flexWrap: 'wrap'},
-  chip: {marginRight: 8, marginBottom: 10},
+  chip: {marginRight: 8, marginBottom: 10, borderRadius: 50},
 });
