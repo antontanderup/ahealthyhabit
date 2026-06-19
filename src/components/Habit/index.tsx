@@ -191,7 +191,7 @@ const useStyles = createUseStyles(theme => ({
   },
   titleRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     paddingLeft: 16,
     paddingTop: 12,
     paddingBottom: 4,
