@@ -128,7 +128,7 @@ export default function Habits() {
           {
             paddingTop: appBarInset,
             height: DEFAULT_APPBAR_HEIGHT + appBarInset,
-            backgroundColor: colors.surfaceContainer,
+            backgroundColor: colors.surface,
           },
           headerWrapperStyle,
         ]}>
