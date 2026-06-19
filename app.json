@@ -1,4 +1,50 @@
 {
-  "name": "AHealthyHabit",
-  "displayName": "AHealthyHabit"
+  "expo": {
+    "name": "A Healthy Habit",
+    "slug": "ahealthyhabit",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./src/assets/logo.png",
+    "scheme": "ahealthyhabit",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ahealthyhabit"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/logo_foreground.png",
+        "backgroundColor": "#04c96a"
+      },
+      "package": "com.ahealthyhabit"
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/logo_transparent.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#04c96a"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+            "./node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"
+          ]
+        }
+      ],
+      "expo-status-bar",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24
+          }
+        }
+      ]
+    ]
+  }
 }

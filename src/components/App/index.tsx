@@ -1,49 +1,51 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import RNBootSplash from 'react-native-bootsplash';
-import Habbits from './../screens/Habbits';
-import {Provider as PaperProvider} from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, useColorScheme} from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import {Provider as PaperProvider, MD3LightTheme, MD3DarkTheme} from 'react-native-paper';
+import {useMaterial3Theme} from '@pchmn/expo-material3-theme';
+import {useDispatch} from 'react-redux';
+import Habits from './../screens/Habits';
+import {initDatabase, loadAllData} from '../../database';
+import {hydrate} from '../../store';
 
-import themeFromColors from '../../utils/themeFromColor';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import {useColorScheme} from 'react-native-appearance';
+SplashScreen.preventAutoHideAsync();
 
-export default () => {
+export default function App() {
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
-  const theme = themeFromColors('#03b45f', isDarkMode);
+  const {theme} = useMaterial3Theme({fallbackSourceColor: '#04c96a'});
+  const paperTheme = isDarkMode
+    ? {...MD3DarkTheme, roundness: 7, colors: {...MD3DarkTheme.colors, ...theme.dark}}
+    : {...MD3LightTheme, roundness: 7, colors: {...MD3LightTheme.colors, ...theme.light}};
+  const dispatch = useDispatch();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    RNBootSplash.hide({fade: true});
-    changeNavigationBarColor(
-      theme.colors.background.slice(0, 7),
-      !isDarkMode,
-      false,
-    );
-  });
+    async function init() {
+      try {
+        await initDatabase();
+        const data = await loadAllData();
+        dispatch(hydrate(data));
+      } finally {
+        setIsReady(true);
+        SplashScreen.hideAsync();
+      }
+    }
+    init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  useEffect(() => {
-    changeNavigationBarColor(
-      theme.colors.background.slice(0, 7),
-      !isDarkMode,
-      false,
-    );
-  }, [isDarkMode, theme]);
+  if (!isReady) return null;
 
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider theme={paperTheme}>
       <View style={styles.container}>
-        <Habbits />
+        <Habits />
       </View>
     </PaperProvider>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  container: {flex: 1},
 });
