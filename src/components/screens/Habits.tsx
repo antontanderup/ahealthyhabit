@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   View,
+  Text,
   AppState,
   AppStateStatus,
   StatusBar,
@@ -8,8 +9,15 @@ import {
   FlatListProps,
   StyleSheet,
   useColorScheme,
+  Pressable,
+  Modal,
 } from 'react-native';
-import {Appbar, Divider, FAB, Menu, useTheme} from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  Host,
+  FloatingActionButton,
+  Icon,
+} from '@expo/ui/jetpack-compose';
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -29,6 +37,7 @@ import {
   reorderCustomOrder,
   changeSortBy,
 } from '../../store';
+import {useTheme, createUseStyles} from '../../theme';
 import Habit from '../Habit';
 import EditHabit from '../EditHabit';
 import ReorderingHabit from '../ReorderingHabit';
@@ -42,7 +51,9 @@ const AnimatedFlatList = Animated.createAnimatedComponent(
 
 export default function Habits() {
   const {t} = useTranslation();
-  const {colors, fonts} = useTheme();
+  const theme = useTheme();
+  const colorScheme = useColorScheme();
+  const styles = useStyles();
   const dispatch = useAppDispatch();
   const habits = useAppSelector(state => state.habits);
   const customOrder = useAppSelector(state => state.customOrder);
@@ -53,6 +64,12 @@ export default function Habits() {
   const [reordering, setReordering] = useState(false);
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
 
+  const handleAppStateChange = (nextAppState: AppStateStatus) => {
+    if (nextAppState === 'active') {
+      setCurrentDate(toLocalISODate(new Date()));
+    }
+  };
+
   useEffect(() => {
     const subscription = AppState.addEventListener(
       'change',
@@ -60,12 +77,6 @@ export default function Habits() {
     );
     return () => subscription.remove();
   }, []);
-
-  const handleAppStateChange = (nextAppState: AppStateStatus) => {
-    if (nextAppState === 'active') {
-      setCurrentDate(toLocalISODate(new Date()));
-    }
-  };
 
   const listData = (): HabitType[] => {
     if (settings.sortBy === 'custom') {
@@ -75,17 +86,25 @@ export default function Habits() {
   };
 
   const insets = useSafeAreaInsets();
-  const headerIsDark = useColorScheme() === 'dark';
-  const headerTitleColor = colors.onSurface;
-  const headerIconColor = colors.onSurfaceVariant;
+  const headerIsDark = colorScheme === 'dark';
   const appBarInset = insets.top + 20;
 
   const headerOffset = useSharedValue(0);
   const scrollOffset = useSharedValue(0);
 
   const headerTitleFontStyle = useAnimatedStyle(() => ({
-    fontSize: interpolate(scrollOffset.value, [0, 20], [30, 20], Extrapolate.CLAMP),
-    marginBottom: interpolate(scrollOffset.value, [0, 20], [6, 0], Extrapolate.CLAMP),
+    fontSize: interpolate(
+      scrollOffset.value,
+      [0, 20],
+      [30, 20],
+      Extrapolate.CLAMP,
+    ),
+    marginBottom: interpolate(
+      scrollOffset.value,
+      [0, 20],
+      [6, 0],
+      Extrapolate.CLAMP,
+    ),
   }));
 
   const headerWrapperStyle = useAnimatedStyle(() => ({
@@ -95,6 +114,7 @@ export default function Habits() {
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: event => {
       const scrollY = event.contentOffset.y;
+      // eslint-disable-next-line react-hooks/immutability
       headerOffset.value =
         scrollY <= 0
           ? withTiming(0)
@@ -106,6 +126,7 @@ export default function Habits() {
                   (scrollOffset.value - event.contentOffset.y),
               ),
             );
+      // eslint-disable-next-line react-hooks/immutability
       scrollOffset.value = event.contentOffset.y;
     },
   });
@@ -116,7 +137,8 @@ export default function Habits() {
   const listFooter = <View style={{height: 100}} />;
 
   return (
-    <View style={[styles.container, {backgroundColor: colors.background}]}>
+    <View
+      style={[styles.container, {backgroundColor: theme.background}]}>
       <StatusBar
         translucent
         backgroundColor="transparent"
@@ -128,63 +150,47 @@ export default function Habits() {
           {
             paddingTop: appBarInset,
             height: DEFAULT_APPBAR_HEIGHT + appBarInset,
-            backgroundColor: colors.surface,
+            backgroundColor: theme.surface,
           },
           headerWrapperStyle,
         ]}>
         <Animated.Text
           style={[
             styles.headerTitle,
-            {fontFamily: fonts.titleLarge.fontFamily, color: headerTitleColor},
+            {color: theme.onSurface},
             headerTitleFontStyle,
           ]}>
           {t('yourHabits')}
         </Animated.Text>
 
         {settings.sortBy === 'custom' && (
-          <Appbar.Action
+          <Pressable
             onPress={() => setReordering(r => !r)}
-            icon={reordering ? 'check' : 'reorder-horizontal'}
-            iconColor={headerIconColor}
-          />
-        )}
-        <Menu
-          style={{marginTop: insets.top}}
-          visible={showHeaderMenu}
-          onDismiss={() => setShowHeaderMenu(false)}
-          anchor={
-            <Appbar.Action
-              onPress={() => setShowHeaderMenu(true)}
-              icon="dots-vertical"
-              iconColor={headerIconColor}
+            style={({pressed}) => [
+              styles.headerButton,
+              pressed && styles.headerButtonPressed,
+            ]}
+            hitSlop={8}>
+            <MaterialCommunityIcons
+              name={reordering ? 'check' : 'reorder-horizontal'}
+              size={24}
+              color={theme.onSurfaceVariant}
             />
-          }>
-          <Menu.Item
-            title={t('sortBy')}
-            titleStyle={{fontWeight: 'bold'}}
+          </Pressable>
+        )}
+        <Pressable
+          onPress={() => setShowHeaderMenu(true)}
+          style={({pressed}) => [
+            styles.headerButton,
+            pressed && styles.headerButtonPressed,
+          ]}
+          hitSlop={8}>
+          <MaterialCommunityIcons
+            name="dots-vertical"
+            size={24}
+            color={theme.onSurfaceVariant}
           />
-          <Divider />
-          <Menu.Item
-            leadingIcon="sort-ascending"
-            onPress={() => {
-              setShowHeaderMenu(false);
-              dispatch(changeSortBy('default'));
-            }}
-            title={t('sortCreated')}
-          />
-          <Menu.Item
-            leadingIcon="sort"
-            onPress={() => {
-              setShowHeaderMenu(false);
-              dispatch(changeSortBy('custom'));
-              if (customOrder.length === 0) {
-                dispatch(reorderCustomOrder(Object.keys(habits)));
-                setReordering(true);
-              }
-            }}
-            title={t('sortManually')}
-          />
-        </Menu>
+        </Pressable>
       </Animated.View>
 
       {reordering ? (
@@ -211,16 +217,98 @@ export default function Habits() {
         />
       )}
 
-      {showAddHabit ? (
-        <EditHabit isOpen={showAddHabit} onClose={() => setShowAddHabit(false)} />
-      ) : (
-        <FAB style={styles.fab} icon="plus" onPress={() => setShowAddHabit(true)} />
+      {!showAddHabit && (
+        <View style={styles.fabContainer}>
+          <Host
+            matchContents
+            seedColor="#04c96a"
+            colorScheme={colorScheme}>
+            <FloatingActionButton onClick={() => setShowAddHabit(true)}>
+              <FloatingActionButton.Icon>
+                <Icon source={require('../../assets/icons/add.xml')} />
+              </FloatingActionButton.Icon>
+            </FloatingActionButton>
+          </Host>
+        </View>
       )}
+
+      {showAddHabit && (
+        <EditHabit
+          isOpen={showAddHabit}
+          onClose={() => setShowAddHabit(false)}
+        />
+      )}
+
+      <Modal
+        visible={showHeaderMenu}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowHeaderMenu(false)}>
+        <Pressable
+          style={styles.menuOverlay}
+          onPress={() => setShowHeaderMenu(false)}>
+          <View
+            style={[
+              styles.menuContainer,
+              {
+                backgroundColor: theme.surface,
+                top: appBarInset + insets.top,
+              },
+            ]}>
+            <Text style={[styles.menuSectionTitle, {color: theme.onSurface}]}>
+              {t('sortBy')}
+            </Text>
+            <View
+              style={[styles.menuDivider, {backgroundColor: theme.outlineVariant}]}
+            />
+            <Pressable
+              style={({pressed}) => [
+                styles.menuItem,
+                pressed && styles.menuItemPressed,
+              ]}
+              onPress={() => {
+                setShowHeaderMenu(false);
+                dispatch(changeSortBy('default'));
+              }}>
+              <MaterialCommunityIcons
+                name="sort-ascending"
+                size={20}
+                color={theme.onSurfaceVariant}
+              />
+              <Text style={[styles.menuItemText, {color: theme.onSurface}]}>
+                {t('sortCreated')}
+              </Text>
+            </Pressable>
+            <Pressable
+              style={({pressed}) => [
+                styles.menuItem,
+                pressed && styles.menuItemPressed,
+              ]}
+              onPress={() => {
+                setShowHeaderMenu(false);
+                dispatch(changeSortBy('custom'));
+                if (customOrder.length === 0) {
+                  dispatch(reorderCustomOrder(Object.keys(habits)));
+                  setReordering(true);
+                }
+              }}>
+              <MaterialCommunityIcons
+                name="sort"
+                size={20}
+                color={theme.onSurfaceVariant}
+              />
+              <Text style={[styles.menuItemText, {color: theme.onSurface}]}>
+                {t('sortManually')}
+              </Text>
+            </Pressable>
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = createUseStyles(_theme => ({
   container: {width: '100%', height: '100%'},
   header: {
     position: 'absolute',
@@ -232,5 +320,52 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerTitle: {flex: 1},
-  fab: {position: 'absolute', bottom: 0, right: 0, margin: 16},
-});
+  headerButton: {
+    padding: 8,
+  },
+  headerButtonPressed: {
+    opacity: 0.5,
+  },
+  fabContainer: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+  },
+  menuOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.1)',
+  },
+  menuContainer: {
+    position: 'absolute',
+    right: 8,
+    borderRadius: 8,
+    minWidth: 200,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+  },
+  menuSectionTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  menuDivider: {
+    height: StyleSheet.hairlineWidth,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 12,
+  },
+  menuItemPressed: {
+    opacity: 0.5,
+  },
+  menuItemText: {
+    fontSize: 16,
+  },
+}));

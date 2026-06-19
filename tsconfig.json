@@ -3,9 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "types": ["jest"],
-    "paths": {
-      "src/types": ["./node_modules/react-native-paper/src/types"]
-    }
+    "paths": {}
   },
   "include": [
     "**/*.ts",
