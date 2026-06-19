@@ -185,7 +185,7 @@ const useStyles = createUseStyles(theme => ({
   card: {
     marginHorizontal: 13,
     marginTop: 15,
-    paddingBottom: 11,
+    paddingBottom: 2,
     borderRadius: 12,
     backgroundColor: theme.surfaceContainer,
   },
@@ -221,7 +221,7 @@ const useStyles = createUseStyles(theme => ({
   content: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
   },
   chip: {
     flexDirection: 'row',
