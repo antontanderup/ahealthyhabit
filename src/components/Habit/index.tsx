@@ -3,12 +3,10 @@ import React, {useMemo, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {
-  Avatar,
   Card,
   Checkbox,
   Chip,
   IconButton,
-  ProgressBar,
 } from 'react-native-paper';
 import {useAppDispatch} from '../../store/hooks';
 import {Habit as HabitType, markTodayDone, markTodayUndone} from '../../store';
@@ -43,18 +41,12 @@ export default function Habit({habit}: {habit: HabitType}) {
   const renderGoalChip = (goal: number, index: number, goals: number[]) => {
     const isDisabled =
       goals[index - 1] != null && longestStreak / goals[index - 1] < 1;
-    const progress = longestStreak / goal;
-    const goalReached = progress >= 1;
+    const goalReached = longestStreak >= goal;
     return (
       <Chip
         disabled={isDisabled}
-        avatar={
-          !isDisabled && !goalReached ? (
-            <ProgressBar progress={progress} />
-          ) : goalReached && !isDisabled ? (
-            <Avatar.Icon icon="star" size={28} />
-          ) : null
-        }
+        selected={goalReached && !isDisabled}
+        icon={goalReached && !isDisabled ? 'star' : undefined}
         key={`goal${goal}`}
         style={styles.chip}>
         {t('daysCount', {count: goal})}
