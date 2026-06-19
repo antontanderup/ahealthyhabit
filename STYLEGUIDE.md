@@ -47,15 +47,17 @@ Access via `useTheme()` from `src/theme`.
 
 ## Jetpack Compose components
 
-Import from `@expo/ui/jetpack-compose`. Every JC component must be wrapped in a `Host`. Use `matchContents` when the Host should size to its content (inline use). Always pass `seedColor` and `colorScheme` so JC components match the app palette.
+Import from `@expo/ui/jetpack-compose`. Every JC component must be wrapped in a `Host`. Use `matchContents` when the Host should size to its content (inline use). Always pass `seedColor={theme.primary}` and `colorScheme` — never hardcode a hex value.
 
 ```tsx
 import {Host, Checkbox} from '@expo/ui/jetpack-compose';
 import {useColorScheme} from 'react-native';
+import {useTheme} from '../../theme';
 
+const theme = useTheme();
 const colorScheme = useColorScheme();
 
-<Host matchContents seedColor="#04c96a" colorScheme={colorScheme}>
+<Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
   <Checkbox value={checked} onCheckedChange={setChecked} />
 </Host>
 ```
@@ -77,14 +79,14 @@ JC `Button` and `TextButton` require a `Host` and a `Text` child from `@expo/ui/
 import {Host, Button, TextButton, Text as JCText} from '@expo/ui/jetpack-compose';
 
 // Primary action
-<Host matchContents seedColor="#04c96a" colorScheme={colorScheme}>
+<Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
   <Button onClick={handleSave}>
     <JCText>{t('save')}</JCText>
   </Button>
 </Host>
 
 // Destructive action
-<Host matchContents seedColor="#04c96a" colorScheme={colorScheme}>
+<Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
   <TextButton onClick={handleDelete} colors={{contentColor: theme.error}}>
     <JCText>{t('delete')}</JCText>
   </TextButton>
@@ -99,7 +101,7 @@ Requires an XML vector drawable icon loaded via `require()`. Icons live in `src/
 import {Host, FloatingActionButton, Icon} from '@expo/ui/jetpack-compose';
 
 <View style={styles.fabContainer}>
-  <Host matchContents seedColor="#04c96a" colorScheme={colorScheme}>
+  <Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
     <FloatingActionButton onClick={onPress}>
       <FloatingActionButton.Icon>
         <Icon source={require('../../assets/icons/add.xml')} />
