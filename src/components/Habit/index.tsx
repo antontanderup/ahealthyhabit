@@ -186,9 +186,7 @@ const useStyles = createUseStyles(theme => ({
     marginTop: 15,
     paddingBottom: 11,
     borderRadius: 12,
-    backgroundColor: theme.surface,
-    borderWidth: 1,
-    borderColor: theme.outlineVariant,
+    backgroundColor: theme.surfaceContainer,
   },
   titleRow: {
     flexDirection: 'row',
