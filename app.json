@@ -14,6 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/logo_foreground.png",
+        "monochromeImage": "./src/assets/logo_monochrome.png",
         "backgroundColor": "#04c96a"
       },
       "package": "com.ahealthyhabit"
