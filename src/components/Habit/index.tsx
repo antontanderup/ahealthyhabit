@@ -66,9 +66,13 @@ export default function Habit({habit}: {habit: HabitType}) {
     <Card elevation={4} mode="elevated" style={styles.card}>
       <Card.Title
         title={habit.name}
-        subtitle={t(doneToday ? 'habitCurrentTodayDone' : 'habitCurrent', {
-          count: currentStreak,
-        })}
+        subtitle={
+          currentStreak === 0
+            ? t(doneToday ? 'habitCurrentTodayDoneZero' : 'habitCurrentZero')
+            : t(doneToday ? 'habitCurrentTodayDone' : 'habitCurrent', {
+                count: currentStreak,
+              })
+        }
         right={() => (
           <View style={styles.cardActions}>
             <IconButton

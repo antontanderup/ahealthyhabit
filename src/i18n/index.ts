@@ -15,6 +15,9 @@ i18next.use(initReactI18next).init({
   lng: languageCode,
   fallbackLng: 'en',
   interpolation: {escapeValue: false},
+  // Hermes (React Native JS engine) lacks Intl.PluralRules support.
+  // v3 compat uses simple singular/plural logic without it.
+  compatibilityJSON: 'v3',
 });
 
 registerTranslation('en', {
