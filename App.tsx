@@ -1,24 +1,19 @@
 import React from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
-import {persistor, store} from './src/store';
-import {PersistGate} from 'redux-persist/lib/integration/react';
-
-import './src/utils/translations';
-
+import {store} from './src/store';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import App from './src/components/App';
+import AppComponent from './src/components/App';
+import './src/i18n';
 
-export default () => {
+export default function Root() {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <SafeAreaProvider>
-            <App />
-          </SafeAreaProvider>
-        </PersistGate>
+        <SafeAreaProvider>
+          <AppComponent />
+        </SafeAreaProvider>
       </Provider>
     </GestureHandlerRootView>
   );
-};
+}

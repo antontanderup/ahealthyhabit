@@ -1,108 +1,106 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createSlice,
   configureStore,
   PayloadAction,
+  createListenerMiddleware,
 } from '@reduxjs/toolkit';
 import {isToday} from 'date-fns';
 import 'react-native-get-random-values';
 import {nanoid} from 'nanoid';
-import {
-  FLUSH,
-  PAUSE,
-  PERSIST,
-  persistReducer,
-  persistStore,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-} from 'redux-persist';
+import {toLocalISODate} from '../utils/dateUtils';
+import * as db from '../database';
 
-type HabbitDate = string;
-type HabbitId = string;
-
-export type Habbit = {
+export type Habit = {
   name: string;
-  id: HabbitId;
-  recordedDates: HabbitDate[];
-  goals?: number[];
+  id: string;
+  recordedDates: string[]; // ISO YYYY-MM-DD in local timezone
+  goals: number[];
 };
 
 type Settings = {
   sortBy: 'default' | 'custom';
 };
 
-const habbitsSlice = createSlice({
-  name: 'habbits',
-  initialState: {
-    habbits: {} as {[key: string]: Habbit},
-    customOrder: [] as HabbitId[],
-    settings: {
-      sortBy: 'default',
-    } as Settings,
-  },
+type HabitsState = {
+  habits: Record<string, Habit>;
+  customOrder: string[];
+  settings: Settings;
+};
+
+const initialState: HabitsState = {
+  habits: {},
+  customOrder: [],
+  settings: {sortBy: 'default'},
+};
+
+const habitsSlice = createSlice({
+  name: 'habits',
+  initialState,
   reducers: {
-    addHabbit: {
-      reducer: (state, action: PayloadAction<Habbit>) => {
-        state.habbits[action.payload.id] = action.payload;
+    hydrate(
+      state,
+      action: PayloadAction<{
+        habits: Record<string, Habit>;
+        customOrder: string[];
+        settings: Settings;
+      }>,
+    ) {
+      state.habits = action.payload.habits;
+      state.customOrder = action.payload.customOrder;
+      state.settings = action.payload.settings;
+    },
+    addHabit: {
+      reducer(state, action: PayloadAction<Habit>) {
+        state.habits[action.payload.id] = action.payload;
         state.customOrder.push(action.payload.id);
       },
-      prepare: (name: string, goals?: Habbit['goals']) => {
-        const id = nanoid();
-        return {payload: {name, id, recordedDates: [], goals: goals || []}};
+      prepare(name: string, goals: number[] = []) {
+        return {payload: {name, id: nanoid(), recordedDates: [], goals}};
       },
     },
-    editHabbit(
+    editHabit(
       state,
       action: PayloadAction<{id: string; name: string; goals: number[]}>,
     ) {
-      const habbit = state.habbits[action.payload.id];
-      habbit.name = action.payload.name;
-      habbit.goals = action.payload.goals;
-      habbit.goals = habbit.goals.slice().sort((a, b) => {
-        return a - b;
-      });
+      const habit = state.habits[action.payload.id];
+      habit.name = action.payload.name;
+      habit.goals = [...action.payload.goals].sort((a, b) => a - b);
     },
     toggleDate(state, action: PayloadAction<{id: string; date: string}>) {
-      const habbit = state.habbits[action.payload.id];
-      const dateString = new Date(action.payload.date).toDateString();
-      if (habbit.recordedDates.includes(dateString)) {
-        habbit.recordedDates = habbit.recordedDates.filter(
-          date => date !== dateString,
-        );
+      const habit = state.habits[action.payload.id];
+      const dateString = toLocalISODate(new Date(action.payload.date));
+      if (habit.recordedDates.includes(dateString)) {
+        habit.recordedDates = habit.recordedDates.filter(d => d !== dateString);
       } else {
-        habbit.recordedDates.push(dateString);
-        habbit.recordedDates.sort((a, b) => {
-          const dateA = new Date(a).valueOf();
-          const dateB = new Date(b).valueOf();
-          return dateB - dateA;
-        });
+        habit.recordedDates.push(dateString);
+        habit.recordedDates.sort((a, b) => b.localeCompare(a));
       }
     },
-    editDates(state, action: PayloadAction<{id: string; dates: HabbitDate[]}>) {
-      const habbit = state.habbits[action.payload.id];
-
-      habbit.recordedDates = action.payload.dates;
-      habbit.recordedDates.sort((a, b) => {
-        const dateA = new Date(a).valueOf();
-        const dateB = new Date(b).valueOf();
-        return dateB - dateA;
-      });
+    editDates(
+      state,
+      action: PayloadAction<{id: string; dates: string[]}>,
+    ) {
+      const habit = state.habits[action.payload.id];
+      habit.recordedDates = [...action.payload.dates].sort((a, b) =>
+        b.localeCompare(a),
+      );
     },
-    removeHabbit(state, action: PayloadAction<string>) {
-      delete state.habbits[action.payload];
+    removeHabit(state, action: PayloadAction<string>) {
+      delete state.habits[action.payload];
       state.customOrder = state.customOrder.filter(id => id !== action.payload);
     },
     markTodayDone(state, action: PayloadAction<string>) {
-      state.habbits[action.payload].recordedDates.unshift(
-        new Date().toDateString(),
+      state.habits[action.payload].recordedDates.unshift(
+        toLocalISODate(new Date()),
       );
     },
     markTodayUndone(state, action: PayloadAction<string>) {
-      const today = state.habbits[action.payload];
-      const latestDate = Date.parse(today.recordedDates[0]);
-      if (isToday(latestDate)) {
-        today.recordedDates.splice(0, 1);
+      const habit = state.habits[action.payload];
+      if (
+        habit.recordedDates.length > 0 &&
+        isToday(new Date(habit.recordedDates[0]))
+      ) {
+        habit.recordedDates.splice(0, 1);
       }
     },
     reorderCustomOrder(state, action: PayloadAction<string[]>) {
@@ -115,35 +113,106 @@ const habbitsSlice = createSlice({
 });
 
 export const {
-  addHabbit,
+  hydrate,
+  addHabit,
   toggleDate,
-  removeHabbit,
+  removeHabit,
   markTodayDone,
   markTodayUndone,
-  editHabbit,
+  editHabit,
   reorderCustomOrder,
   changeSortBy,
   editDates,
-} = habbitsSlice.actions;
+} = habitsSlice.actions;
 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-};
+const listenerMiddleware = createListenerMiddleware();
 
-const persistedReducer = persistReducer(persistConfig, habbitsSlice.reducer);
-
-export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+listenerMiddleware.startListening({
+  actionCreator: addHabit,
+  effect: async (action, {getState}) => {
+    const state = getState() as RootState;
+    const order = state.customOrder.length - 1;
+    await db.insertHabit(action.payload, order);
+  },
 });
 
-export const persistor = persistStore(store);
+listenerMiddleware.startListening({
+  actionCreator: editHabit,
+  effect: async action => {
+    await db.updateHabit(
+      action.payload.id,
+      action.payload.name,
+      action.payload.goals,
+    );
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: removeHabit,
+  effect: async action => {
+    await db.deleteHabit(action.payload);
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: markTodayDone,
+  effect: async action => {
+    await db.addRecordedDate(action.payload, toLocalISODate(new Date()));
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: markTodayUndone,
+  effect: async (action, {getOriginalState}) => {
+    const prevState = getOriginalState() as RootState;
+    const prevDate = prevState.habits[action.payload]?.recordedDates[0];
+    if (prevDate && isToday(new Date(prevDate))) {
+      await db.removeRecordedDate(action.payload, prevDate);
+    }
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: toggleDate,
+  effect: async (action, {getOriginalState}) => {
+    const date = toLocalISODate(new Date(action.payload.date));
+    const prevState = getOriginalState() as RootState;
+    const hadDate =
+      prevState.habits[action.payload.id]?.recordedDates.includes(date);
+    if (hadDate) {
+      await db.removeRecordedDate(action.payload.id, date);
+    } else {
+      await db.addRecordedDate(action.payload.id, date);
+    }
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: editDates,
+  effect: async action => {
+    await db.replaceRecordedDates(action.payload.id, action.payload.dates);
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: reorderCustomOrder,
+  effect: async action => {
+    await db.updateCustomOrder(action.payload);
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: changeSortBy,
+  effect: async action => {
+    await db.setSetting('sortBy', action.payload);
+  },
+});
+
+export const store = configureStore({
+  reducer: habitsSlice.reducer,
+  middleware: getDefault =>
+    getDefault().prepend(listenerMiddleware.middleware),
+});
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

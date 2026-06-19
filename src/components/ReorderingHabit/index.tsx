@@ -1,21 +1,21 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {List} from 'react-native-paper';
-import {Habbit} from '../../store';
+import {Habit} from '../../store';
 
-export default ({
-  habbit,
+export default function ReorderingHabit({
+  habit,
   drag,
   isActive,
 }: {
-  habbit: Habbit;
+  habit: Habit;
   drag: () => void;
   isActive: boolean;
-}) => {
+}) {
   return (
     <TouchableOpacity onPressIn={drag}>
       <List.Item
-        title={habbit.name}
+        title={habit.name}
         style={{paddingVertical: 0}}
         right={() => (
           <List.Icon
@@ -25,4 +25,4 @@ export default ({
       />
     </TouchableOpacity>
   );
-};
+}

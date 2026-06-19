@@ -1,11 +1,12 @@
 import {differenceInCalendarDays, isToday, isYesterday} from 'date-fns';
+import {parseLocalDate} from './dateUtils';
 
 export const getStreaks = (
   streaksArray: string[],
 ): {dates: number[]; isCurrentStreak?: boolean}[] => {
-  let streaks: {dates: number[]; isCurrentStreak?: boolean}[] = [];
+  const streaks: {dates: number[]; isCurrentStreak?: boolean}[] = [];
+  const streaksAsDates = streaksArray.map(parseLocalDate);
 
-  const streaksAsDates = streaksArray.map(stringDate => Date.parse(stringDate));
   if (streaksAsDates.length === 1) {
     streaks.push({dates: streaksAsDates});
   } else {
