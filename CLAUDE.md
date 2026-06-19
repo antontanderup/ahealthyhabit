@@ -4,7 +4,7 @@ An Android habit tracker built with React Native and Expo.
 
 ## Architecture
 
-- **Framework**: Expo (managed workflow with development build via `expo-dev-client`)
+- **Framework**: Expo (managed workflow with development build via `expo-dev-client`) with **Expo Router** for file-based routing
 - **State**: Redux Toolkit — a single flat slice in `src/store/index.ts`. Side effects (SQLite persistence) run via `createListenerMiddleware`
 - **Database**: `expo-sqlite` via `src/database/index.ts`
 - **i18n**: `i18next` + `react-i18next` + `expo-localization` — translation files in `src/i18n/`
@@ -31,11 +31,12 @@ yarn typecheck
 ## Directory Structure
 
 ```
-App.tsx               Root component (GestureHandler, Redux Provider, SafeAreaProvider)
-index.js              Entry point (registerRootComponent)
+app/
+  _layout.tsx         Root layout (GestureHandler, Redux Provider, SafeAreaProvider,
+                      ThemeProvider, database init)
+  index.tsx           Default route — renders the Habits screen
 src/
   components/
-    App/              ThemeProvider + database init + root screen
     screens/          Habits.tsx — the single full-screen view
     Habit/            Habit card (done-today toggle, goal chips, streak info)
     EditHabit/        Add / edit / delete habit dialog
