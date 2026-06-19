@@ -55,7 +55,7 @@ export default function Habit({habit}: {habit: HabitType}) {
           styles.chip,
           goalReached && !isDisabled
             ? {backgroundColor: theme.primaryContainer}
-            : {backgroundColor: theme.surfaceVariant, opacity: isDisabled ? 0.5 : 1},
+            : {backgroundColor: theme.surfaceContainerHigh, opacity: isDisabled ? 0.5 : 1},
         ]}>
         {!isDisabled && !goalReached && (
           <View
@@ -148,7 +148,7 @@ export default function Habit({habit}: {habit: HabitType}) {
         {streaksDateArray.length > 1 &&
           longestStreak > 0 &&
           currentStreak !== longestStreak && (
-            <View style={[styles.chip, {backgroundColor: theme.surfaceVariant}]}>
+            <View style={[styles.chip, {backgroundColor: theme.surfaceContainerHigh}]}>
               <Text style={[styles.chipText, {color: theme.onSurfaceVariant}]}>
                 {t('habitLongest', {count: longestStreak})}
               </Text>
@@ -159,7 +159,7 @@ export default function Habit({habit}: {habit: HabitType}) {
         ) : (
           <Pressable
             onPress={() => setEditorOpen(true)}
-            style={[styles.chip, {backgroundColor: theme.surfaceVariant}]}>
+            style={[styles.chip, {backgroundColor: theme.surfaceContainerHigh}]}>
             <Text style={[styles.chipText, {color: theme.onSurfaceVariant}]}>
               {t('addGoals')}
             </Text>
