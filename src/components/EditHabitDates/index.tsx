@@ -24,15 +24,18 @@ export default function EditHabitDates({
     [habit.recordedDates],
   );
 
-  const onConfirm = ({dates: newDates}: {dates: Date[]}) => {
-    dispatch(
-      editDates({
-        id: habit.id,
-        dates: newDates.map(toLocalISODate),
-      }),
-    );
-    onClose();
-  };
+  const onConfirm = React.useCallback(
+    ({dates: newDates}: {dates: Date[]}) => {
+      dispatch(
+        editDates({
+          id: habit.id,
+          dates: newDates.map(toLocalISODate),
+        }),
+      );
+      onClose();
+    },
+    [dispatch, habit.id, onClose],
+  );
 
   return (
     <DatePickerModal

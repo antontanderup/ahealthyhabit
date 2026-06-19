@@ -37,6 +37,8 @@ registerTranslation('en', {
   typeInDate: 'Type in date',
   pickDateFromCalendar: 'Pick date from calendar',
   close: 'Close',
+  hour: 'Hour',
+  minute: 'Minute',
 });
 
 export default i18next;
