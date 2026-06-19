@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {View} from 'react-native';
-import {useTranslation} from 'react-i18next';
 import {
-  Button,
-  Checkbox,
-  Dialog,
-  Divider,
-  Portal,
+  View,
   Text,
   TextInput,
-  useTheme,
-} from 'react-native-paper';
+  Modal,
+  Pressable,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {Host, Checkbox, Button, TextButton, Text as JCText} from '@expo/ui/jetpack-compose';
 import {useAppDispatch} from '../../store/hooks';
 import {addHabit, editHabit, Habit, removeHabit} from '../../store';
+import {useTheme, createUseStyles} from '../../theme';
 
 const GOAL_OPTIONS = [7, 30, 90, 180, 365] as const;
 
@@ -26,7 +26,9 @@ export default function EditHabit({
   isOpen: boolean;
 }) {
   const {t} = useTranslation();
-  const {colors} = useTheme();
+  const theme = useTheme();
+  const colorScheme = useColorScheme();
+  const styles = useStyles();
   const dispatch = useAppDispatch();
 
   const [name, setName] = useState(habit?.name ?? '');
@@ -48,52 +50,157 @@ export default function EditHabit({
   };
 
   return (
-    <Portal>
-      <Dialog visible={isOpen} onDismiss={handleSave}>
-        <Dialog.Title>
-          {habit?.name ? `${t('edit')} ${habit.name}` : t('addHabit')}
-        </Dialog.Title>
-        <Dialog.Content>
-          <TextInput
-            mode="outlined"
-            label={t('habitName')}
-            value={name}
-            onChangeText={setName}
-          />
-          <Text variant="titleSmall" style={{marginTop: 10}}>
-            {t('goals')}
+    <Modal
+      visible={isOpen}
+      transparent
+      animationType="fade"
+      onRequestClose={handleSave}>
+      <Pressable style={styles.overlay} onPress={handleSave}>
+        <Pressable
+          style={[styles.dialog, {backgroundColor: theme.surface}]}
+          onPress={e => e.stopPropagation()}>
+          <Text style={[styles.dialogTitle, {color: theme.onSurface}]}>
+            {habit?.name ? `${t('edit')} ${habit.name}` : t('addHabit')}
           </Text>
-          {GOAL_OPTIONS.map((goal, index) => (
-            <View key={`goal${goal}`}>
-              {index > 0 && <Divider />}
-              <Checkbox.Item
-                label={t('daysCount', {count: goal})}
-                status={goals.includes(goal) ? 'checked' : 'unchecked'}
-                onPress={() => toggleGoal(goal)}
-              />
+          <View style={styles.dialogContent}>
+            <TextInput
+              style={[
+                styles.textInput,
+                {
+                  borderColor: theme.outline,
+                  color: theme.onSurface,
+                  backgroundColor: theme.surface,
+                },
+              ]}
+              placeholder={t('habitName')}
+              placeholderTextColor={theme.onSurfaceVariant}
+              value={name}
+              onChangeText={setName}
+            />
+            <Text style={[styles.goalsLabel, {color: theme.onSurface}]}>
+              {t('goals')}
+            </Text>
+            {GOAL_OPTIONS.map((goal, index) => (
+              <View key={`goal${goal}`}>
+                {index > 0 && (
+                  <View
+                    style={[
+                      styles.divider,
+                      {backgroundColor: theme.outlineVariant},
+                    ]}
+                  />
+                )}
+                <Pressable
+                  style={({pressed}) => [
+                    styles.checkboxRow,
+                    pressed && styles.checkboxRowPressed,
+                  ]}
+                  onPress={() => toggleGoal(goal)}>
+                  <Host
+                    matchContents
+                    seedColor={theme.primary}
+                    colorScheme={colorScheme}>
+                    <Checkbox
+                      value={goals.includes(goal)}
+                      onCheckedChange={() => toggleGoal(goal)}
+                    />
+                  </Host>
+                  <Text
+                    style={[styles.checkboxLabel, {color: theme.onSurface}]}>
+                    {t('daysCount', {count: goal})}
+                  </Text>
+                </Pressable>
+              </View>
+            ))}
+          </View>
+          {isOpen && (
+            <View style={styles.dialogActions}>
+              {habit && (
+                <Host
+                  matchContents
+                  seedColor={theme.primary}
+                  colorScheme={colorScheme}>
+                  <TextButton
+                    onClick={() => dispatch(removeHabit(habit.id))}
+                    colors={{contentColor: theme.error}}>
+                    <JCText>{t('delete')}</JCText>
+                  </TextButton>
+                </Host>
+              )}
+              <View style={styles.actionSpacer} />
+              <Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
+                <Button onClick={handleSave}>
+                  <JCText>{t(habit ? 'save' : 'done')}</JCText>
+                </Button>
+              </Host>
             </View>
-          ))}
-        </Dialog.Content>
-        {isOpen && (
-          <Dialog.Actions>
-            {habit && (
-              <Button
-                mode="text"
-                compact
-                textColor={colors.error}
-                onPress={() => dispatch(removeHabit(habit.id))}>
-                {t('delete')}
-              </Button>
-            )}
-            <Button
-              mode="contained"
-              compact
-              onPress={handleSave}>
-              {t(habit ? 'save' : 'done')}
-            </Button>
-          </Dialog.Actions>
-        )}
-      </Dialog>
-    </Portal>
+          )}
+        </Pressable>
+      </Pressable>
+    </Modal>
   );
 }
+
+const useStyles = createUseStyles(theme => ({
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  dialog: {
+    width: '100%',
+    borderRadius: 16,
+    paddingTop: 24,
+    paddingBottom: 16,
+    elevation: 6,
+  },
+  dialogTitle: {
+    fontSize: 20,
+    fontWeight: '500',
+    paddingHorizontal: 24,
+    marginBottom: 16,
+  },
+  dialogContent: {
+    paddingHorizontal: 24,
+  },
+  textInput: {
+    fontSize: 16,
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 16,
+  },
+  goalsLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  divider: {
+    height: StyleSheet.hairlineWidth,
+    marginVertical: 0,
+  },
+  checkboxRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+  },
+  checkboxRowPressed: {
+    opacity: 0.5,
+  },
+  checkboxLabel: {
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  dialogActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 8,
+  },
+  actionSpacer: {
+    flex: 1,
+  },
+}));
