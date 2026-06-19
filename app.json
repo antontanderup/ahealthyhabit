@@ -13,8 +13,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/logo.png",
-        "backgroundColor": "#1a5c38"
+        "foregroundImage": "./src/assets/logo_foreground.png",
+        "backgroundColor": "#04c96a"
       },
       "package": "com.ahealthyhabit"
     },
