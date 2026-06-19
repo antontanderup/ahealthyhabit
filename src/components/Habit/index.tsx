@@ -131,7 +131,7 @@ export default function Habit({habit}: {habit: HabitType}) {
               color={theme.onSurfaceVariant}
             />
           </Pressable>
-          <Host matchContents seedColor="#04c96a" colorScheme={colorScheme}>
+          <Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
             <Checkbox
               value={doneToday}
               onCheckedChange={() =>

@@ -221,7 +221,7 @@ export default function Habits() {
         <View style={[styles.fabContainer, {bottom: insets.bottom + 16}]}>
           <Host
             matchContents
-            seedColor="#04c96a"
+            seedColor={theme.primary}
             colorScheme={colorScheme}>
             <FloatingActionButton onClick={() => setShowAddHabit(true)}>
               <FloatingActionButton.Icon>

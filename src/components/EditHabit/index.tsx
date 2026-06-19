@@ -98,7 +98,7 @@ export default function EditHabit({
                   onPress={() => toggleGoal(goal)}>
                   <Host
                     matchContents
-                    seedColor="#04c96a"
+                    seedColor={theme.primary}
                     colorScheme={colorScheme}>
                     <Checkbox
                       value={goals.includes(goal)}
@@ -118,7 +118,7 @@ export default function EditHabit({
               {habit && (
                 <Host
                   matchContents
-                  seedColor="#04c96a"
+                  seedColor={theme.primary}
                   colorScheme={colorScheme}>
                   <TextButton
                     onClick={() => dispatch(removeHabit(habit.id))}
@@ -128,7 +128,7 @@ export default function EditHabit({
                 </Host>
               )}
               <View style={styles.actionSpacer} />
-              <Host matchContents seedColor="#04c96a" colorScheme={colorScheme}>
+              <Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
                 <Button onClick={handleSave}>
                   <JCText>{t(habit ? 'save' : 'done')}</JCText>
                 </Button>
