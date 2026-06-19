@@ -15,8 +15,8 @@ export default function App() {
   const isDarkMode = colorScheme === 'dark';
   const {theme} = useMaterial3Theme({fallbackSourceColor: '#04c96a'});
   const paperTheme = isDarkMode
-    ? {...MD3DarkTheme, colors: {...MD3DarkTheme.colors, ...theme.dark}}
-    : {...MD3LightTheme, colors: {...MD3LightTheme.colors, ...theme.light}};
+    ? {...MD3DarkTheme, roundness: 7, colors: {...MD3DarkTheme.colors, ...theme.dark}}
+    : {...MD3LightTheme, roundness: 7, colors: {...MD3LightTheme.colors, ...theme.light}};
   const dispatch = useDispatch();
   const [isReady, setIsReady] = useState(false);
 
