@@ -63,7 +63,7 @@ export default function Habit({habit}: {habit: HabitType}) {
   };
 
   return (
-    <Card elevation={4} mode="elevated" style={styles.card}>
+    <Card elevation={1} mode="elevated" style={styles.card}>
       <Card.Title
         title={habit.name}
         subtitle={

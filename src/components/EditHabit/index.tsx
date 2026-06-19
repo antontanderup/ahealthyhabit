@@ -78,10 +78,9 @@ export default function EditHabit({
           <Dialog.Actions>
             {habit && (
               <Button
-                mode="contained"
+                mode="text"
                 compact
-                style={{marginRight: 8}}
-                buttonColor={colors.error}
+                textColor={colors.error}
                 onPress={() => dispatch(removeHabit(habit.id))}>
                 {t('delete')}
               </Button>
@@ -89,7 +88,6 @@ export default function EditHabit({
             <Button
               mode="contained"
               compact
-              buttonColor={colors.primary}
               onPress={handleSave}>
               {t(habit ? 'save' : 'done')}
             </Button>

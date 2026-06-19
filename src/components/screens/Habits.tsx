@@ -76,7 +76,8 @@ export default function Habits() {
 
   const insets = useSafeAreaInsets();
   const headerIsDark = useColorScheme() === 'dark';
-  const headerIconColor = colors.onSurface;
+  const headerTitleColor = colors.onSurface;
+  const headerIconColor = colors.onSurfaceVariant;
   const appBarInset = insets.top + 20;
 
   const headerOffset = useSharedValue(0);
@@ -127,14 +128,14 @@ export default function Habits() {
           {
             paddingTop: appBarInset,
             height: DEFAULT_APPBAR_HEIGHT + appBarInset,
-            backgroundColor: colors.background,
+            backgroundColor: colors.surfaceContainer,
           },
           headerWrapperStyle,
         ]}>
         <Animated.Text
           style={[
             styles.headerTitle,
-            {fontFamily: fonts.titleLarge.fontFamily, color: headerIconColor},
+            {fontFamily: fonts.titleLarge.fontFamily, color: headerTitleColor},
             headerTitleFontStyle,
           ]}>
           {t('yourHabits')}
