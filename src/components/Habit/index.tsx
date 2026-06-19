@@ -9,6 +9,7 @@ import {
   Chip,
   IconButton,
   ProgressBar,
+  useTheme,
 } from 'react-native-paper';
 import {useAppDispatch} from '../../store/hooks';
 import {Habit as HabitType, markTodayDone, markTodayUndone} from '../../store';
@@ -18,6 +19,7 @@ import EditHabitDates from '../EditHabitDates';
 
 export default function Habit({habit}: {habit: HabitType}) {
   const {t} = useTranslation();
+  const {colors} = useTheme();
   const dispatch = useAppDispatch();
 
   const streaksDateArray = useMemo(
@@ -51,7 +53,10 @@ export default function Habit({habit}: {habit: HabitType}) {
         selected={goalReached && !isDisabled}
         avatar={
           !isDisabled && !goalReached ? (
-            <ProgressBar progress={progress} />
+            <ProgressBar
+              progress={progress}
+              style={{backgroundColor: colors.primaryContainer}}
+            />
           ) : goalReached && !isDisabled ? (
             <Avatar.Icon icon="star" size={24} />
           ) : null
