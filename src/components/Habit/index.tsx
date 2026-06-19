@@ -53,6 +53,7 @@ export default function Habit({habit}: {habit: HabitType}) {
         key={`goal${goal}`}
         style={[
           styles.chip,
+          !isDisabled && styles.chipWithAvatar,
           goalReached && !isDisabled
             ? {backgroundColor: theme.primaryContainer}
             : {backgroundColor: theme.surfaceContainerHigh, opacity: isDisabled ? 0.5 : 1},
@@ -231,6 +232,9 @@ const useStyles = createUseStyles(theme => ({
     marginRight: 8,
     marginBottom: 10,
     overflow: 'hidden',
+  },
+  chipWithAvatar: {
+    paddingLeft: 6,
   },
   chipProgressFill: {
     position: 'absolute',
