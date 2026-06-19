@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@pchmn/expo-material3-theme": "^1.4.0",
     "@reduxjs/toolkit": "^2.5.0",
     "date-fns": "^3.6.0",
     "expo": "~56.0.12",
@@ -34,15 +35,13 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-worklets": "0.8.3",
-    "react-redux": "^9.2.0",
-    "tinycolor2": "^1.4.2"
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@react-native/jest-preset": "^0.86.0",
     "@types/jest": "^29.5.14",
     "@types/react": "~19.2.14",
-    "@types/tinycolor2": "^1.4.6",
     "babel-jest": "^29.7.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~56.0.4",

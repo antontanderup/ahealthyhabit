@@ -7,6 +7,7 @@ import {
   FlatList,
   FlatListProps,
   StyleSheet,
+  useColorScheme,
 } from 'react-native';
 import {Appbar, Divider, FAB, Menu, useTheme} from 'react-native-paper';
 import Animated, {
@@ -31,7 +32,6 @@ import {
 import Habit from '../Habit';
 import EditHabit from '../EditHabit';
 import ReorderingHabit from '../ReorderingHabit';
-import Hsla, {hexToHsla} from '../../utils/hsla';
 import {toLocalISODate} from '../../utils/dateUtils';
 
 const DEFAULT_APPBAR_HEIGHT = 56;
@@ -75,8 +75,7 @@ export default function Habits() {
   };
 
   const insets = useSafeAreaInsets();
-  const headerColor = new Hsla(hexToHsla(colors.background));
-  const headerIsDark = headerColor.isDark();
+  const headerIsDark = useColorScheme() === 'dark';
   const headerIconColor = colors.onSurface;
   const appBarInset = insets.top + 20;
 
@@ -128,7 +127,7 @@ export default function Habits() {
           {
             paddingTop: appBarInset,
             height: DEFAULT_APPBAR_HEIGHT + appBarInset,
-            backgroundColor: headerColor.getHexString(),
+            backgroundColor: colors.background,
           },
           headerWrapperStyle,
         ]}>

@@ -13,7 +13,6 @@ import {
 } from 'react-native-paper';
 import {useAppDispatch} from '../../store/hooks';
 import {addHabit, editHabit, Habit, removeHabit} from '../../store';
-import {AppTheme} from '../../types/paper';
 
 const GOAL_OPTIONS = [7, 30, 90, 180, 365] as const;
 
@@ -27,7 +26,7 @@ export default function EditHabit({
   isOpen: boolean;
 }) {
   const {t} = useTranslation();
-  const {colors} = useTheme<AppTheme>();
+  const {colors} = useTheme();
   const dispatch = useAppDispatch();
 
   const [name, setName] = useState(habit?.name ?? '');
@@ -82,7 +81,7 @@ export default function EditHabit({
                 mode="contained"
                 compact
                 style={{marginRight: 8}}
-                buttonColor={colors.warn}
+                buttonColor={colors.error}
                 onPress={() => dispatch(removeHabit(habit.id))}>
                 {t('delete')}
               </Button>
