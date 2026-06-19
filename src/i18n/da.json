@@ -20,5 +20,6 @@
   "habitCurrentTodayDone": "Dag 1. Ses i morgen!",
   "habitCurrentTodayDone_plural": "Dag {{count}}. Godt klaret!",
   "habitLongest": "Bedste: 1 dag",
-  "habitLongest_plural": "Bedste: {{count}} dage"
+  "habitLongest_plural": "Bedste: {{count}} dage",
+  "cancel": "Annuller"
 }
