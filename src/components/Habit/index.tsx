@@ -49,29 +49,24 @@ export default function Habit({habit}: {habit: HabitType}) {
     const progress = longestStreak / goal;
     const goalReached = progress >= 1;
     return (
-      <Pressable
+      <View
         key={`goal${goal}`}
-        onPress={isDisabled ? undefined : undefined}
         style={[
           styles.chip,
           goalReached && !isDisabled
             ? {backgroundColor: theme.primaryContainer}
-            : isDisabled
-            ? {backgroundColor: theme.surfaceVariant, opacity: 0.5}
-            : {backgroundColor: theme.surfaceVariant},
+            : {backgroundColor: theme.surfaceVariant, opacity: isDisabled ? 0.5 : 1},
         ]}>
         {!isDisabled && !goalReached && (
-          <View style={styles.progressBarContainer}>
-            <View
-              style={[
-                styles.progressBarFill,
-                {
-                  width: `${Math.min(progress * 100, 100)}%` as `${number}%`,
-                  backgroundColor: theme.primary,
-                },
-              ]}
-            />
-          </View>
+          <View
+            style={[
+              styles.chipProgressFill,
+              {
+                width: `${Math.min(progress * 100, 100)}%` as `${number}%`,
+                backgroundColor: theme.primary,
+              },
+            ]}
+          />
         )}
         {goalReached && !isDisabled && (
           <MaterialCommunityIcons
@@ -93,12 +88,12 @@ export default function Habit({habit}: {habit: HabitType}) {
           ]}>
           {t('daysCount', {count: goal})}
         </Text>
-      </Pressable>
+      </View>
     );
   };
 
   return (
-    <View style={[styles.card, {backgroundColor: theme.surface}]}>
+    <View style={styles.card}>
       <View style={styles.titleRow}>
         <View style={styles.titleInfo}>
           <Text style={[styles.title, {color: theme.onSurface}]}>
@@ -116,7 +111,8 @@ export default function Habit({habit}: {habit: HabitType}) {
           <Pressable
             onPress={() => setEditorOpen(true)}
             style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
-            hitSlop={8}>
+            hitSlop={8}
+            accessibilityLabel="Edit habit">
             <MaterialCommunityIcons
               name="dots-vertical"
               size={20}
@@ -126,7 +122,8 @@ export default function Habit({habit}: {habit: HabitType}) {
           <Pressable
             onPress={() => setDateEditorOpen(true)}
             style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
-            hitSlop={8}>
+            hitSlop={8}
+            accessibilityLabel="Edit dates">
             <MaterialCommunityIcons
               name="calendar-range"
               size={20}
@@ -189,7 +186,9 @@ const useStyles = createUseStyles(theme => ({
     marginTop: 15,
     paddingBottom: 11,
     borderRadius: 12,
-    elevation: 1,
+    backgroundColor: theme.surface,
+    borderWidth: 1,
+    borderColor: theme.outlineVariant,
   },
   titleRow: {
     flexDirection: 'row',
@@ -235,25 +234,17 @@ const useStyles = createUseStyles(theme => ({
     marginBottom: 10,
     overflow: 'hidden',
   },
+  chipProgressFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    opacity: 0.3,
+  },
   chipIcon: {
     marginRight: 4,
   },
   chipText: {
     fontSize: 14,
-  },
-  progressBarContainer: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: theme.surfaceContainer,
-    overflow: 'hidden',
-    marginRight: 4,
-    justifyContent: 'flex-end',
-  },
-  progressBarFill: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
   },
 }));

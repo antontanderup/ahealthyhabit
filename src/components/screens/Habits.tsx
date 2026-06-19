@@ -218,7 +218,7 @@ export default function Habits() {
       )}
 
       {!showAddHabit && (
-        <View style={styles.fabContainer}>
+        <View style={[styles.fabContainer, {bottom: insets.bottom + 16}]}>
           <Host
             matchContents
             seedColor="#04c96a"
@@ -328,7 +328,6 @@ const useStyles = createUseStyles(_theme => ({
   },
   fabContainer: {
     position: 'absolute',
-    bottom: 16,
     right: 16,
   },
   menuOverlay: {
