@@ -21,5 +21,7 @@
   "habitCurrentTodayDone_plural": "Day {{count}}. Good job!",
   "habitLongest": "Best: 1 day",
   "habitLongest_plural": "Best: {{count}} days",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "noHabitsYet": "No habits yet",
+  "noHabitsSubtitle": "Add your first habit below"
 }

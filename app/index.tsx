@@ -1,5 +1,3 @@
-import {View} from 'react-native';
+import HomeScreen from '../src/screens/HomeScreen';
 
-export default function Index() {
-  return <View />;
-}
+export default HomeScreen;
