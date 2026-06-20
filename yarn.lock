@@ -1050,7 +1050,7 @@
     micromatch "^4.0.4"
     walker "^1.0.8"
 
-"@expo/metro-runtime@^56.0.15":
+"@expo/metro-runtime@^56.0.15", "@expo/metro-runtime@~56.0.15":
   version "56.0.15"
   resolved "https://registry.yarnpkg.com/@expo/metro-runtime/-/metro-runtime-56.0.15.tgz#24a0dbd0e1d1bbb6b0642e1f439d25289fcc5e7b"
   integrity sha512-WIWeVsL6kCSB57oYZdUA4MTkH7c67UFMIjdNoQzKXwxZYwBFE/xL2cGPDC3z8RWt0femzJTVxAVZUOW/hiqRzA==
@@ -3873,6 +3873,14 @@ expo-keep-awake@~56.0.3:
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-56.0.3.tgz#88991b4859c77af73cf68c500839a18fe5d8febe"
   integrity sha512-CLMJXtEiMKknD3Rpm8CRwE6ZJUzu2yCEmRk1sgfHAJ1zIbuEWY3dpPDubtsnuzWm+2k6Sru+yaFbYsvPWmTiBA==
 
+expo-linking@~56.0.14:
+  version "56.0.14"
+  resolved "https://registry.yarnpkg.com/expo-linking/-/expo-linking-56.0.14.tgz#fe3a7469c6db757d745f65f8608eb7619321c370"
+  integrity sha512-IvVQHWC+Cj4fK5qD3iEVYqpU2a4rLW0IpAAlGJ4MH+H1fyZiHh3eN6qg2WmoclOEPfYATSuEa+dQT6wfgVpXlQ==
+  dependencies:
+    expo-constants "~56.0.18"
+    invariant "^2.2.4"
+
 expo-localization@~56.0.5:
   version "56.0.6"
   resolved "https://registry.yarnpkg.com/expo-localization/-/expo-localization-56.0.6.tgz#386663c5cb137d763e055feabeb74ec2b43b2194"
@@ -6633,7 +6641,7 @@ react-native-safe-area-context@~5.7.0:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-5.7.0.tgz#035699d5ec17fefb98cc1fa44a9ec852c7d530d0"
   integrity sha512-/9/MtQz8ODphjsLdZ+GZAIcC/RtoqW9EeShf7Uvnfgm/pzYrJ75y3PV/J1wuAV1T5Dye5ygq4EAW20RoBq0ABQ==
 
-react-native-screens@^4.25.2:
+react-native-screens@4.25.2, react-native-screens@^4.25.2:
   version "4.25.2"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-4.25.2.tgz#f12c3d8d2cb9d69e1267af1bbba1b37d1d05452d"
   integrity sha512-1Nj1fusFd+rIMKU/qC9yGKVG+3ofh11d3OdBQKL1iVvQfKvcB8vhvTGQf2TkfxW3bamxN+hCZIXmNuU0mRkyDg==
