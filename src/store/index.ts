@@ -17,6 +17,7 @@ export const useSettingsStore = create<SettingsStore>()(
     {
       name: 'settings',
       storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state: SettingsStore) => ({sortBy: state.sortBy}),
     },
   ),
 );

@@ -4,9 +4,8 @@ import type {Habit} from '../types';
 let db: SQLite.SQLiteDatabase | null = null;
 let dbPromise: Promise<SQLite.SQLiteDatabase> | null = null;
 
-// Each function receives the open database and runs inside a transaction.
-// The migration runner bumps user_version atomically with the schema change,
-// so a crash mid-migration re-runs it on next open.
+// Schema migrations indexed by version. Each runs inside a transaction with
+// the version bump, so a crash mid-migration re-runs it cleanly on next open.
 type Migration = (db: SQLite.SQLiteDatabase) => Promise<void>;
 
 const migrations: Migration[] = [

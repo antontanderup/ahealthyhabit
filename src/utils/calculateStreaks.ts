@@ -7,25 +7,21 @@ export const getStreaks = (
   const streaks: {dates: number[]; isCurrentStreak?: boolean}[] = [];
   const streaksAsDates = recordedDatesSortedDesc.map(parseLocalDate);
 
-  if (streaksAsDates.length === 1) {
-    streaks.push({dates: streaksAsDates});
-  } else {
-    streaksAsDates.forEach((date, index) => {
-      const previousDate = streaksAsDates[index - 1];
-      const currentStreak = streaks[streaks.length - 1];
+  streaksAsDates.forEach((date, index) => {
+    const previousDate = streaksAsDates[index - 1];
+    const currentStreak = streaks[streaks.length - 1];
 
-      if (!previousDate) {
-        streaks.push({dates: [date]});
+    if (!previousDate) {
+      streaks.push({dates: [date]});
+    } else {
+      const daysSinceLastDate = differenceInCalendarDays(previousDate, date);
+      if (daysSinceLastDate === 1) {
+        currentStreak.dates.push(date);
       } else {
-        const daysSinceLastDate = differenceInCalendarDays(previousDate, date);
-        if (daysSinceLastDate === 1) {
-          currentStreak.dates.push(date);
-        } else {
-          streaks.push({dates: [date]});
-        }
+        streaks.push({dates: [date]});
       }
-    });
-  }
+    }
+  });
 
   if (streaks[0]) {
     const latestDate = streaks[0].dates[0];
