@@ -24,10 +24,6 @@ async function getDb(): Promise<SQLite.SQLiteDatabase> {
           PRIMARY KEY (habit_id, date),
           FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
         );
-        CREATE TABLE IF NOT EXISTS settings (
-          key TEXT PRIMARY KEY NOT NULL,
-          value TEXT NOT NULL
-        );
       `);
       db = database;
       return db;
@@ -68,20 +64,6 @@ export async function loadHabits(): Promise<Habit[]> {
     goals: JSON.parse(row.goals) as number[],
     recordedDates: datesByHabitId.get(row.id) ?? [],
   }));
-}
-
-export async function getSetting(key: string): Promise<string | null> {
-  const database = await getDb();
-  const row = await database.getFirstAsync<{value: string}>(
-    'SELECT value FROM settings WHERE key = ?',
-    [key],
-  );
-  return row?.value ?? null;
-}
-
-export async function removeSetting(key: string): Promise<void> {
-  const database = await getDb();
-  await database.runAsync('DELETE FROM settings WHERE key = ?', [key]);
 }
 
 export async function insertHabit(habit: Habit, order: number): Promise<void> {
@@ -162,10 +144,3 @@ export async function updateCustomOrder(orderedIds: string[]): Promise<void> {
   });
 }
 
-export async function setSetting(key: string, value: string): Promise<void> {
-  const database = await getDb();
-  await database.runAsync(
-    'INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)',
-    [key, value],
-  );
-}

@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 import {persist, createJSONStorage} from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import type {Settings} from '../types';
-import * as db from '../database';
 
 type SettingsStore = {
   sortBy: Settings['sortBy'];
@@ -16,11 +16,7 @@ export const useSettingsStore = create<SettingsStore>()(
     }),
     {
       name: 'settings',
-      storage: createJSONStorage(() => ({
-        getItem: (name: string) => db.getSetting(name),
-        setItem: (name: string, value: string) => db.setSetting(name, value),
-        removeItem: (name: string) => db.removeSetting(name),
-      })),
+      storage: createJSONStorage(() => AsyncStorage),
     },
   ),
 );
