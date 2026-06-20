@@ -1,36 +1,68 @@
 import * as SQLite from 'expo-sqlite';
-import type { Habit } from '../store';
+import type {Habit} from '../types';
 
 let db: SQLite.SQLiteDatabase | null = null;
+let dbPromise: Promise<SQLite.SQLiteDatabase> | null = null;
+
+// Schema migrations indexed by version. Each runs inside a transaction with
+// the version bump, so a crash mid-migration re-runs it cleanly on next open.
+type Migration = (db: SQLite.SQLiteDatabase) => Promise<void>;
+
+const migrations: Migration[] = [
+  // v1: initial schema
+  async database => {
+    await database.execAsync(`
+      PRAGMA journal_mode = WAL;
+      CREATE TABLE IF NOT EXISTS habits (
+        id TEXT PRIMARY KEY NOT NULL,
+        name TEXT NOT NULL,
+        goals TEXT NOT NULL DEFAULT '[]',
+        custom_order INTEGER NOT NULL DEFAULT 0
+      );
+      CREATE TABLE IF NOT EXISTS recorded_dates (
+        habit_id TEXT NOT NULL,
+        date TEXT NOT NULL,
+        PRIMARY KEY (habit_id, date),
+        FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
+      );
+    `);
+  },
+  // v2: track when each habit was created
+  async database => {
+    await database.execAsync(`
+      ALTER TABLE habits ADD COLUMN created_at TEXT NOT NULL DEFAULT '';
+      UPDATE habits SET created_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') WHERE created_at = '';
+    `);
+  },
+];
+
+async function runMigrations(database: SQLite.SQLiteDatabase): Promise<void> {
+  const row = await database.getFirstAsync<{user_version: number}>(
+    'PRAGMA user_version',
+  );
+  let version = row?.user_version ?? 0;
+  while (version < migrations.length) {
+    const migration = migrations[version];
+    await database.withTransactionAsync(async () => {
+      await migration(database);
+      await database.execAsync(`PRAGMA user_version = ${version + 1}`);
+    });
+    version++;
+  }
+}
 
 async function getDb(): Promise<SQLite.SQLiteDatabase> {
   if (db) return db;
-  db = await SQLite.openDatabaseAsync('ahealthyhabit.db');
-  return db;
-}
-
-export async function initDatabase(): Promise<void> {
-  const database = await getDb();
-  await database.execAsync(`
-    PRAGMA journal_mode = WAL;
-    PRAGMA foreign_keys = ON;
-    CREATE TABLE IF NOT EXISTS habits (
-      id TEXT PRIMARY KEY NOT NULL,
-      name TEXT NOT NULL,
-      goals TEXT NOT NULL DEFAULT '[]',
-      custom_order INTEGER NOT NULL DEFAULT 0
-    );
-    CREATE TABLE IF NOT EXISTS recorded_dates (
-      habit_id TEXT NOT NULL,
-      date TEXT NOT NULL,
-      PRIMARY KEY (habit_id, date),
-      FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
-    );
-    CREATE TABLE IF NOT EXISTS settings (
-      key TEXT PRIMARY KEY NOT NULL,
-      value TEXT NOT NULL
-    );
-  `);
+  if (!dbPromise) {
+    dbPromise = (async () => {
+      const database = await SQLite.openDatabaseAsync('ahealthyhabit.db');
+      await database.execAsync('PRAGMA foreign_keys = ON');
+      await runMigrations(database);
+      db = database;
+      return db;
+    })();
+  }
+  return dbPromise;
 }
 
 type HabitRow = {
@@ -38,51 +70,42 @@ type HabitRow = {
   name: string;
   goals: string;
   custom_order: number;
+  created_at: string;
 };
 
-export async function loadAllData(): Promise<{
-  habits: Record<string, Habit>;
-  customOrder: string[];
-  settings: { sortBy: 'default' | 'custom' };
-}> {
+export async function loadHabits(): Promise<Habit[]> {
   const database = await getDb();
   const habitRows = await database.getAllAsync<HabitRow>(
     'SELECT * FROM habits ORDER BY custom_order ASC',
   );
-
-  const habits: Record<string, Habit> = {};
-  const customOrder: string[] = [];
-
-  for (const row of habitRows) {
-    const dateRows = await database.getAllAsync<{ date: string }>(
-      'SELECT date FROM recorded_dates WHERE habit_id = ? ORDER BY date DESC',
-      [row.id],
-    );
-    habits[row.id] = {
-      id: row.id,
-      name: row.name,
-      goals: JSON.parse(row.goals) as number[],
-      recordedDates: dateRows.map(r => r.date),
-    };
-    customOrder.push(row.id);
-  }
-
-  const sortByRow = await database.getFirstAsync<{ value: string }>(
-    "SELECT value FROM settings WHERE key = 'sortBy'",
+  const allDateRows = await database.getAllAsync<{habit_id: string; date: string}>(
+    'SELECT habit_id, date FROM recorded_dates ORDER BY date DESC',
   );
 
-  return {
-    habits,
-    customOrder,
-    settings: { sortBy: (sortByRow?.value ?? 'default') as 'default' | 'custom' },
-  };
+  const datesByHabitId = new Map<string, string[]>();
+  for (const row of allDateRows) {
+    const dates = datesByHabitId.get(row.habit_id);
+    if (dates) {
+      dates.push(row.date);
+    } else {
+      datesByHabitId.set(row.habit_id, [row.date]);
+    }
+  }
+
+  return habitRows.map(row => ({
+    id: row.id,
+    name: row.name,
+    createdAt: row.created_at,
+    goals: JSON.parse(row.goals) as number[],
+    recordedDates: datesByHabitId.get(row.id) ?? [],
+  }));
 }
 
 export async function insertHabit(habit: Habit, order: number): Promise<void> {
   const database = await getDb();
   await database.runAsync(
-    'INSERT INTO habits (id, name, goals, custom_order) VALUES (?, ?, ?, ?)',
-    [habit.id, habit.name, JSON.stringify(habit.goals), order],
+    'INSERT INTO habits (id, name, goals, custom_order, created_at) VALUES (?, ?, ?, ?, ?)',
+    [habit.id, habit.name, JSON.stringify(habit.goals), order, habit.createdAt],
   );
 }
 
@@ -154,12 +177,4 @@ export async function updateCustomOrder(orderedIds: string[]): Promise<void> {
       );
     }
   });
-}
-
-export async function setSetting(key: string, value: string): Promise<void> {
-  const database = await getDb();
-  await database.runAsync(
-    'INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)',
-    [key, value],
-  );
 }

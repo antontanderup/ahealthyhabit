@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@expo/ui": "~56.0.18",
-    "@reduxjs/toolkit": "^2.5.0",
+    "@react-native-async-storage/async-storage": "^3.1.1",
     "date-fns": "^3.6.0",
     "expo": "~56.0.12",
     "expo-localization": "~56.0.5",
@@ -30,7 +30,7 @@
     "react-native-reanimated": "4.3.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-worklets": "0.8.3",
-    "react-redux": "^9.2.0"
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -58,7 +58,7 @@
       "./node_modules/react-native-gesture-handler/jestSetup.js"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-redux|i18next|react-i18next)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|zustand|i18next|react-i18next)"
     ]
   }
 }
