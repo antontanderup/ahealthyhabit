@@ -37,7 +37,13 @@ export function HabitsProvider({children}: {children: React.ReactNode}) {
     async (name: string, goals: number[] = []) => {
       const id = nanoid();
       const sortedGoals = [...goals].sort((a, b) => a - b);
-      const newHabit: Habit = {id, name, goals: sortedGoals, recordedDates: []};
+      const newHabit: Habit = {
+        id,
+        name,
+        createdAt: new Date().toISOString(),
+        goals: sortedGoals,
+        recordedDates: [],
+      };
       await db.insertHabit(newHabit, habits.length);
       setHabits(prev => [...prev, newHabit]);
     },
