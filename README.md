@@ -1,5 +1,10 @@
 # A Healthy Habit
 
+> [!WARNING]
+> **UNDER CONSTRUCTION**
+>
+> This is an old project currently being revived. The codebase is in active flux and is not in working order. Expect missing features, broken builds, and significant structural changes in progress.
+
 A React Native habit tracker app for Android and iOS.
 
 ## Tech Stack
