@@ -8,8 +8,6 @@ An Android habit tracker built with React Native and Expo.
 - **State**: Redux Toolkit — a single flat slice in `src/store/index.ts`. Side effects (SQLite persistence) run via `createListenerMiddleware`
 - **Database**: `expo-sqlite` via `src/database/index.ts`
 - **i18n**: `i18next` + `react-i18next` + `expo-localization` — translation files in `src/i18n/`
-- **Theme**: `@pchmn/expo-material3-theme` exposed through a custom `ThemeProvider` in `src/theme/`
-- **UI**: vanilla React Native components + `@expo/ui/jetpack-compose` for native Material3 components (Checkbox, FloatingActionButton, Button)
 
 ## Development
 
@@ -32,33 +30,20 @@ yarn typecheck
 
 ```
 app/
-  _layout.tsx         Root layout (GestureHandler, Redux Provider, SafeAreaProvider,
-                      ThemeProvider, database init)
-  index.tsx           Default route — renders the Habits screen
+  _layout.tsx         Root layout (Redux Provider, database init)
+  index.tsx           Placeholder route
 src/
-  components/
-    screens/          Habits.tsx — the single full-screen view
-    Habit/            Habit card (done-today toggle, goal chips, streak info)
-    EditHabit/        Add / edit / delete habit dialog
-    EditHabitDates/   Multi-date calendar picker dialog
-    ReorderingHabit/  Drag-to-reorder row
-  theme/              ThemeProvider, useTheme, createUseStyles
   store/              Redux slice + listener middleware
   database/           expo-sqlite helpers
   i18n/               Translation files (en, da)
   utils/              dateUtils, calculateStreaks
-  assets/
-    icons/            XML vector drawables for @expo/ui Icon
 ```
 
 ## Conventions
 
-**Style Guide**: Read `STYLEGUIDE.md` before creating or editing any component.
-
 ### Exports
 
 - Always use **named exports**. No default exports except for screen components inside `screens/`.
-- All components are co-located in their own folder under `components/`.
 
 ### TypeScript
 
@@ -68,13 +53,7 @@ src/
 ### Naming
 
 - Never abbreviate variable or function names.
-- Component files use PascalCase (`EditHabit/index.tsx`).
 - Hook files use camelCase prefixed with `use`.
-
-### Props
-
-- Define prop types inline as a `type` alias directly above the component.
-- Provide sensible defaults for all optional props.
 
 ### Translations
 
