@@ -48,22 +48,26 @@ export async function loadHabits(): Promise<Habit[]> {
   const habitRows = await database.getAllAsync<HabitRow>(
     'SELECT * FROM habits ORDER BY custom_order ASC',
   );
+  const allDateRows = await database.getAllAsync<{habit_id: string; date: string}>(
+    'SELECT habit_id, date FROM recorded_dates ORDER BY date DESC',
+  );
 
-  const habits: Habit[] = [];
-  for (const row of habitRows) {
-    const dateRows = await database.getAllAsync<{date: string}>(
-      'SELECT date FROM recorded_dates WHERE habit_id = ? ORDER BY date DESC',
-      [row.id],
-    );
-    habits.push({
-      id: row.id,
-      name: row.name,
-      goals: JSON.parse(row.goals) as number[],
-      recordedDates: dateRows.map(r => r.date),
-    });
+  const datesByHabitId = new Map<string, string[]>();
+  for (const row of allDateRows) {
+    const dates = datesByHabitId.get(row.habit_id);
+    if (dates) {
+      dates.push(row.date);
+    } else {
+      datesByHabitId.set(row.habit_id, [row.date]);
+    }
   }
 
-  return habits;
+  return habitRows.map(row => ({
+    id: row.id,
+    name: row.name,
+    goals: JSON.parse(row.goals) as number[],
+    recordedDates: datesByHabitId.get(row.id) ?? [],
+  }));
 }
 
 export async function loadSettings(): Promise<Settings> {

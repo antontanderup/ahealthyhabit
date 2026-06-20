@@ -2,10 +2,10 @@ import {differenceInCalendarDays, isToday, isYesterday} from 'date-fns';
 import {parseLocalDate} from './dateUtils';
 
 export const getStreaks = (
-  streaksArray: string[],
+  recordedDatesSortedDesc: string[],
 ): {dates: number[]; isCurrentStreak?: boolean}[] => {
   const streaks: {dates: number[]; isCurrentStreak?: boolean}[] = [];
-  const streaksAsDates = streaksArray.map(parseLocalDate);
+  const streaksAsDates = recordedDatesSortedDesc.map(parseLocalDate);
 
   if (streaksAsDates.length === 1) {
     streaks.push({dates: streaksAsDates});
@@ -18,7 +18,7 @@ export const getStreaks = (
         streaks.push({dates: [date]});
       } else {
         const daysSinceLastDate = differenceInCalendarDays(previousDate, date);
-        if (daysSinceLastDate === 1 || daysSinceLastDate === -1) {
+        if (daysSinceLastDate === 1) {
           currentStreak.dates.push(date);
         } else {
           streaks.push({dates: [date]});
