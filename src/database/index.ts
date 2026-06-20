@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import type {Habit, Settings} from '../types';
+import type {Habit} from '../types';
 
 let db: SQLite.SQLiteDatabase | null = null;
 let dbPromise: Promise<SQLite.SQLiteDatabase> | null = null;
@@ -70,12 +70,18 @@ export async function loadHabits(): Promise<Habit[]> {
   }));
 }
 
-export async function loadSettings(): Promise<Settings> {
+export async function getSetting(key: string): Promise<string | null> {
   const database = await getDb();
   const row = await database.getFirstAsync<{value: string}>(
-    "SELECT value FROM settings WHERE key = 'sortBy'",
+    'SELECT value FROM settings WHERE key = ?',
+    [key],
   );
-  return {sortBy: (row?.value ?? 'default') as Settings['sortBy']};
+  return row?.value ?? null;
+}
+
+export async function removeSetting(key: string): Promise<void> {
+  const database = await getDb();
+  await database.runAsync('DELETE FROM settings WHERE key = ?', [key]);
 }
 
 export async function insertHabit(habit: Habit, order: number): Promise<void> {

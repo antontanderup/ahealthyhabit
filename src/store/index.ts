@@ -1,49 +1,26 @@
-import {
-  createSlice,
-  configureStore,
-  PayloadAction,
-  createListenerMiddleware,
-} from '@reduxjs/toolkit';
+import {create} from 'zustand';
+import {persist, createJSONStorage} from 'zustand/middleware';
 import type {Settings} from '../types';
 import * as db from '../database';
 
-type SettingsState = {
-  settings: Settings;
+type SettingsStore = {
+  sortBy: Settings['sortBy'];
+  changeSortBy: (sortBy: Settings['sortBy']) => void;
 };
 
-const initialState: SettingsState = {
-  settings: {sortBy: 'default'},
-};
-
-const settingsSlice = createSlice({
-  name: 'settings',
-  initialState,
-  reducers: {
-    hydrateSettings(state, action: PayloadAction<Settings>) {
-      state.settings = action.payload;
+export const useSettingsStore = create<SettingsStore>()(
+  persist(
+    set => ({
+      sortBy: 'default',
+      changeSortBy: sortBy => set({sortBy}),
+    }),
+    {
+      name: 'settings',
+      storage: createJSONStorage(() => ({
+        getItem: (name: string) => db.getSetting(name),
+        setItem: (name: string, value: string) => db.setSetting(name, value),
+        removeItem: (name: string) => db.removeSetting(name),
+      })),
     },
-    changeSortBy(state, action: PayloadAction<Settings['sortBy']>) {
-      state.settings.sortBy = action.payload;
-    },
-  },
-});
-
-export const {hydrateSettings, changeSortBy} = settingsSlice.actions;
-
-const listenerMiddleware = createListenerMiddleware();
-
-listenerMiddleware.startListening({
-  actionCreator: changeSortBy,
-  effect: async action => {
-    await db.setSetting('sortBy', action.payload);
-  },
-});
-
-export const store = configureStore({
-  reducer: settingsSlice.reducer,
-  middleware: getDefault =>
-    getDefault().prepend(listenerMiddleware.middleware),
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+  ),
+);
