@@ -167,6 +167,14 @@ export async function replaceRecordedDates(
   });
 }
 
+export async function loadHabitCreationOrder(): Promise<string[]> {
+  const database = await getDb();
+  const rows = await database.getAllAsync<{id: string}>(
+    'SELECT id FROM habits ORDER BY rowid ASC',
+  );
+  return rows.map(r => r.id);
+}
+
 export async function updateCustomOrder(orderedIds: string[]): Promise<void> {
   const database = await getDb();
   await database.withTransactionAsync(async () => {

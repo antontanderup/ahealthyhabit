@@ -1,5 +1,1 @@
-import {View} from 'react-native';
-
-export default function Index() {
-  return <View />;
-}
+export {default} from '../src/components/screens/Habits';
