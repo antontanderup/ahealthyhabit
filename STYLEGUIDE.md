@@ -96,7 +96,9 @@ import {
 <ComposeButton label={t('save')} onClick={handleSave} />
 ```
 
-Use raw `Host` + JC component only when a wrapper doesn't cover your needs (e.g. `Checkbox` with custom `modifiers`, `FloatingActionButton`).
+If you need a JC component that doesn't have a wrapper yet, create one in `src/components/compose/` following the same pattern (wrap in `Host` with `seedColor={theme.primary}` and `colorScheme`, export from `index.ts`), then use the wrapper everywhere instead of the raw component.
+
+Use raw `Host` + JC component only when the use-site needs capabilities the wrapper intentionally omits (e.g. `Checkbox` with custom `modifiers`).
 
 ### Raw Host usage
 
