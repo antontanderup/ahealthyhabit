@@ -1,24 +1,15 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Modal,
-  Pressable,
-  StyleSheet,
-  useColorScheme,
-} from 'react-native';
+import {View, Text, Modal, Pressable, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {
-  Host,
-  Checkbox,
-  Button,
-  TextButton,
-  Text as JCText,
-} from '@expo/ui/jetpack-compose';
 import type {Habit} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
-import {useTheme, createUseStyles} from '../../theme';
+import {createUseStyles} from '../../theme';
+import {
+  ComposeButton,
+  ComposeCheckbox,
+  ComposeTextButton,
+  ComposeTextField,
+} from '../compose';
 
 const GOAL_OPTIONS = [7, 30, 90, 180, 365] as const;
 
@@ -32,8 +23,6 @@ export default function EditHabit({
   isOpen: boolean;
 }) {
   const {t} = useTranslation();
-  const theme = useTheme();
-  const colorScheme = useColorScheme() ?? 'light';
   const styles = useStyles();
   const {addHabit, editHabit, removeHabit} = useHabits();
 
@@ -69,13 +58,13 @@ export default function EditHabit({
             {habit?.name ? `${t('edit')} ${habit.name}` : t('addHabit')}
           </Text>
           <View style={styles.dialogContent}>
-            <TextInput
-              style={styles.textInput}
-              placeholder={t('habitName')}
-              placeholderTextColor={theme.onSurfaceVariant}
-              value={name}
-              onChangeText={setName}
-            />
+            <View style={styles.textFieldWrapper}>
+              <ComposeTextField
+                defaultValue={habit?.name ?? ''}
+                onChangeText={setName}
+                label={t('habitName')}
+              />
+            </View>
             <Text style={styles.goalsLabel}>{t('goals')}</Text>
             {GOAL_OPTIONS.map((goal, index) => (
               <View key={`goal${goal}`}>
@@ -86,15 +75,10 @@ export default function EditHabit({
                     pressed && styles.checkboxRowPressed,
                   ]}
                   onPress={() => toggleGoal(goal)}>
-                  <Host
-                    matchContents
-                    seedColor={theme.primary}
-                    colorScheme={colorScheme}>
-                    <Checkbox
-                      value={goals.includes(goal)}
-                      onCheckedChange={() => toggleGoal(goal)}
-                    />
-                  </Host>
+                  <ComposeCheckbox
+                    value={goals.includes(goal)}
+                    onCheckedChange={() => toggleGoal(goal)}
+                  />
                   <Text style={styles.checkboxLabel}>
                     {t('daysCount', {count: goal})}
                   </Text>
@@ -105,29 +89,20 @@ export default function EditHabit({
           {isOpen && (
             <View style={styles.dialogActions}>
               {habit && (
-                <Host
-                  matchContents
-                  seedColor={theme.primary}
-                  colorScheme={colorScheme}>
-                  <TextButton
-                    onClick={() => {
-                      removeHabit(habit.id);
-                      onClose();
-                    }}
-                    colors={{contentColor: theme.error}}>
-                    <JCText>{t('delete')}</JCText>
-                  </TextButton>
-                </Host>
+                <ComposeTextButton
+                  label={t('delete')}
+                  onClick={() => {
+                    removeHabit(habit.id);
+                    onClose();
+                  }}
+                  destructive
+                />
               )}
               <View style={styles.actionSpacer} />
-              <Host
-                matchContents
-                seedColor={theme.primary}
-                colorScheme={colorScheme}>
-                <Button onClick={handleSave}>
-                  <JCText>{t(habit ? 'save' : 'done')}</JCText>
-                </Button>
-              </Host>
+              <ComposeButton
+                label={t(habit ? 'save' : 'done')}
+                onClick={handleSave}
+              />
             </View>
           )}
         </Pressable>
@@ -162,16 +137,8 @@ const useStyles = createUseStyles(theme => ({
   dialogContent: {
     paddingHorizontal: 24,
   },
-  textInput: {
-    fontSize: 16,
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+  textFieldWrapper: {
     marginBottom: 16,
-    borderColor: theme.outline,
-    color: theme.onSurface,
-    backgroundColor: theme.surface,
   },
   goalsLabel: {
     fontSize: 14,

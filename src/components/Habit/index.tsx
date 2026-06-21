@@ -1,10 +1,9 @@
 import {isToday} from 'date-fns';
 import React, {useMemo, useState} from 'react';
-import {View, Text, Pressable, useColorScheme} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Host, Checkbox} from '@expo/ui/jetpack-compose';
-import {clip, Shapes} from '@expo/ui/jetpack-compose/modifiers';
+import {DoneButton} from './DoneButton';
 import type {Habit as HabitType} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {getStreaks} from '../../utils/calculateStreaks';
@@ -15,7 +14,6 @@ import EditHabitDates from '../EditHabitDates';
 export default function Habit({habit}: {habit: HabitType}) {
   const {t} = useTranslation();
   const theme = useTheme();
-  const colorScheme = useColorScheme() ?? 'light';
   const styles = useStyles();
   const {markTodayDone, markTodayUndone} = useHabits();
 
@@ -124,18 +122,12 @@ export default function Habit({habit}: {habit: HabitType}) {
               color={theme.onSurfaceVariant}
             />
           </Pressable>
-          <Host
-            matchContents
-            seedColor={theme.primary}
-            colorScheme={colorScheme}>
-            <Checkbox
-              value={doneToday}
-              onCheckedChange={() =>
-                doneToday ? markTodayUndone(habit.id) : markTodayDone(habit.id)
-              }
-              modifiers={[clip(Shapes.Circle)]}
-            />
-          </Host>
+          <DoneButton
+            done={doneToday}
+            onToggle={() =>
+              doneToday ? markTodayUndone(habit.id) : markTodayDone(habit.id)
+            }
+          />
         </View>
       </View>
       <View style={styles.content}>

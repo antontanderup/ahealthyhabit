@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   View,
   Text,
@@ -71,7 +71,7 @@ export default function Habits() {
     return () => subscription.remove();
   }, []);
 
-  const listData = (): HabitType[] => {
+  const listData = useMemo((): HabitType[] => {
     if (sortBy === 'custom') {
       return habits;
     }
@@ -79,7 +79,7 @@ export default function Habits() {
     return creationOrder
       .map(id => byId.get(id))
       .filter((h): h is HabitType => h !== undefined);
-  };
+  }, [habits, creationOrder, sortBy]);
 
   const insets = useSafeAreaInsets();
   const headerIsDark = colorScheme === 'dark';
@@ -182,7 +182,7 @@ export default function Habits() {
 
       {reordering ? (
         <DraggableFlatlist
-          data={listData()}
+          data={listData}
           renderItem={({item, drag, isActive}: RenderItemParams<HabitType>) => (
             <ReorderingHabit habit={item} drag={drag} isActive={isActive} />
           )}
@@ -193,7 +193,7 @@ export default function Habits() {
         />
       ) : (
         <AnimatedFlatList
-          data={listData()}
+          data={listData}
           renderItem={({item}: {item: HabitType}) => <Habit habit={item} />}
           keyExtractor={item => (item as HabitType).id + currentDate}
           ListHeaderComponent={listHeader}
