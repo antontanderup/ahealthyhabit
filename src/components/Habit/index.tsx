@@ -659,17 +659,16 @@ function PlayfulCard({
   const theme = useTheme();
   const styles = usePlayfulStyles();
   const leadingEmoji = extractLeadingEmoji(habit.name);
-  const avatarLetter = leadingEmoji ?? habit.name.charAt(0).toUpperCase();
 
   return (
     <View style={styles.card}>
       <View style={styles.accentStrip} />
       <View style={styles.content}>
-        <View style={styles.avatar}>
-          <Text style={leadingEmoji ? styles.avatarEmoji : styles.avatarText}>
-            {avatarLetter}
-          </Text>
-        </View>
+        {leadingEmoji != null && (
+          <View style={styles.avatar}>
+            <Text style={styles.avatarEmoji}>{leadingEmoji}</Text>
+          </View>
+        )}
         <View style={styles.info}>
           <Text style={styles.title} numberOfLines={1}>{habit.name}</Text>
           <Text style={styles.subtitle}>
@@ -767,11 +766,6 @@ const usePlayfulStyles = createUseStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
-  },
-  avatarText: {
-    fontSize: 20,
-    fontWeight: '800',
-    color: theme.onPrimaryContainer,
   },
   avatarEmoji: {
     fontSize: 24,
