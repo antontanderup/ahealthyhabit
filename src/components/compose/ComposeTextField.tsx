@@ -26,7 +26,7 @@ export function ComposeTextField({
   const nativeValue = useNativeState(defaultValue);
 
   return (
-    <Host seedColor={theme.primary} colorScheme={colorScheme}>
+    <Host matchContents={{vertical: true}} seedColor={theme.primary} colorScheme={colorScheme}>
       <OutlinedTextField
         value={nativeValue}
         onValueChange={onChangeText}
