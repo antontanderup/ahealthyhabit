@@ -194,6 +194,7 @@ export default function Habits() {
       ) : (
         <AnimatedFlatList
           data={listData()}
+          extraData={habits}
           renderItem={({item}: {item: HabitType}) => <Habit habit={item} />}
           keyExtractor={item => (item as HabitType).id + currentDate}
           ListHeaderComponent={listHeader}
