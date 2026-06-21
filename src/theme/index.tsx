@@ -4,27 +4,63 @@ import {StyleSheet, useColorScheme} from 'react-native';
 import {useMaterial3Theme} from '@pchmn/expo-material3-theme';
 
 export type Theme = {
-  background: string;
-  onBackground: string;
-  surface: string;
-  onSurface: string;
-  surfaceVariant: string;
-  onSurfaceVariant: string;
-  surfaceContainerLowest: string;
-  surfaceContainer: string;
-  surfaceContainerHigh: string;
+  // Primary
   primary: string;
   onPrimary: string;
   primaryContainer: string;
   onPrimaryContainer: string;
+  inversePrimary: string;
+  // Secondary
   secondary: string;
   onSecondary: string;
   secondaryContainer: string;
   onSecondaryContainer: string;
+  // Tertiary
+  tertiary: string;
+  onTertiary: string;
+  tertiaryContainer: string;
+  onTertiaryContainer: string;
+  // Error
   error: string;
   onError: string;
+  errorContainer: string;
+  onErrorContainer: string;
+  // Background
+  background: string;
+  onBackground: string;
+  // Surface
+  surface: string;
+  onSurface: string;
+  surfaceDim: string;
+  surfaceBright: string;
+  surfaceContainerLowest: string;
+  surfaceContainerLow: string;
+  surfaceContainer: string;
+  surfaceContainerHigh: string;
+  surfaceContainerHighest: string;
+  surfaceVariant: string;
+  onSurfaceVariant: string;
+  surfaceDisabled: string;
+  onSurfaceDisabled: string;
+  surfaceTint: string;
+  inverseSurface: string;
+  inverseOnSurface: string;
+  // Outline
   outline: string;
   outlineVariant: string;
+  // Misc
+  shadow: string;
+  scrim: string;
+  backdrop: string;
+  // Elevation overlays (as hex-alpha blended surface colors)
+  elevation: {
+    level0: string;
+    level1: string;
+    level2: string;
+    level3: string;
+    level4: string;
+    level5: string;
+  };
 };
 
 const ThemeContext = createContext<Theme | null>(null);
