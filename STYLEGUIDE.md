@@ -27,7 +27,25 @@ const useStyles = createUseStyles(theme => ({
 
 Always use `createUseStyles` — even when the component doesn't consume theme tokens. This keeps styles co-located and makes adopting tokens later trivial. No `StyleSheet.create` calls outside of `createUseStyles`.
 
-No inline style objects except for values that are genuinely computed at render time (e.g. a width derived from a JS measurement). Dynamic theme-driven values (`{color: theme.primary}`) are acceptable inline.
+All theme token references (colors, backgrounds, borders) must live inside `createUseStyles`. Never reference `theme.*` inside an inline style object in JSX. The only values permitted inline are those genuinely computed at render time from JS measurements — for example a width derived from a state variable or a safe-area inset:
+
+```tsx
+// correct — theme token in createUseStyles, computed value inline
+<View style={[styles.header, {height: DEFAULT_HEIGHT + insets.top}]} />
+
+// wrong — theme token leaked into JSX
+<Text style={[styles.label, {color: theme.primary}]} />
+```
+
+For conditional styles, define named variants in `createUseStyles` and compose them:
+
+```tsx
+// correct
+<View style={[styles.chip, selected ? styles.chipSelected : styles.chipDefault]} />
+
+// wrong
+<View style={[styles.chip, {backgroundColor: selected ? theme.primaryContainer : theme.surfaceContainerHigh}]} />
+```
 
 ## Theme tokens
 
