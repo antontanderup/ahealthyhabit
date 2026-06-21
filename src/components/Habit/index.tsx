@@ -198,7 +198,6 @@ const useStyles = createUseStyles(theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 4,
-    marginTop: -8,
   },
   iconButton: {
     padding: 8,
