@@ -77,7 +77,7 @@ export default function EditHabit({
                   onPress={() => toggleGoal(goal)}>
                   <ComposeCheckbox
                     value={goals.includes(goal)}
-                    onCheckedChange={() => toggleGoal(goal)}
+                    onValueChange={() => toggleGoal(goal)}
                   />
                   <Text style={styles.checkboxLabel}>
                     {t('daysCount', {count: goal})}

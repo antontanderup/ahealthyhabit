@@ -3857,6 +3857,11 @@ expo-build-properties@~56.0.19:
     resolve-from "^5.0.0"
     semver "^7.6.0"
 
+expo-checkbox@^56.0.1:
+  version "56.0.1"
+  resolved "https://registry.yarnpkg.com/expo-checkbox/-/expo-checkbox-56.0.1.tgz#725dadd3daec03d430fed2480f8132dbb7ec0478"
+  integrity sha512-YvhkXThEzeJoQ7AUQ+D4K6WZvjW/rSQIEq2jjj724yAagPjurMD/G1AhGU/zHJcKpQ+aMHwffkcbQUhMP+JSCQ==
+
 expo-constants@~56.0.18:
   version "56.0.18"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-56.0.18.tgz#f9be4f8af7470144578ac945bfa98c271cf39120"
