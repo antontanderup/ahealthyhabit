@@ -3,7 +3,7 @@ import React, {useMemo, useState} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {ComposeDoneButton} from '../compose';
+import {DoneButton} from './DoneButton';
 import type {Habit as HabitType} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {getStreaks} from '../../utils/calculateStreaks';
@@ -122,7 +122,7 @@ export default function Habit({habit}: {habit: HabitType}) {
               color={theme.onSurfaceVariant}
             />
           </Pressable>
-          <ComposeDoneButton
+          <DoneButton
             done={doneToday}
             onToggle={() =>
               doneToday ? markTodayUndone(habit.id) : markTodayDone(habit.id)
