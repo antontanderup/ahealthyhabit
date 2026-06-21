@@ -6,7 +6,7 @@ export type Habit = {
   goals: number[];
 };
 
-export type CardStyle = 'default' | 'hero' | 'compact' | 'stats' | 'playful';
+export type CardStyle = 'playful' | 'hero' | 'compact' | 'stats';
 
 export type Settings = {
   sortBy: 'default' | 'custom';

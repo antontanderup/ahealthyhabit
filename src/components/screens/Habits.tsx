@@ -278,11 +278,10 @@ export default function Habits() {
             <View style={styles.menuDivider} />
             {(
               [
-                {value: 'default', label: t('cardStyleDefault'), icon: 'card-outline'},
+                {value: 'playful', label: t('cardStylePlayful'), icon: 'emoticon-outline'},
                 {value: 'hero', label: t('cardStyleHero'), icon: 'rocket-launch-outline'},
                 {value: 'compact', label: t('cardStyleCompact'), icon: 'view-list'},
                 {value: 'stats', label: t('cardStyleStats'), icon: 'chart-bar'},
-                {value: 'playful', label: t('cardStylePlayful'), icon: 'emoticon-outline'},
               ] as {value: CardStyle; label: string; icon: string}[]
             ).map(option => (
               <Pressable

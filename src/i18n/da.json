@@ -30,7 +30,6 @@
   "goalsReached": "{{count}} mål nået",
   "goalsReached_plural": "{{count}} mål nået",
   "cardStyle": "Kortstil",
-  "cardStyleDefault": "Standard",
   "cardStyleHero": "Hero",
   "cardStyleCompact": "Kompakt",
   "cardStyleStats": "Statistik",

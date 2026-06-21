@@ -30,7 +30,6 @@
   "goalsReached": "{{count}} goal reached",
   "goalsReached_plural": "{{count}} goals reached",
   "cardStyle": "Card style",
-  "cardStyleDefault": "Default",
   "cardStyleHero": "Hero",
   "cardStyleCompact": "Compact",
   "cardStyleStats": "Stats",
