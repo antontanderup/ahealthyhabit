@@ -10,6 +10,7 @@ export type Theme = {
   onSurface: string;
   surfaceVariant: string;
   onSurfaceVariant: string;
+  surfaceContainerLowest: string;
   surfaceContainer: string;
   surfaceContainerHigh: string;
   primary: string;

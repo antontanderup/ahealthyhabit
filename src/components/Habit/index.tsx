@@ -586,7 +586,7 @@ const usePlayfulStyles = createUseStyles(theme => ({
     marginHorizontal: 13,
     marginTop: 15,
     borderRadius: 16,
-    backgroundColor: theme.surface,
+    backgroundColor: theme.surfaceContainerLowest,
     overflow: 'hidden',
     elevation: 1,
     shadowColor: '#000',
