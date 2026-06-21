@@ -125,7 +125,7 @@ export default function Habit({habit}: {habit: HabitType}) {
             />
           </Pressable>
           <Host
-            matchContents
+            style={styles.checkboxHost}
             seedColor={theme.primary}
             colorScheme={colorScheme}>
             <Checkbox
@@ -206,6 +206,11 @@ const useStyles = createUseStyles(theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 4,
+    marginTop: -8,
+  },
+  checkboxHost: {
+    width: 40,
+    height: 40,
   },
   iconButton: {
     padding: 8,
