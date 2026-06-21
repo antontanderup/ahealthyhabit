@@ -500,19 +500,21 @@ function PlayfulCard({
   const {t} = useTranslation();
   const theme = useTheme();
   const styles = usePlayfulStyles();
-  const leadingEmoji = extractLeadingEmoji(habit.name);
+  const emojiResult = extractLeadingEmoji(habit.name);
 
   return (
     <View style={styles.card}>
       <View style={styles.accentStrip} />
       <View style={styles.content}>
-        {leadingEmoji != null && (
+        {emojiResult != null && (
           <View style={styles.avatar}>
-            <Text style={styles.avatarEmoji}>{leadingEmoji}</Text>
+            <Text style={styles.avatarEmoji}>{emojiResult.emoji}</Text>
           </View>
         )}
         <View style={styles.info}>
-          <Text style={styles.title} numberOfLines={1}>{habit.name}</Text>
+          <Text style={styles.title} numberOfLines={1}>
+            {emojiResult != null ? emojiResult.rest : habit.name}
+          </Text>
           <Text style={styles.subtitle}>
             {currentStreak === 0
               ? t(doneToday ? 'habitCurrentTodayDoneZero' : 'habitCurrentZero')
