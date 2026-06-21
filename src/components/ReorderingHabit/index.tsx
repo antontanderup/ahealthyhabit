@@ -18,7 +18,9 @@ export default function ReorderingHabit({
   const styles = useStyles();
 
   return (
-    <TouchableOpacity onPressIn={drag} style={styles.row}>
+    <TouchableOpacity
+      onPressIn={drag}
+      style={[styles.row, isActive && styles.rowActive]}>
       <Text style={styles.name}>{habit.name}</Text>
       <MaterialCommunityIcons
         name={isActive ? 'arrow-up-down' : 'drag-horizontal-variant'}
@@ -35,7 +37,10 @@ const useStyles = createUseStyles(theme => ({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: theme.surface,
+    backgroundColor: theme.surfaceContainerLow,
+  },
+  rowActive: {
+    backgroundColor: theme.surfaceContainerHigh,
   },
   name: {
     flex: 1,

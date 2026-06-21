@@ -162,8 +162,7 @@ const useHeroStyles = createUseStyles(theme => ({
   progressTrack: {
     height: 5,
     borderRadius: 3,
-    backgroundColor: theme.onSecondaryContainer,
-    opacity: 0.2,
+    backgroundColor: theme.onSecondaryContainer + '33',
     overflow: 'hidden',
   },
   progressFill: {
@@ -173,7 +172,6 @@ const useHeroStyles = createUseStyles(theme => ({
     bottom: 0,
     backgroundColor: theme.secondary,
     borderRadius: 3,
-    opacity: 5, // undo parent opacity
   },
   progressLabel: {
     fontSize: 11,

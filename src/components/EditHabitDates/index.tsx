@@ -234,7 +234,7 @@ export default function EditHabitDates({
 const useStyles = createUseStyles(theme => ({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: theme.scrim + '80',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
