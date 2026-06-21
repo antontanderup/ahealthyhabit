@@ -15,6 +15,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Host, FloatingActionButton, Icon} from '@expo/ui/jetpack-compose';
 import {clip, Shapes} from '@expo/ui/jetpack-compose/modifiers';
+import {router} from 'expo-router';
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -312,6 +313,23 @@ export default function Habits() {
                 )}
               </Pressable>
             ))}
+            <View style={styles.menuDivider} />
+            <Pressable
+              style={({pressed}) => [
+                styles.menuItem,
+                pressed && styles.menuItemPressed,
+              ]}
+              onPress={() => {
+                setShowHeaderMenu(false);
+                router.push('/settings');
+              }}>
+              <MaterialCommunityIcons
+                name="cog-outline"
+                size={20}
+                color={theme.onSurfaceVariant}
+              />
+              <Text style={styles.menuItemText}>{t('settings')}</Text>
+            </Pressable>
           </View>
         </Pressable>
       </Modal>

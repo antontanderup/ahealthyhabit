@@ -6,8 +6,10 @@ import type {Settings, CardStyle} from '../types';
 type SettingsStore = {
   sortBy: Settings['sortBy'];
   cardStyle: CardStyle;
+  themeColor: string | null;
   changeSortBy: (sortBy: Settings['sortBy']) => void;
   changeCardStyle: (cardStyle: CardStyle) => void;
+  changeThemeColor: (color: string | null) => void;
 };
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -15,8 +17,10 @@ export const useSettingsStore = create<SettingsStore>()(
     set => ({
       sortBy: 'default',
       cardStyle: 'playful',
+      themeColor: null,
       changeSortBy: sortBy => set({sortBy}),
       changeCardStyle: cardStyle => set({cardStyle}),
+      changeThemeColor: themeColor => set({themeColor}),
     }),
     {
       name: 'settings',
@@ -24,6 +28,7 @@ export const useSettingsStore = create<SettingsStore>()(
       partialize: (state: SettingsStore) => ({
         sortBy: state.sortBy,
         cardStyle: state.cardStyle,
+        themeColor: state.themeColor,
       }),
     },
   ),

@@ -1,7 +1,8 @@
-import React, {createContext, useContext, useMemo} from 'react';
+import React, {createContext, useContext, useEffect, useMemo} from 'react';
 import type {ReactNode} from 'react';
 import {StyleSheet, useColorScheme} from 'react-native';
 import {useMaterial3Theme} from '@pchmn/expo-material3-theme';
+import {useSettingsStore} from '../store';
 
 export type Theme = {
   // Primary
@@ -67,7 +68,19 @@ const ThemeContext = createContext<Theme | null>(null);
 
 export function ThemeProvider({children}: {children: ReactNode}) {
   const colorScheme = useColorScheme();
-  const {theme} = useMaterial3Theme({fallbackSourceColor: '#04c96a'});
+  const {theme, updateTheme, resetTheme} = useMaterial3Theme({
+    fallbackSourceColor: '#04c96a',
+  });
+  const themeColor = useSettingsStore(state => state.themeColor);
+
+  useEffect(() => {
+    if (themeColor !== null) {
+      updateTheme(themeColor);
+    } else {
+      resetTheme();
+    }
+  }, [themeColor, updateTheme, resetTheme]);
+
   const colors = (
     colorScheme === 'dark' ? theme.dark : theme.light
   ) as unknown as Theme;

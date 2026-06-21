@@ -11,4 +11,5 @@ export type CardStyle = 'playful' | 'hero' | 'compact' | 'stats';
 export type Settings = {
   sortBy: 'default' | 'custom';
   cardStyle: CardStyle;
+  themeColor: string | null; // null = use system dynamic color
 };
