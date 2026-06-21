@@ -14,6 +14,7 @@ import {toLocalISODate, parseLocalDate} from '../utils/dateUtils';
 
 type HabitsContextValue = {
   habits: Habit[];
+  creationOrder: string[];
   addHabit: (name: string, goals?: number[]) => Promise<void>;
   editHabit: (id: string, name: string, goals: number[]) => Promise<void>;
   removeHabit: (id: string) => Promise<void>;
@@ -28,9 +29,15 @@ const HabitsContext = createContext<HabitsContextValue | null>(null);
 
 export function HabitsProvider({children}: {children: React.ReactNode}) {
   const [habits, setHabits] = useState<Habit[]>([]);
+  const [creationOrder, setCreationOrder] = useState<string[]>([]);
 
   useEffect(() => {
-    db.loadHabits().then(setHabits);
+    Promise.all([db.loadHabits(), db.loadHabitCreationOrder()]).then(
+      ([loadedHabits, order]) => {
+        setHabits(loadedHabits);
+        setCreationOrder(order);
+      },
+    );
   }, []);
 
   const addHabit = useCallback(
@@ -46,6 +53,7 @@ export function HabitsProvider({children}: {children: React.ReactNode}) {
       };
       await db.insertHabit(newHabit, habits.length);
       setHabits(prev => [...prev, newHabit]);
+      setCreationOrder(prev => [...prev, id]);
     },
     [habits.length],
   );
@@ -64,6 +72,7 @@ export function HabitsProvider({children}: {children: React.ReactNode}) {
   const removeHabit = useCallback(async (id: string) => {
     await db.deleteHabit(id);
     setHabits(prev => prev.filter(h => h.id !== id));
+    setCreationOrder(prev => prev.filter(i => i !== id));
   }, []);
 
   const toggleDate = useCallback(
@@ -151,6 +160,7 @@ export function HabitsProvider({children}: {children: React.ReactNode}) {
     <HabitsContext.Provider
       value={{
         habits,
+        creationOrder,
         addHabit,
         editHabit,
         removeHabit,

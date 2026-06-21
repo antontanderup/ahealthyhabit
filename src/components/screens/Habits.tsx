@@ -47,7 +47,7 @@ export default function Habits() {
   const theme = useTheme();
   const colorScheme = useColorScheme();
   const styles = useStyles();
-  const {habits, reorder} = useHabits();
+  const {habits, creationOrder, reorder} = useHabits();
   const sortBy = useSettingsStore(state => state.sortBy);
   const changeSortBy = useSettingsStore(state => state.changeSortBy);
 
@@ -74,10 +74,10 @@ export default function Habits() {
     if (sortBy === 'custom') {
       return habits;
     }
-    return [...habits].sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-    );
+    const byId = new Map(habits.map(h => [h.id, h]));
+    return creationOrder
+      .map(id => byId.get(id))
+      .filter((h): h is HabitType => h !== undefined);
   };
 
   const insets = useSafeAreaInsets();
