@@ -11,6 +11,7 @@ import {useTheme, createUseStyles} from '../../theme';
 import EditHabit from '../EditHabit';
 import EditHabitDates from '../EditHabitDates';
 import {useSettingsStore} from '../../store';
+import {extractLeadingEmoji} from '../../utils/emojiUtils';
 
 type CardProps = {
   habit: HabitType;
@@ -657,14 +658,17 @@ function PlayfulCard({
   const {t} = useTranslation();
   const theme = useTheme();
   const styles = usePlayfulStyles();
-  const avatarLetter = habit.name.charAt(0).toUpperCase();
+  const leadingEmoji = extractLeadingEmoji(habit.name);
+  const avatarLetter = leadingEmoji ?? habit.name.charAt(0).toUpperCase();
 
   return (
     <View style={styles.card}>
       <View style={styles.accentStrip} />
       <View style={styles.content}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{avatarLetter}</Text>
+          <Text style={leadingEmoji ? styles.avatarEmoji : styles.avatarText}>
+            {avatarLetter}
+          </Text>
         </View>
         <View style={styles.info}>
           <Text style={styles.title} numberOfLines={1}>{habit.name}</Text>
@@ -768,6 +772,9 @@ const usePlayfulStyles = createUseStyles(theme => ({
     fontSize: 20,
     fontWeight: '800',
     color: theme.onPrimaryContainer,
+  },
+  avatarEmoji: {
+    fontSize: 24,
   },
   info: {flex: 1},
   title: {fontSize: 16, fontWeight: '700', color: theme.onSurface},

@@ -4,9 +4,9 @@ import {useTranslation} from 'react-i18next';
 import type {Habit} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {createUseStyles} from '../../theme';
+import {Checkbox} from '../Checkbox';
 import {
   ComposeButton,
-  ComposeCheckbox,
   ComposeTextButton,
   ComposeTextField,
 } from '../compose';
@@ -75,7 +75,7 @@ export default function EditHabit({
                     pressed && styles.checkboxRowPressed,
                   ]}
                   onPress={() => toggleGoal(goal)}>
-                  <ComposeCheckbox
+                  <Checkbox
                     value={goals.includes(goal)}
                     onValueChange={() => toggleGoal(goal)}
                   />
