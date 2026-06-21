@@ -17,6 +17,12 @@ Requires a development build because of native modules:
 npx expo run:android
 ```
 
+If `node_modules` is absent, install dependencies first:
+
+```bash
+yarn install
+```
+
 ## Before Committing
 
 Run these checks in order:

@@ -67,6 +67,39 @@ Access via `useTheme()` from `src/theme`.
 
 Import from `@expo/ui/jetpack-compose`. Every JC component must be wrapped in a `Host`. Use `matchContents` when the Host should size to its content (inline use). Always pass `seedColor={theme.primary}` and `colorScheme` — never hardcode a hex value.
 
+### Wrappers
+
+Prefer the pre-built wrappers in `src/components/compose/` — they handle `Host`, theming, and `colorScheme` automatically:
+
+| Wrapper | Props | Use |
+| ------- | ----- | --- |
+| `ComposeButton` | `label`, `onClick`, `enabled?` | Primary dialog action |
+| `ComposeTextButton` | `label`, `onClick`, `destructive?`, `enabled?` | Low-emphasis or destructive action |
+| `ComposeTextField` | `defaultValue?`, `onChangeText?`, `label?`, `placeholder?` | Native Material3 text input |
+| `ComposeCheckbox` | `value`, `onCheckedChange` | Standard (non-modified) checkbox |
+
+```tsx
+import {
+  ComposeButton,
+  ComposeTextButton,
+  ComposeTextField,
+  ComposeCheckbox,
+} from '../compose';
+
+<ComposeTextField
+  defaultValue={initialName}
+  onChangeText={setName}
+  label={t('habitName')}
+/>
+<ComposeCheckbox value={checked} onCheckedChange={setChecked} />
+<ComposeTextButton label={t('delete')} onClick={handleDelete} destructive />
+<ComposeButton label={t('save')} onClick={handleSave} />
+```
+
+Use raw `Host` + JC component only when a wrapper doesn't cover your needs (e.g. `Checkbox` with custom `modifiers`, `FloatingActionButton`).
+
+### Raw Host usage
+
 ```tsx
 import {Host, Checkbox} from '@expo/ui/jetpack-compose';
 import {useColorScheme} from 'react-native';
@@ -84,32 +117,11 @@ const colorScheme = useColorScheme();
 
 | Component | Use |
 | --------- | --- |
-| `Checkbox` | Done-today toggle, goal selection rows |
+| `Checkbox` | Done-today toggle (with `clip(Shapes.Circle)` modifier), goal selection rows via `ComposeCheckbox` |
 | `FloatingActionButton` | Primary floating action (add habit) |
-| `Button` | Primary dialog action (save / done) |
-| `TextButton` | Low-emphasis or destructive dialog action |
-
-### Buttons
-
-JC `Button` and `TextButton` require a `Host` and a `Text` child from `@expo/ui/jetpack-compose`:
-
-```tsx
-import {Host, Button, TextButton, Text as JCText} from '@expo/ui/jetpack-compose';
-
-// Primary action
-<Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
-  <Button onClick={handleSave}>
-    <JCText>{t('save')}</JCText>
-  </Button>
-</Host>
-
-// Destructive action
-<Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
-  <TextButton onClick={handleDelete} colors={{contentColor: theme.error}}>
-    <JCText>{t('delete')}</JCText>
-  </TextButton>
-</Host>
-```
+| `Button` | Via `ComposeButton` |
+| `TextButton` | Via `ComposeTextButton` |
+| `OutlinedTextField` | Via `ComposeTextField` |
 
 ### FloatingActionButton
 
