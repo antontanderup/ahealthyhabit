@@ -19,6 +19,7 @@
     "date-fns": "^3.6.0",
     "expo": "~56.0.12",
     "expo-build-properties": "~56.0.19",
+    "expo-checkbox": "^56.0.1",
     "expo-constants": "~56.0.18",
     "expo-linking": "~56.0.14",
     "expo-localization": "~56.0.5",

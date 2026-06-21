@@ -21,5 +21,17 @@
   "habitCurrentTodayDone_plural": "Day {{count}}. Good job!",
   "habitLongest": "Best: 1 day",
   "habitLongest_plural": "Best: {{count}} days",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "markDone": "Mark as done",
+  "markedDone": "Done today!",
+  "statsNow": "NOW",
+  "statsBest": "BEST",
+  "statsTotal": "TOTAL",
+  "goalsReached": "{{count}} goal reached",
+  "goalsReached_plural": "{{count}} goals reached",
+  "cardStyle": "Card style",
+  "cardStyleHero": "Hero",
+  "cardStyleCompact": "Compact",
+  "cardStyleStats": "Stats",
+  "cardStylePlayful": "Playful"
 }
