@@ -1,5 +1,5 @@
-import React from 'react';
-import {useColorScheme} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, useColorScheme} from 'react-native';
 import {
   Host,
   FilledIconButton,
@@ -17,19 +17,31 @@ export function ComposeDoneButton({done, onToggle}: ComposeDoneButtonProps) {
   const theme = useTheme();
   const colorScheme = useColorScheme() ?? 'light';
   const styles = useStyles();
+  const [hostReady, setHostReady] = useState(false);
+
+  useEffect(() => {
+    setHostReady(true);
+  }, []);
 
   return (
-    <Host style={styles.host} seedColor={theme.primary} colorScheme={colorScheme}>
-      {done ? (
-        <FilledIconButton onClick={onToggle}>
-          <Icon source={require('../../assets/icons/check.xml')} />
-        </FilledIconButton>
-      ) : (
-        <OutlinedIconButton onClick={onToggle}>
-          <Icon source={require('../../assets/icons/check.xml')} />
-        </OutlinedIconButton>
+    <View style={styles.host}>
+      {hostReady && (
+        <Host
+          style={styles.host}
+          seedColor={theme.primary}
+          colorScheme={colorScheme}>
+          {done ? (
+            <FilledIconButton onClick={onToggle}>
+              <Icon source={require('../../assets/icons/check.xml')} />
+            </FilledIconButton>
+          ) : (
+            <OutlinedIconButton onClick={onToggle}>
+              <Icon source={require('../../assets/icons/check.xml')} />
+            </OutlinedIconButton>
+          )}
+        </Host>
       )}
-    </Host>
+    </View>
   );
 }
 
