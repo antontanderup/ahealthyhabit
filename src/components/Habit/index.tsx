@@ -3,7 +3,7 @@ import React, {useMemo, useState} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {clip, Shapes} from '@expo/ui/jetpack-compose/modifiers';
+import {clip, fillMaxSize, Shapes} from '@expo/ui/jetpack-compose/modifiers';
 import {ComposeCheckbox} from '../compose';
 import type {Habit as HabitType} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
@@ -129,7 +129,7 @@ export default function Habit({habit}: {habit: HabitType}) {
             onCheckedChange={() =>
               doneToday ? markTodayUndone(habit.id) : markTodayDone(habit.id)
             }
-            modifiers={[clip(Shapes.Circle)]}
+            modifiers={[fillMaxSize(), clip(Shapes.Circle)]}
           />
         </View>
       </View>
