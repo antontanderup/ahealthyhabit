@@ -132,7 +132,7 @@ export default function Habits() {
   const listFooter = <View style={{height: 100}} />;
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.background}]}>
+    <View style={styles.container}>
       <StatusBar
         translucent
         backgroundColor="transparent"
@@ -141,19 +141,11 @@ export default function Habits() {
       <Animated.View
         style={[
           styles.header,
-          {
-            paddingTop: appBarInset,
-            height: DEFAULT_APPBAR_HEIGHT + appBarInset,
-            backgroundColor: theme.surface,
-          },
+          {paddingTop: appBarInset, height: DEFAULT_APPBAR_HEIGHT + appBarInset},
           headerWrapperStyle,
         ]}>
         <Animated.Text
-          style={[
-            styles.headerTitle,
-            {color: theme.onSurface},
-            headerTitleFontStyle,
-          ]}>
+          style={[styles.headerTitle, headerTitleFontStyle]}>
           {t('yourHabits')}
         </Animated.Text>
 
@@ -201,9 +193,7 @@ export default function Habits() {
       ) : (
         <AnimatedFlatList
           data={listData()}
-          renderItem={({item}: {item: HabitType}) => (
-            <Habit habit={item} currentDate={currentDate} />
-          )}
+          renderItem={({item}: {item: HabitType}) => <Habit habit={item} />}
           keyExtractor={item => (item as HabitType).id + currentDate}
           ListHeaderComponent={listHeader}
           ListFooterComponent={listFooter}
@@ -241,23 +231,9 @@ export default function Habits() {
         <Pressable
           style={styles.menuOverlay}
           onPress={() => setShowHeaderMenu(false)}>
-          <View
-            style={[
-              styles.menuContainer,
-              {
-                backgroundColor: theme.surface,
-                top: appBarInset + insets.top,
-              },
-            ]}>
-            <Text style={[styles.menuSectionTitle, {color: theme.onSurface}]}>
-              {t('sortBy')}
-            </Text>
-            <View
-              style={[
-                styles.menuDivider,
-                {backgroundColor: theme.outlineVariant},
-              ]}
-            />
+          <View style={[styles.menuContainer, {top: appBarInset + insets.top}]}>
+            <Text style={styles.menuSectionTitle}>{t('sortBy')}</Text>
+            <View style={styles.menuDivider} />
             <Pressable
               style={({pressed}) => [
                 styles.menuItem,
@@ -273,9 +249,7 @@ export default function Habits() {
                 size={20}
                 color={theme.onSurfaceVariant}
               />
-              <Text style={[styles.menuItemText, {color: theme.onSurface}]}>
-                {t('sortCreated')}
-              </Text>
+              <Text style={styles.menuItemText}>{t('sortCreated')}</Text>
             </Pressable>
             <Pressable
               style={({pressed}) => [
@@ -292,9 +266,7 @@ export default function Habits() {
                 size={20}
                 color={theme.onSurfaceVariant}
               />
-              <Text style={[styles.menuItemText, {color: theme.onSurface}]}>
-                {t('sortManually')}
-              </Text>
+              <Text style={styles.menuItemText}>{t('sortManually')}</Text>
             </Pressable>
           </View>
         </Pressable>
@@ -303,8 +275,12 @@ export default function Habits() {
   );
 }
 
-const useStyles = createUseStyles(_theme => ({
-  container: {width: '100%', height: '100%'},
+const useStyles = createUseStyles(theme => ({
+  container: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: theme.background,
+  },
   header: {
     position: 'absolute',
     zIndex: 1,
@@ -313,8 +289,12 @@ const useStyles = createUseStyles(_theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: theme.surface,
   },
-  headerTitle: {flex: 1},
+  headerTitle: {
+    flex: 1,
+    color: theme.onSurface,
+  },
   headerButton: {
     padding: 8,
   },
@@ -339,15 +319,18 @@ const useStyles = createUseStyles(_theme => ({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.15,
     shadowRadius: 4,
+    backgroundColor: theme.surface,
   },
   menuSectionTitle: {
     fontSize: 14,
     fontWeight: '700',
     paddingHorizontal: 16,
     paddingVertical: 12,
+    color: theme.onSurface,
   },
   menuDivider: {
     height: StyleSheet.hairlineWidth,
+    backgroundColor: theme.outlineVariant,
   },
   menuItem: {
     flexDirection: 'row',
@@ -361,5 +344,6 @@ const useStyles = createUseStyles(_theme => ({
   },
   menuItemText: {
     fontSize: 16,
+    color: theme.onSurface,
   },
 }));

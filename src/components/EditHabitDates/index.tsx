@@ -123,7 +123,7 @@ export default function EditHabitDates({
       onRequestClose={handleDismiss}>
       <Pressable style={styles.overlay} onPress={handleDismiss}>
         <Pressable
-          style={[styles.dialog, {backgroundColor: theme.surface}]}
+          style={styles.dialog}
           onPress={e => e.stopPropagation()}>
           <View style={styles.header}>
             <Pressable
@@ -138,7 +138,7 @@ export default function EditHabitDates({
                 color={theme.onSurface}
               />
             </Pressable>
-            <Text style={[styles.monthLabel, {color: theme.onSurface}]}>
+            <Text style={styles.monthLabel}>
               {MONTH_NAMES[displayMonth]} {displayYear}
             </Text>
             <Pressable
@@ -159,9 +159,7 @@ export default function EditHabitDates({
 
           <View style={styles.dayLabelsRow}>
             {DAY_LABELS.map(label => (
-              <Text
-                key={label}
-                style={[styles.dayLabel, {color: theme.onSurfaceVariant}]}>
+              <Text key={label} style={styles.dayLabel}>
                 {label}
               </Text>
             ))}
@@ -188,24 +186,18 @@ export default function EditHabitDates({
                     onPress={() => !isFuture && toggleDate(day)}
                     style={({pressed}) => [
                       styles.cell,
-                      isSelected && {
-                        backgroundColor: theme.primaryContainer,
-                      },
-                      isTodayCell &&
-                        !isSelected && {
-                          borderWidth: 1,
-                          borderColor: theme.primary,
-                        },
+                      isSelected && styles.cellSelected,
+                      isTodayCell && !isSelected && styles.cellToday,
                       pressed && !isFuture && styles.cellPressed,
                     ]}>
                     <Text
                       style={[
                         styles.dayText,
                         isSelected
-                          ? {color: theme.onPrimaryContainer}
+                          ? styles.dayTextSelected
                           : isFuture
-                            ? {color: theme.onSurfaceVariant, opacity: 0.4}
-                            : {color: theme.onSurface},
+                            ? styles.dayTextFuture
+                            : styles.dayTextNormal,
                       ]}>
                       {day}
                     </Text>
@@ -222,9 +214,7 @@ export default function EditHabitDates({
                 styles.actionButton,
                 pressed && styles.actionButtonPressed,
               ]}>
-              <Text style={[styles.actionButtonText, {color: theme.primary}]}>
-                {t('cancel')}
-              </Text>
+              <Text style={styles.actionButtonText}>{t('cancel')}</Text>
             </Pressable>
             <Pressable
               onPress={handleConfirm}
@@ -232,9 +222,7 @@ export default function EditHabitDates({
                 styles.actionButton,
                 pressed && styles.actionButtonPressed,
               ]}>
-              <Text style={[styles.actionButtonText, {color: theme.primary}]}>
-                {t('done')}
-              </Text>
+              <Text style={styles.actionButtonText}>{t('done')}</Text>
             </Pressable>
           </View>
         </Pressable>
@@ -257,6 +245,7 @@ const useStyles = createUseStyles(theme => ({
     paddingTop: 16,
     paddingBottom: 8,
     elevation: 6,
+    backgroundColor: theme.surface,
   },
   header: {
     flexDirection: 'row',
@@ -280,6 +269,7 @@ const useStyles = createUseStyles(theme => ({
     fontWeight: '600',
     flex: 1,
     textAlign: 'center',
+    color: theme.onSurface,
   },
   dayLabelsRow: {
     flexDirection: 'row',
@@ -291,6 +281,7 @@ const useStyles = createUseStyles(theme => ({
     textAlign: 'center',
     fontSize: 12,
     fontWeight: '600',
+    color: theme.onSurfaceVariant,
   },
   grid: {
     flexDirection: 'row',
@@ -305,11 +296,28 @@ const useStyles = createUseStyles(theme => ({
     borderRadius: 20,
     marginVertical: 2,
   },
+  cellSelected: {
+    backgroundColor: theme.primaryContainer,
+  },
+  cellToday: {
+    borderWidth: 1,
+    borderColor: theme.primary,
+  },
   cellPressed: {
     opacity: 0.5,
   },
   dayText: {
     fontSize: 14,
+  },
+  dayTextSelected: {
+    color: theme.onPrimaryContainer,
+  },
+  dayTextFuture: {
+    color: theme.onSurfaceVariant,
+    opacity: 0.4,
+  },
+  dayTextNormal: {
+    color: theme.onSurface,
   },
   actions: {
     flexDirection: 'row',
@@ -330,5 +338,6 @@ const useStyles = createUseStyles(theme => ({
     fontSize: 14,
     fontWeight: '600',
     letterSpacing: 0.5,
+    color: theme.primary,
   },
 }));

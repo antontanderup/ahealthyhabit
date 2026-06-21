@@ -11,13 +11,7 @@ import {useTheme, createUseStyles} from '../../theme';
 import EditHabit from '../EditHabit';
 import EditHabitDates from '../EditHabitDates';
 
-export default function Habit({
-  habit,
-  currentDate,
-}: {
-  habit: HabitType;
-  currentDate: string;
-}) {
+export default function Habit({habit}: {habit: HabitType}) {
   const {t} = useTranslation();
   const theme = useTheme();
   const colorScheme = useColorScheme();
@@ -55,21 +49,14 @@ export default function Habit({
         style={[
           styles.chip,
           !isDisabled && styles.chipWithAvatar,
-          goalReached && !isDisabled
-            ? {backgroundColor: theme.primaryContainer}
-            : {
-                backgroundColor: theme.surfaceContainerHigh,
-                opacity: isDisabled ? 0.5 : 1,
-              },
+          goalReached && !isDisabled ? styles.chipGoalReached : styles.chipNotReached,
+          isDisabled && styles.chipDisabled,
         ]}>
         {!isDisabled && !goalReached && (
           <View
             style={[
               styles.chipProgressFill,
-              {
-                width: `${Math.min(progress * 100, 100)}%` as `${number}%`,
-                backgroundColor: theme.primary,
-              },
+              {width: `${Math.min(progress * 100, 100)}%` as `${number}%`},
             ]}
           />
         )}
@@ -84,12 +71,9 @@ export default function Habit({
         <Text
           style={[
             styles.chipText,
-            {
-              color:
-                goalReached && !isDisabled
-                  ? theme.onPrimaryContainer
-                  : theme.onSurfaceVariant,
-            },
+            goalReached && !isDisabled
+              ? styles.chipTextGoalReached
+              : styles.chipTextDefault,
           ]}>
           {t('daysCount', {count: goal})}
         </Text>
@@ -97,17 +81,12 @@ export default function Habit({
     );
   };
 
-  // currentDate is passed as a prop so the card re-renders when the date changes
-  void currentDate;
-
   return (
     <View style={styles.card}>
       <View style={styles.titleRow}>
         <View style={styles.titleInfo}>
-          <Text style={[styles.title, {color: theme.onSurface}]}>
-            {habit.name}
-          </Text>
-          <Text style={[styles.subtitle, {color: theme.onSurfaceVariant}]}>
+          <Text style={styles.title}>{habit.name}</Text>
+          <Text style={styles.subtitle}>
             {currentStreak === 0
               ? t(doneToday ? 'habitCurrentTodayDoneZero' : 'habitCurrentZero')
               : t(doneToday ? 'habitCurrentTodayDone' : 'habitCurrent', {
@@ -161,12 +140,8 @@ export default function Habit({
         {streaksDateArray.length > 1 &&
           longestStreak > 0 &&
           currentStreak !== longestStreak && (
-            <View
-              style={[
-                styles.chip,
-                {backgroundColor: theme.surfaceContainerHigh},
-              ]}>
-              <Text style={[styles.chipText, {color: theme.onSurfaceVariant}]}>
+            <View style={[styles.chip, styles.chipNotReached]}>
+              <Text style={[styles.chipText, styles.chipTextDefault]}>
                 {t('habitLongest', {count: longestStreak})}
               </Text>
             </View>
@@ -176,8 +151,8 @@ export default function Habit({
         ) : (
           <Pressable
             onPress={() => setEditorOpen(true)}
-            style={[styles.chip, {backgroundColor: theme.surfaceContainerHigh}]}>
-            <Text style={[styles.chipText, {color: theme.onSurfaceVariant}]}>
+            style={[styles.chip, styles.chipNotReached]}>
+            <Text style={[styles.chipText, styles.chipTextDefault]}>
               {t('addGoals')}
             </Text>
           </Pressable>
@@ -218,10 +193,12 @@ const useStyles = createUseStyles(theme => ({
   title: {
     fontSize: 16,
     fontWeight: '600',
+    color: theme.onSurface,
   },
   subtitle: {
     fontSize: 14,
     marginTop: 2,
+    color: theme.onSurfaceVariant,
   },
   cardActions: {
     flexDirection: 'row',
@@ -252,17 +229,33 @@ const useStyles = createUseStyles(theme => ({
   chipWithAvatar: {
     paddingLeft: 6,
   },
+  chipGoalReached: {
+    backgroundColor: theme.primaryContainer,
+  },
+  chipNotReached: {
+    backgroundColor: theme.surfaceContainerHigh,
+  },
+  chipDisabled: {
+    opacity: 0.5,
+  },
   chipProgressFill: {
     position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
     opacity: 0.3,
+    backgroundColor: theme.primary,
   },
   chipIcon: {
     marginRight: 4,
   },
   chipText: {
     fontSize: 14,
+  },
+  chipTextGoalReached: {
+    color: theme.onPrimaryContainer,
+  },
+  chipTextDefault: {
+    color: theme.onSurfaceVariant,
   },
 }));

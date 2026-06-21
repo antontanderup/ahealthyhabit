@@ -63,39 +63,23 @@ export default function EditHabit({
       onRequestClose={handleSave}>
       <Pressable style={styles.overlay} onPress={handleSave}>
         <Pressable
-          style={[styles.dialog, {backgroundColor: theme.surface}]}
+          style={styles.dialog}
           onPress={e => e.stopPropagation()}>
-          <Text style={[styles.dialogTitle, {color: theme.onSurface}]}>
+          <Text style={styles.dialogTitle}>
             {habit?.name ? `${t('edit')} ${habit.name}` : t('addHabit')}
           </Text>
           <View style={styles.dialogContent}>
             <TextInput
-              style={[
-                styles.textInput,
-                {
-                  borderColor: theme.outline,
-                  color: theme.onSurface,
-                  backgroundColor: theme.surface,
-                },
-              ]}
+              style={styles.textInput}
               placeholder={t('habitName')}
               placeholderTextColor={theme.onSurfaceVariant}
               value={name}
               onChangeText={setName}
             />
-            <Text style={[styles.goalsLabel, {color: theme.onSurface}]}>
-              {t('goals')}
-            </Text>
+            <Text style={styles.goalsLabel}>{t('goals')}</Text>
             {GOAL_OPTIONS.map((goal, index) => (
               <View key={`goal${goal}`}>
-                {index > 0 && (
-                  <View
-                    style={[
-                      styles.divider,
-                      {backgroundColor: theme.outlineVariant},
-                    ]}
-                  />
-                )}
+                {index > 0 && <View style={styles.divider} />}
                 <Pressable
                   style={({pressed}) => [
                     styles.checkboxRow,
@@ -111,8 +95,7 @@ export default function EditHabit({
                       onCheckedChange={() => toggleGoal(goal)}
                     />
                   </Host>
-                  <Text
-                    style={[styles.checkboxLabel, {color: theme.onSurface}]}>
+                  <Text style={styles.checkboxLabel}>
                     {t('daysCount', {count: goal})}
                   </Text>
                 </Pressable>
@@ -167,12 +150,14 @@ const useStyles = createUseStyles(theme => ({
     paddingTop: 24,
     paddingBottom: 16,
     elevation: 6,
+    backgroundColor: theme.surface,
   },
   dialogTitle: {
     fontSize: 20,
     fontWeight: '500',
     paddingHorizontal: 24,
     marginBottom: 16,
+    color: theme.onSurface,
   },
   dialogContent: {
     paddingHorizontal: 24,
@@ -184,15 +169,20 @@ const useStyles = createUseStyles(theme => ({
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginBottom: 16,
+    borderColor: theme.outline,
+    color: theme.onSurface,
+    backgroundColor: theme.surface,
   },
   goalsLabel: {
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 4,
+    color: theme.onSurface,
   },
   divider: {
     height: StyleSheet.hairlineWidth,
     marginVertical: 0,
+    backgroundColor: theme.outlineVariant,
   },
   checkboxRow: {
     flexDirection: 'row',
@@ -205,6 +195,7 @@ const useStyles = createUseStyles(theme => ({
   checkboxLabel: {
     fontSize: 16,
     marginLeft: 8,
+    color: theme.onSurface,
   },
   dialogActions: {
     flexDirection: 'row',
