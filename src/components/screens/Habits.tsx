@@ -351,7 +351,7 @@ const useStyles = createUseStyles(theme => ({
   },
   menuOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: theme.scrim + '1A',
   },
   menuContainer: {
     position: 'absolute',
@@ -359,11 +359,11 @@ const useStyles = createUseStyles(theme => ({
     borderRadius: 8,
     minWidth: 200,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: theme.shadow,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.15,
     shadowRadius: 4,
-    backgroundColor: theme.surface,
+    backgroundColor: theme.surfaceContainer,
   },
   menuSectionTitle: {
     fontSize: 14,
