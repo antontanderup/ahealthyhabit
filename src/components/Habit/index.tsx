@@ -1,20 +1,72 @@
 import {isToday} from 'date-fns';
 import React, {useMemo, useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {DoneButton} from './DoneButton';
-import type {Habit as HabitType} from '../../types';
+import type {Habit as HabitType, CardStyle} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {getStreaks} from '../../utils/calculateStreaks';
 import {useTheme, createUseStyles} from '../../theme';
+import type {Theme} from '../../theme';
 import EditHabit from '../EditHabit';
 import EditHabitDates from '../EditHabitDates';
+import {useSettingsStore} from '../../store';
+
+function getCardVariantStyle(cardStyle: CardStyle, theme: Theme) {
+  switch (cardStyle) {
+    case 'outlined':
+      return {
+        card: {
+          backgroundColor: 'transparent' as const,
+          borderWidth: 1,
+          borderColor: theme.outline,
+        },
+      };
+    case 'elevated':
+      return {
+        card: {
+          backgroundColor: theme.surface,
+          borderRadius: 16,
+          elevation: 4,
+          shadowColor: '#000',
+          shadowOffset: {width: 0, height: 2},
+          shadowOpacity: 0.15,
+          shadowRadius: 6,
+        },
+      };
+    case 'flat':
+      return {
+        card: {
+          marginHorizontal: 0,
+          marginTop: 0,
+          borderRadius: 0,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomColor: theme.outlineVariant,
+        },
+      };
+    case 'accent':
+      return {
+        card: {
+          borderLeftWidth: 4,
+          borderLeftColor: theme.primary,
+          borderRadius: 8,
+        },
+      };
+    default:
+      return {card: {}};
+  }
+}
 
 export default function Habit({habit}: {habit: HabitType}) {
   const {t} = useTranslation();
   const theme = useTheme();
   const styles = useStyles();
+  const cardStyle = useSettingsStore(state => state.cardStyle);
+  const cardVariantStyle = useMemo(
+    () => getCardVariantStyle(cardStyle, theme),
+    [cardStyle, theme],
+  );
   const {markTodayDone, markTodayUndone} = useHabits();
 
   const streaksDateArray = useMemo(
@@ -81,7 +133,7 @@ export default function Habit({habit}: {habit: HabitType}) {
   };
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, cardVariantStyle.card]}>
       <View style={styles.titleRow}>
         <View style={styles.titleInfo}>
           <Text style={styles.title}>{habit.name}</Text>

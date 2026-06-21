@@ -28,7 +28,7 @@ import DraggableFlatlist, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import type {Habit as HabitType} from '../../types';
+import type {Habit as HabitType, CardStyle} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {useSettingsStore} from '../../store';
 import {useTheme, createUseStyles} from '../../theme';
@@ -51,6 +51,8 @@ export default function Habits() {
   const {habits, creationOrder, reorder} = useHabits();
   const sortBy = useSettingsStore(state => state.sortBy);
   const changeSortBy = useSettingsStore(state => state.changeSortBy);
+  const cardStyle = useSettingsStore(state => state.cardStyle);
+  const changeCardStyle = useSettingsStore(state => state.changeCardStyle);
 
   const [currentDate, setCurrentDate] = useState(toLocalISODate(new Date()));
   const [showAddHabit, setShowAddHabit] = useState(false);
@@ -271,6 +273,46 @@ export default function Habits() {
               />
               <Text style={styles.menuItemText}>{t('sortManually')}</Text>
             </Pressable>
+            <View style={styles.menuDivider} />
+            <Text style={styles.menuSectionTitle}>{t('cardStyle')}</Text>
+            <View style={styles.menuDivider} />
+            {(
+              [
+                {value: 'default', label: t('cardStyleDefault'), icon: 'card-outline'},
+                {value: 'outlined', label: t('cardStyleOutlined'), icon: 'border-all-variant'},
+                {value: 'elevated', label: t('cardStyleElevated'), icon: 'layers-outline'},
+                {value: 'flat', label: t('cardStyleFlat'), icon: 'view-list'},
+                {value: 'accent', label: t('cardStyleAccent'), icon: 'bookmark-outline'},
+              ] as {value: CardStyle; label: string; icon: string}[]
+            ).map(option => (
+              <Pressable
+                key={option.value}
+                style={({pressed}) => [
+                  styles.menuItem,
+                  pressed && styles.menuItemPressed,
+                ]}
+                onPress={() => {
+                  setShowHeaderMenu(false);
+                  changeCardStyle(option.value);
+                }}>
+                <MaterialCommunityIcons
+                  name={option.icon}
+                  size={20}
+                  color={theme.onSurfaceVariant}
+                />
+                <Text style={[styles.menuItemText, cardStyle === option.value && styles.menuItemTextSelected]}>
+                  {option.label}
+                </Text>
+                {cardStyle === option.value && (
+                  <MaterialCommunityIcons
+                    name="check"
+                    size={18}
+                    color={theme.primary}
+                    style={styles.menuItemCheck}
+                  />
+                )}
+              </Pressable>
+            ))}
           </View>
         </Pressable>
       </Modal>
@@ -348,5 +390,13 @@ const useStyles = createUseStyles(theme => ({
   menuItemText: {
     fontSize: 16,
     color: theme.onSurface,
+    flex: 1,
+  },
+  menuItemTextSelected: {
+    color: theme.primary,
+    fontWeight: '600',
+  },
+  menuItemCheck: {
+    marginLeft: 'auto',
   },
 }));

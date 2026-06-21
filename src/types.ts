@@ -6,6 +6,9 @@ export type Habit = {
   goals: number[];
 };
 
+export type CardStyle = 'default' | 'outlined' | 'elevated' | 'flat' | 'accent';
+
 export type Settings = {
   sortBy: 'default' | 'custom';
+  cardStyle: CardStyle;
 };

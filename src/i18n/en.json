@@ -21,5 +21,11 @@
   "habitCurrentTodayDone_plural": "Day {{count}}. Good job!",
   "habitLongest": "Best: 1 day",
   "habitLongest_plural": "Best: {{count}} days",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "cardStyle": "Card style",
+  "cardStyleDefault": "Default",
+  "cardStyleOutlined": "Outlined",
+  "cardStyleElevated": "Elevated",
+  "cardStyleFlat": "Flat",
+  "cardStyleAccent": "Accent"
 }
