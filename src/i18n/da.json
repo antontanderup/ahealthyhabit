@@ -22,10 +22,17 @@
   "habitLongest": "Bedste: 1 dag",
   "habitLongest_plural": "Bedste: {{count}} dage",
   "cancel": "Annuller",
+  "markDone": "Marker som udført",
+  "markedDone": "Udført i dag!",
+  "statsNow": "NU",
+  "statsBest": "BEDST",
+  "statsTotal": "TOTAL",
+  "goalsReached": "{{count}} mål nået",
+  "goalsReached_plural": "{{count}} mål nået",
   "cardStyle": "Kortstil",
   "cardStyleDefault": "Standard",
-  "cardStyleOutlined": "Omridset",
-  "cardStyleElevated": "Hævet",
-  "cardStyleFlat": "Flad",
-  "cardStyleAccent": "Accent"
+  "cardStyleHero": "Hero",
+  "cardStyleCompact": "Kompakt",
+  "cardStyleStats": "Statistik",
+  "cardStylePlayful": "Sjov"
 }

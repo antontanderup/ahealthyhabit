@@ -279,10 +279,10 @@ export default function Habits() {
             {(
               [
                 {value: 'default', label: t('cardStyleDefault'), icon: 'card-outline'},
-                {value: 'outlined', label: t('cardStyleOutlined'), icon: 'border-all-variant'},
-                {value: 'elevated', label: t('cardStyleElevated'), icon: 'layers-outline'},
-                {value: 'flat', label: t('cardStyleFlat'), icon: 'view-list'},
-                {value: 'accent', label: t('cardStyleAccent'), icon: 'bookmark-outline'},
+                {value: 'hero', label: t('cardStyleHero'), icon: 'rocket-launch-outline'},
+                {value: 'compact', label: t('cardStyleCompact'), icon: 'view-list'},
+                {value: 'stats', label: t('cardStyleStats'), icon: 'chart-bar'},
+                {value: 'playful', label: t('cardStylePlayful'), icon: 'emoticon-outline'},
               ] as {value: CardStyle; label: string; icon: string}[]
             ).map(option => (
               <Pressable
