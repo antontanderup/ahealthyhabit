@@ -14,7 +14,7 @@ import EditHabitDates from '../EditHabitDates';
 export default function Habit({habit}: {habit: HabitType}) {
   const {t} = useTranslation();
   const theme = useTheme();
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme() ?? 'light';
   const styles = useStyles();
   const {markTodayDone, markTodayUndone} = useHabits();
 

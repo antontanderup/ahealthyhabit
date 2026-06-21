@@ -45,7 +45,7 @@ const AnimatedFlatList = Animated.createAnimatedComponent(
 export default function Habits() {
   const {t} = useTranslation();
   const theme = useTheme();
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme() ?? 'light';
   const styles = useStyles();
   const {habits, creationOrder, reorder} = useHabits();
   const sortBy = useSettingsStore(state => state.sortBy);

@@ -33,7 +33,7 @@ export default function EditHabit({
 }) {
   const {t} = useTranslation();
   const theme = useTheme();
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme() ?? 'light';
   const styles = useStyles();
   const {addHabit, editHabit, removeHabit} = useHabits();
 
