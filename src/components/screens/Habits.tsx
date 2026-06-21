@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Host, FloatingActionButton, Icon} from '@expo/ui/jetpack-compose';
+import {clip, Shapes} from '@expo/ui/jetpack-compose/modifiers';
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -207,7 +208,9 @@ export default function Habits() {
             matchContents
             seedColor={theme.primary}
             colorScheme={colorScheme}>
-            <FloatingActionButton onClick={() => setShowAddHabit(true)}>
+            <FloatingActionButton
+              onClick={() => setShowAddHabit(true)}
+              modifiers={[clip(Shapes.Circle)]}>
               <FloatingActionButton.Icon>
                 <Icon source={require('../../assets/icons/add.xml')} />
               </FloatingActionButton.Icon>

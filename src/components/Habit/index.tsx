@@ -4,6 +4,7 @@ import {View, Text, Pressable, useColorScheme} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Host, Checkbox} from '@expo/ui/jetpack-compose';
+import {clip, Shapes} from '@expo/ui/jetpack-compose/modifiers';
 import type {Habit as HabitType} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {getStreaks} from '../../utils/calculateStreaks';
@@ -132,6 +133,7 @@ export default function Habit({habit}: {habit: HabitType}) {
               onCheckedChange={() =>
                 doneToday ? markTodayUndone(habit.id) : markTodayDone(habit.id)
               }
+              modifiers={[clip(Shapes.Circle)]}
             />
           </Host>
         </View>
