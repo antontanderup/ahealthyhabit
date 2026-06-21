@@ -3,8 +3,7 @@ import React, {useMemo, useState} from 'react';
 import {View, Text, Pressable} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {clip, fillMaxSize, Shapes} from '@expo/ui/jetpack-compose/modifiers';
-import {ComposeCheckbox} from '../compose';
+import {ComposeDoneButton} from '../compose';
 import type {Habit as HabitType} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {getStreaks} from '../../utils/calculateStreaks';
@@ -123,13 +122,11 @@ export default function Habit({habit}: {habit: HabitType}) {
               color={theme.onSurfaceVariant}
             />
           </Pressable>
-          <ComposeCheckbox
-            style={styles.checkboxHost}
-            value={doneToday}
-            onCheckedChange={() =>
+          <ComposeDoneButton
+            done={doneToday}
+            onToggle={() =>
               doneToday ? markTodayUndone(habit.id) : markTodayDone(habit.id)
             }
-            modifiers={[fillMaxSize(), clip(Shapes.Circle)]}
           />
         </View>
       </View>
@@ -202,10 +199,6 @@ const useStyles = createUseStyles(theme => ({
     alignItems: 'center',
     marginRight: 4,
     marginTop: -8,
-  },
-  checkboxHost: {
-    width: 40,
-    height: 40,
   },
   iconButton: {
     padding: 8,
