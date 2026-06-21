@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-} from 'react-native';
-import {router} from 'expo-router';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {View, Text, Pressable, ScrollView} from 'react-native';
+import {Stack} from 'expo-router';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSettingsStore} from '../../store';
 import {useTheme, createUseStyles} from '../../theme';
 
@@ -27,46 +20,29 @@ const PRESET_COLORS = [
   '#607D8B',
 ];
 
-const APPBAR_HEIGHT = 56;
-
 export default function Settings() {
   const {t} = useTranslation();
   const theme = useTheme();
   const styles = useStyles();
   const insets = useSafeAreaInsets();
-  const colorScheme = useColorScheme() ?? 'light';
 
   const themeColor = useSettingsStore(state => state.themeColor);
   const changeThemeColor = useSettingsStore(state => state.changeThemeColor);
 
-  const headerHeight = APPBAR_HEIGHT + insets.top;
-
   return (
-    <View style={styles.container}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
+    <>
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: t('settings'),
+          headerStyle: {backgroundColor: theme.surface},
+          headerTintColor: theme.onSurfaceVariant,
+          headerTitleStyle: {color: theme.onSurface},
+          headerShadowVisible: false,
+        }}
       />
-      <View style={[styles.header, {paddingTop: insets.top, height: headerHeight}]}>
-        <Pressable
-          onPress={() => router.back()}
-          style={({pressed}) => [
-            styles.headerButton,
-            pressed && styles.headerButtonPressed,
-          ]}
-          hitSlop={8}>
-          <MaterialCommunityIcons
-            name="arrow-left"
-            size={24}
-            color={theme.onSurfaceVariant}
-          />
-        </Pressable>
-        <Text style={styles.headerTitle}>{t('settings')}</Text>
-      </View>
-
       <ScrollView
-        style={{marginTop: headerHeight}}
+        style={styles.container}
         contentContainerStyle={[
           styles.scrollContent,
           {paddingBottom: insets.bottom + 24},
@@ -95,11 +71,7 @@ export default function Settings() {
             {t('systemColor')}
           </Text>
           {themeColor === null && (
-            <MaterialCommunityIcons
-              name="check"
-              size={20}
-              color={theme.primary}
-            />
+            <MaterialCommunityIcons name="check" size={20} color={theme.primary} />
           )}
         </Pressable>
 
@@ -126,7 +98,7 @@ export default function Settings() {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </>
   );
 }
 
@@ -134,29 +106,6 @@ const useStyles = createUseStyles(theme => ({
   container: {
     flex: 1,
     backgroundColor: theme.background,
-  },
-  header: {
-    position: 'absolute',
-    zIndex: 1,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 4,
-    backgroundColor: theme.surface,
-  },
-  headerButton: {
-    padding: 8,
-    marginLeft: 4,
-  },
-  headerButtonPressed: {
-    opacity: 0.5,
-  },
-  headerTitle: {
-    flex: 1,
-    fontSize: 20,
-    fontWeight: '600',
-    color: theme.onSurface,
-    marginLeft: 8,
   },
   scrollContent: {
     padding: 16,

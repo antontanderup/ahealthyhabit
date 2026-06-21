@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Slot} from 'expo-router';
+import {Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import {ThemeProvider} from '../src/theme';
 import {HabitsProvider} from '../src/habits/HabitsContext';
@@ -19,7 +19,7 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <ThemeProvider>
           <HabitsProvider>
-            <Slot />
+            <Stack screenOptions={{headerShown: false}} />
           </HabitsProvider>
         </ThemeProvider>
       </SafeAreaProvider>
