@@ -15,7 +15,6 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Host, FloatingActionButton, Icon} from '@expo/ui/jetpack-compose';
 import {clip, Shapes} from '@expo/ui/jetpack-compose/modifiers';
-import {router} from 'expo-router';
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -29,6 +28,7 @@ import DraggableFlatlist, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useRouter} from 'expo-router';
 import type {Habit as HabitType, CardStyle} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {useSettingsStore} from '../../store';
@@ -49,6 +49,7 @@ export default function Habits() {
   const theme = useTheme();
   const colorScheme = useColorScheme() ?? 'light';
   const styles = useStyles();
+  const router = useRouter();
   const {habits, creationOrder, reorder} = useHabits();
   const sortBy = useSettingsStore(state => state.sortBy);
   const changeSortBy = useSettingsStore(state => state.changeSortBy);
@@ -168,6 +169,19 @@ export default function Habits() {
             />
           </Pressable>
         )}
+        <Pressable
+          onPress={() => router.push('/settings')}
+          style={({pressed}) => [
+            styles.headerButton,
+            pressed && styles.headerButtonPressed,
+          ]}
+          hitSlop={8}>
+          <MaterialCommunityIcons
+            name="cog-outline"
+            size={24}
+            color={theme.onSurfaceVariant}
+          />
+        </Pressable>
         <Pressable
           onPress={() => setShowHeaderMenu(true)}
           style={({pressed}) => [
@@ -313,23 +327,6 @@ export default function Habits() {
                 )}
               </Pressable>
             ))}
-            <View style={styles.menuDivider} />
-            <Pressable
-              style={({pressed}) => [
-                styles.menuItem,
-                pressed && styles.menuItemPressed,
-              ]}
-              onPress={() => {
-                setShowHeaderMenu(false);
-                router.push('/settings');
-              }}>
-              <MaterialCommunityIcons
-                name="cog-outline"
-                size={20}
-                color={theme.onSurfaceVariant}
-              />
-              <Text style={styles.menuItemText}>{t('settings')}</Text>
-            </Pressable>
           </View>
         </Pressable>
       </Modal>
