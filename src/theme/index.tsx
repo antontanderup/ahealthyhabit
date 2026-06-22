@@ -79,7 +79,10 @@ export function ThemeProvider({children}: {children: ReactNode}) {
     } else {
       resetTheme();
     }
-  }, [themeColor, updateTheme, resetTheme]);
+    // updateTheme/resetTheme are recreated on every render (no useCallback in the
+    // library), so including them causes an infinite loop. Only themeColor matters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [themeColor]);
 
   const colors = (
     colorScheme === 'dark' ? theme.dark : theme.light
