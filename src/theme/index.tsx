@@ -79,7 +79,10 @@ export function ThemeProvider({children}: {children: ReactNode}) {
     } else {
       resetTheme();
     }
-  }, [themeColor, updateTheme, resetTheme]);
+    // updateTheme/resetTheme are recreated on every render of useMaterial3Theme
+    // (no useCallback inside the hook), so including them would cause an infinite loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [themeColor]);
 
   const colors = (
     colorScheme === 'dark' ? theme.dark : theme.light
