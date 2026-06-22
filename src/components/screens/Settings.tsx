@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, Pressable, ScrollView} from 'react-native';
+import {Stack} from 'expo-router';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,7 +30,18 @@ export default function Settings() {
   const changeThemeColor = useSettingsStore(state => state.changeThemeColor);
 
   return (
-    <ScrollView
+    <>
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: t('settings'),
+          headerStyle: {backgroundColor: theme.surface},
+          headerTintColor: theme.onSurfaceVariant,
+          headerTitleStyle: {color: theme.onSurface},
+          headerShadowVisible: false,
+        }}
+      />
+      <ScrollView
         style={styles.container}
         contentContainerStyle={[
           styles.scrollContent,
@@ -86,6 +98,7 @@ export default function Settings() {
           ))}
         </View>
       </ScrollView>
+    </>
   );
 }
 
