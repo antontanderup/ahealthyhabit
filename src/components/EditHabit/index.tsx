@@ -152,26 +152,23 @@ const useStyles = createUseStyles(theme => ({
   goalChips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 6,
     marginBottom: 8,
   },
   goalChip: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 100,
-    borderWidth: 1.5,
-    borderColor: theme.outline,
-    backgroundColor: 'transparent',
+    backgroundColor: theme.surfaceContainerHighest,
   },
   goalChipSelected: {
     backgroundColor: theme.primary,
-    borderColor: theme.primary,
   },
   goalChipPressed: {
     opacity: 0.7,
   },
   goalChipLabel: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
     color: theme.onSurfaceVariant,
   },
