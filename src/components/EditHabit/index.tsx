@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
-import {View, Text, Modal, Pressable, StyleSheet} from 'react-native';
+import {View, Text, Modal, Pressable} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import type {Habit} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {createUseStyles} from '../../theme';
-import {Checkbox} from '../Checkbox';
 import {
   ComposeButton,
   ComposeTextButton,
@@ -51,11 +50,9 @@ export default function EditHabit({
       animationType="fade"
       onRequestClose={handleSave}>
       <Pressable style={styles.overlay} onPress={handleSave}>
-        <Pressable
-          style={styles.dialog}
-          onPress={e => e.stopPropagation()}>
+        <Pressable style={styles.dialog} onPress={e => e.stopPropagation()}>
           <Text style={styles.dialogTitle}>
-            {habit?.name ? `${t('edit')} ${habit.name}` : t('addHabit')}
+            {habit?.id ? t('editHabit') : t('addHabit')}
           </Text>
           <View style={styles.dialogContent}>
             <View style={styles.textFieldWrapper}>
@@ -66,25 +63,29 @@ export default function EditHabit({
               />
             </View>
             <Text style={styles.goalsLabel}>{t('goals')}</Text>
-            {GOAL_OPTIONS.map((goal, index) => (
-              <View key={`goal${goal}`}>
-                {index > 0 && <View style={styles.divider} />}
-                <Pressable
-                  style={({pressed}) => [
-                    styles.checkboxRow,
-                    pressed && styles.checkboxRowPressed,
-                  ]}
-                  onPress={() => toggleGoal(goal)}>
-                  <Checkbox
-                    value={goals.includes(goal)}
-                    onValueChange={() => toggleGoal(goal)}
-                  />
-                  <Text style={styles.checkboxLabel}>
-                    {t('daysCount', {count: goal})}
-                  </Text>
-                </Pressable>
-              </View>
-            ))}
+            <View style={styles.goalChips}>
+              {GOAL_OPTIONS.map(goal => {
+                const selected = goals.includes(goal);
+                return (
+                  <Pressable
+                    key={`goal${goal}`}
+                    style={({pressed}) => [
+                      styles.goalChip,
+                      selected && styles.goalChipSelected,
+                      pressed && styles.goalChipPressed,
+                    ]}
+                    onPress={() => toggleGoal(goal)}>
+                    <Text
+                      style={[
+                        styles.goalChipLabel,
+                        selected && styles.goalChipLabelSelected,
+                      ]}>
+                      {t('daysCount', {count: goal})}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
           </View>
           {isOpen && (
             <View style={styles.dialogActions}>
@@ -121,54 +122,64 @@ const useStyles = createUseStyles(theme => ({
   },
   dialog: {
     width: '100%',
-    borderRadius: 16,
-    paddingTop: 24,
+    borderRadius: 28,
+    paddingTop: 28,
     paddingBottom: 16,
     elevation: 6,
-    backgroundColor: theme.surface,
+    backgroundColor: theme.surfaceContainerHigh,
   },
   dialogTitle: {
-    fontSize: 20,
-    fontWeight: '500',
+    fontSize: 22,
+    fontWeight: '600',
     paddingHorizontal: 24,
-    marginBottom: 16,
+    marginBottom: 20,
     color: theme.onSurface,
   },
   dialogContent: {
     paddingHorizontal: 24,
   },
   textFieldWrapper: {
-    marginBottom: 16,
+    marginBottom: 24,
   },
   goalsLabel: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
-    marginBottom: 4,
-    color: theme.onSurface,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    marginBottom: 12,
+    color: theme.onSurfaceVariant,
   },
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    marginVertical: 0,
-    backgroundColor: theme.outlineVariant,
-  },
-  checkboxRow: {
+  goalChips: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 4,
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: 8,
   },
-  checkboxRowPressed: {
-    opacity: 0.5,
+  goalChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 100,
+    backgroundColor: theme.surfaceContainerHighest,
   },
-  checkboxLabel: {
-    fontSize: 16,
-    marginLeft: 8,
-    color: theme.onSurface,
+  goalChipSelected: {
+    backgroundColor: theme.primary,
+  },
+  goalChipPressed: {
+    opacity: 0.7,
+  },
+  goalChipLabel: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: theme.onSurfaceVariant,
+  },
+  goalChipLabelSelected: {
+    color: theme.onPrimary,
   },
   dialogActions: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 8,
+    paddingTop: 16,
   },
   actionSpacer: {
     flex: 1,
