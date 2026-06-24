@@ -1,6 +1,7 @@
 import React from 'react';
 import type {StyleProp, ViewStyle} from 'react-native';
-import ExpoCheckbox from 'expo-checkbox';
+import {Pressable} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useTheme} from '../theme';
 
 type CheckboxProps = {
@@ -13,11 +14,17 @@ export function Checkbox({value, onValueChange, style}: CheckboxProps) {
   const theme = useTheme();
 
   return (
-    <ExpoCheckbox
-      value={value}
-      onValueChange={onValueChange}
-      color={value ? theme.primary : undefined}
-      style={style}
-    />
+    <Pressable
+      onPress={() => onValueChange(!value)}
+      style={({pressed}) => [style, pressed && {opacity: 0.6}]}
+      hitSlop={8}
+      accessibilityRole="checkbox"
+      accessibilityState={{checked: value}}>
+      <MaterialCommunityIcons
+        name={value ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'}
+        size={24}
+        color={value ? theme.primary : theme.outline}
+      />
+    </Pressable>
   );
 }

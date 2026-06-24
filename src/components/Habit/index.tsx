@@ -238,7 +238,7 @@ function CompactCard({
           accessibilityLabel="Edit dates">
           <MaterialCommunityIcons name="calendar-range" size={18} color={theme.onSurfaceVariant} />
         </Pressable>
-        <Checkbox value={doneToday} onValueChange={onToggleDone} />
+        <Checkbox value={doneToday} onValueChange={onToggleDone} style={styles.iconButton} />
       </View>
       {habit.goals && habit.goals.length > 0 && (
         <View style={styles.dotsRow}>
@@ -341,7 +341,7 @@ function StatsCard({
           accessibilityLabel="Edit dates">
           <MaterialCommunityIcons name="calendar-range" size={20} color={theme.onSurfaceVariant} />
         </Pressable>
-        <Checkbox value={doneToday} onValueChange={onToggleDone} />
+        <Checkbox value={doneToday} onValueChange={onToggleDone} style={styles.iconButton} />
       </View>
 
       <View style={styles.divider} />
@@ -537,7 +537,7 @@ function DefaultCard({
             accessibilityLabel="Edit dates">
             <MaterialCommunityIcons name="calendar-range" size={20} color={theme.onSurfaceVariant} />
           </Pressable>
-          <Checkbox value={doneToday} onValueChange={onToggleDone} />
+          <Checkbox value={doneToday} onValueChange={onToggleDone} style={styles.iconButton} />
         </View>
       </View>
 
