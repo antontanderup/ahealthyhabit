@@ -504,7 +504,6 @@ function PlayfulCard({
 
   return (
     <View style={styles.card}>
-      <View style={styles.accentStrip} />
       <View style={styles.content}>
         {emojiResult != null && (
           <View style={styles.avatar}>
@@ -547,6 +546,7 @@ function PlayfulCard({
           habit.goals.map((goal, index, goals) => {
             const isDisabled = goals[index - 1] != null && longestStreak < goals[index - 1];
             const reached = longestStreak >= goal;
+            const progress = Math.min(longestStreak, goal) / goal;
             return (
               <View
                 key={`goal${goal}`}
@@ -555,6 +555,11 @@ function PlayfulCard({
                   reached ? styles.goalTagReached : styles.goalTagPending,
                   isDisabled && styles.goalTagDisabled,
                 ]}>
+                {!reached && (
+                  <View
+                    style={[styles.goalTagProgressFill, {width: `${Math.round(progress * 100)}%`}]}
+                  />
+                )}
                 <MaterialCommunityIcons
                   name={reached ? 'star' : 'star-outline'}
                   size={13}
@@ -586,7 +591,7 @@ const usePlayfulStyles = createUseStyles(theme => ({
     marginHorizontal: 13,
     marginTop: 15,
     borderRadius: 16,
-    backgroundColor: theme.surfaceContainerLowest,
+    backgroundColor: theme.surfaceContainerLow,
     overflow: 'hidden',
     elevation: 1,
     shadowColor: '#000',
@@ -594,7 +599,6 @@ const usePlayfulStyles = createUseStyles(theme => ({
     shadowOpacity: 0.06,
     shadowRadius: 3,
   },
-  accentStrip: {height: 5, backgroundColor: theme.primary},
   content: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -634,6 +638,14 @@ const usePlayfulStyles = createUseStyles(theme => ({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
+    overflow: 'hidden',
+  },
+  goalTagProgressFill: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.primaryContainer,
   },
   goalTagReached: {backgroundColor: theme.primaryContainer},
   goalTagPending: {backgroundColor: theme.surfaceContainerHigh},
