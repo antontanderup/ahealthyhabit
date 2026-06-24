@@ -21,7 +21,9 @@ export function Checkbox({value, onValueChange, style}: CheckboxProps) {
       accessibilityRole="checkbox"
       accessibilityState={{checked: value}}>
       <MaterialCommunityIcons
-        name={value ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'}
+        name={
+          value ? 'checkbox-marked-circle' : 'checkbox-blank-circle-outline'
+        }
         size={24}
         color={value ? theme.primary : theme.outline}
       />

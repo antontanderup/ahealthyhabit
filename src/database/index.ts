@@ -78,9 +78,10 @@ export async function loadHabits(): Promise<Habit[]> {
   const habitRows = await database.getAllAsync<HabitRow>(
     'SELECT * FROM habits ORDER BY custom_order ASC',
   );
-  const allDateRows = await database.getAllAsync<{habit_id: string; date: string}>(
-    'SELECT habit_id, date FROM recorded_dates ORDER BY date DESC',
-  );
+  const allDateRows = await database.getAllAsync<{
+    habit_id: string;
+    date: string;
+  }>('SELECT habit_id, date FROM recorded_dates ORDER BY date DESC');
 
   const datesByHabitId = new Map<string, string[]>();
   for (const row of allDateRows) {
@@ -115,11 +116,10 @@ export async function updateHabit(
   goals: number[],
 ): Promise<void> {
   const database = await getDb();
-  await database.runAsync('UPDATE habits SET name = ?, goals = ? WHERE id = ?', [
-    name,
-    JSON.stringify(goals),
-    id,
-  ]);
+  await database.runAsync(
+    'UPDATE habits SET name = ?, goals = ? WHERE id = ?',
+    [name, JSON.stringify(goals), id],
+  );
 }
 
 export async function deleteHabit(id: string): Promise<void> {

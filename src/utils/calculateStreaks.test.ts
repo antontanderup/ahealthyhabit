@@ -5,9 +5,7 @@ describe('getStreaks', () => {
   it('returns one streak with two entries', () => {
     const dates = ['2021-04-03', '2021-04-02'];
     const outputStreaks = getStreaks(dates);
-    expect(outputStreaks).toEqual([
-      {dates: dates.map(parseLocalDate)},
-    ]);
+    expect(outputStreaks).toEqual([{dates: dates.map(parseLocalDate)}]);
   });
 
   it('returns single streak', () => {

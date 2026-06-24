@@ -51,17 +51,17 @@ For conditional styles, define named variants in `createUseStyles` and compose t
 
 Access via `useTheme()` from `src/theme`.
 
-| Token                                 | Use                                                    |
-| ------------------------------------- | ------------------------------------------------------ |
-| `background` / `onBackground`         | Screen background and text                             |
-| `surface` / `onSurface`               | Cards, dialogs, sheets                                 |
-| `surfaceVariant` / `onSurfaceVariant` | Secondary surfaces, muted text, icons                  |
-| `surfaceContainer`                    | Inputs, list rows, chips                               |
-| `surfaceContainerHigh`                | Elevated state (e.g. active drag row)                  |
-| `primary` / `onPrimary`               | Primary actions, active borders                        |
-| `primaryContainer` / `onPrimaryContainer` | Selected chips, goal-reached state                 |
-| `outlineVariant`                      | Subtle dividers                                        |
-| `error` / `onError`                   | Destructive actions                                    |
+| Token                                     | Use                                   |
+| ----------------------------------------- | ------------------------------------- |
+| `background` / `onBackground`             | Screen background and text            |
+| `surface` / `onSurface`                   | Cards, dialogs, sheets                |
+| `surfaceVariant` / `onSurfaceVariant`     | Secondary surfaces, muted text, icons |
+| `surfaceContainer`                        | Inputs, list rows, chips              |
+| `surfaceContainerHigh`                    | Elevated state (e.g. active drag row) |
+| `primary` / `onPrimary`                   | Primary actions, active borders       |
+| `primaryContainer` / `onPrimaryContainer` | Selected chips, goal-reached state    |
+| `outlineVariant`                          | Subtle dividers                       |
+| `error` / `onError`                       | Destructive actions                   |
 
 ## Jetpack Compose components
 
@@ -71,12 +71,12 @@ Import from `@expo/ui/jetpack-compose`. Every JC component must be wrapped in a 
 
 Prefer the pre-built wrappers in `src/components/compose/` — they handle `Host`, theming, and `colorScheme` automatically:
 
-| Wrapper | Props | Use |
-| ------- | ----- | --- |
-| `ComposeButton` | `label`, `onClick`, `enabled?` | Primary dialog action |
-| `ComposeTextButton` | `label`, `onClick`, `destructive?`, `enabled?` | Low-emphasis or destructive action |
-| `ComposeTextField` | `defaultValue?`, `onChangeText?`, `label?`, `placeholder?` | Native Material3 text input |
-| `ComposeCheckbox` | `value`, `onCheckedChange` | Standard (non-modified) checkbox |
+| Wrapper             | Props                                                      | Use                                |
+| ------------------- | ---------------------------------------------------------- | ---------------------------------- |
+| `ComposeButton`     | `label`, `onClick`, `enabled?`                             | Primary dialog action              |
+| `ComposeTextButton` | `label`, `onClick`, `destructive?`, `enabled?`             | Low-emphasis or destructive action |
+| `ComposeTextField`  | `defaultValue?`, `onChangeText?`, `label?`, `placeholder?` | Native Material3 text input        |
+| `ComposeCheckbox`   | `value`, `onCheckedChange`                                 | Standard (non-modified) checkbox   |
 
 ```tsx
 import {
@@ -112,18 +112,18 @@ const colorScheme = useColorScheme();
 
 <Host matchContents seedColor={theme.primary} colorScheme={colorScheme}>
   <Checkbox value={checked} onCheckedChange={setChecked} />
-</Host>
+</Host>;
 ```
 
 ### Available JC components used in this project
 
-| Component | Use |
-| --------- | --- |
-| `Checkbox` | Done-today toggle (with `clip(Shapes.Circle)` modifier), goal selection rows via `ComposeCheckbox` |
-| `FloatingActionButton` | Primary floating action (add habit) |
-| `Button` | Via `ComposeButton` |
-| `TextButton` | Via `ComposeTextButton` |
-| `OutlinedTextField` | Via `ComposeTextField` |
+| Component              | Use                                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------------------- |
+| `Checkbox`             | Done-today toggle (with `clip(Shapes.Circle)` modifier), goal selection rows via `ComposeCheckbox` |
+| `FloatingActionButton` | Primary floating action (add habit)                                                                |
+| `Button`               | Via `ComposeButton`                                                                                |
+| `TextButton`           | Via `ComposeTextButton`                                                                            |
+| `OutlinedTextField`    | Via `ComposeTextField`                                                                             |
 
 ### FloatingActionButton
 
@@ -140,7 +140,7 @@ import {Host, FloatingActionButton, Icon} from '@expo/ui/jetpack-compose';
       </FloatingActionButton.Icon>
     </FloatingActionButton>
   </Host>
-</View>
+</View>;
 ```
 
 `fabContainer` style: `position: 'absolute', bottom: 16, right: 16`.
@@ -161,23 +161,27 @@ Pressed style is always `opacity: 0.5`, named `<base>Pressed`.
 ```tsx
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-<MaterialCommunityIcons name="dots-vertical" size={20} color={theme.onSurfaceVariant} />
+<MaterialCommunityIcons
+  name="dots-vertical"
+  size={20}
+  color={theme.onSurfaceVariant}
+/>;
 ```
 
 Both `MaterialCommunityIcons.ttf` and `MaterialIcons.ttf` are loaded via the `expo-font` plugin in `app.json`.
 
-| Purpose             | Name                          |
-| ------------------- | ----------------------------- |
-| Options menu        | `dots-vertical`               |
-| Calendar            | `calendar-range`              |
-| Reorder toggle (on) | `check`                       |
-| Reorder toggle (off)| `reorder-horizontal`          |
-| Sort ascending      | `sort-ascending`              |
-| Sort manual         | `sort`                        |
-| Drag handle         | `drag-horizontal-variant`     |
-| Drag active         | `arrow-up-down`               |
-| Goal star           | `star`                        |
-| Chevron left/right  | `chevron-left` / `chevron-right` |
+| Purpose              | Name                             |
+| -------------------- | -------------------------------- |
+| Options menu         | `dots-vertical`                  |
+| Calendar             | `calendar-range`                 |
+| Reorder toggle (on)  | `check`                          |
+| Reorder toggle (off) | `reorder-horizontal`             |
+| Sort ascending       | `sort-ascending`                 |
+| Sort manual          | `sort`                           |
+| Drag handle          | `drag-horizontal-variant`        |
+| Drag active          | `arrow-up-down`                  |
+| Goal star            | `star`                           |
+| Chevron left/right   | `chevron-left` / `chevron-right` |
 
 Icon-only buttons must always have `accessibilityLabel` set.
 
@@ -186,7 +190,11 @@ Icon-only buttons must always have `accessibilityLabel` set.
 Use React Native `Modal` with `transparent` and `animationType="fade"`. The outer `Pressable` is the backdrop (dismisses on tap); the inner `Pressable` stops propagation.
 
 ```tsx
-<Modal visible={isOpen} transparent animationType="fade" onRequestClose={onClose}>
+<Modal
+  visible={isOpen}
+  transparent
+  animationType="fade"
+  onRequestClose={onClose}>
   <Pressable style={styles.overlay} onPress={onClose}>
     <Pressable
       style={[styles.dialog, {backgroundColor: theme.surface}]}
@@ -203,13 +211,13 @@ Standard dialog style: `width: '100%', borderRadius: 16, elevation: 6`.
 
 ## Spacing & typography
 
-| fontSize | Role                                                                                  |
-| -------- | ------------------------------------------------------------------------------------- |
-| `12`     | Caption, section label (`fontWeight: '600'`, `letterSpacing: 0.5`)                   |
-| `14`     | Secondary text, chip labels                                                           |
-| `16`     | Body, list labels, inputs                                                             |
-| `20`     | Dialog title                                                                          |
-| `30→20`  | Animated screen title (interpolated on scroll via Reanimated)                         |
+| fontSize | Role                                                               |
+| -------- | ------------------------------------------------------------------ |
+| `12`     | Caption, section label (`fontWeight: '600'`, `letterSpacing: 0.5`) |
+| `14`     | Secondary text, chip labels                                        |
+| `16`     | Body, list labels, inputs                                          |
+| `20`     | Dialog title                                                       |
+| `30→20`  | Animated screen title (interpolated on scroll via Reanimated)      |
 
 Dividers: `height: StyleSheet.hairlineWidth, backgroundColor: theme.outlineVariant`.
 

@@ -146,11 +146,13 @@ export default function Habits() {
       <Animated.View
         style={[
           styles.header,
-          {paddingTop: appBarInset, height: DEFAULT_APPBAR_HEIGHT + appBarInset},
+          {
+            paddingTop: appBarInset,
+            height: DEFAULT_APPBAR_HEIGHT + appBarInset,
+          },
           headerWrapperStyle,
         ]}>
-        <Animated.Text
-          style={[styles.headerTitle, headerTitleFontStyle]}>
+        <Animated.Text style={[styles.headerTitle, headerTitleFontStyle]}>
           {t('yourHabits')}
         </Animated.Text>
 
@@ -293,9 +295,21 @@ export default function Habits() {
             <View style={styles.menuDivider} />
             {(
               [
-                {value: 'default', label: t('cardStyleDefault'), icon: 'emoticon-outline'},
-                {value: 'hero', label: t('cardStyleHero'), icon: 'rocket-launch-outline'},
-                {value: 'compact', label: t('cardStyleCompact'), icon: 'view-list'},
+                {
+                  value: 'default',
+                  label: t('cardStyleDefault'),
+                  icon: 'emoticon-outline',
+                },
+                {
+                  value: 'hero',
+                  label: t('cardStyleHero'),
+                  icon: 'rocket-launch-outline',
+                },
+                {
+                  value: 'compact',
+                  label: t('cardStyleCompact'),
+                  icon: 'view-list',
+                },
                 {value: 'stats', label: t('cardStyleStats'), icon: 'chart-bar'},
               ] as {value: CardStyle; label: string; icon: string}[]
             ).map(option => (
@@ -314,7 +328,11 @@ export default function Habits() {
                   size={20}
                   color={theme.onSurfaceVariant}
                 />
-                <Text style={[styles.menuItemText, cardStyle === option.value && styles.menuItemTextSelected]}>
+                <Text
+                  style={[
+                    styles.menuItemText,
+                    cardStyle === option.value && styles.menuItemTextSelected,
+                  ]}>
                   {option.label}
                 </Text>
                 {cardStyle === option.value && (

@@ -46,30 +46,50 @@ function HeroCard({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.watermark}>{displayNumber > 0 ? displayNumber : ''}</Text>
+      <Text style={styles.watermark}>
+        {displayNumber > 0 ? displayNumber : ''}
+      </Text>
 
       <View style={styles.header}>
-        <Text style={styles.title} numberOfLines={2}>{habit.name}</Text>
+        <Text style={styles.title} numberOfLines={2}>
+          {habit.name}
+        </Text>
         <Pressable
           onPress={onEditOpen}
-          style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+          style={({pressed}) => [
+            styles.iconButton,
+            pressed && styles.iconButtonPressed,
+          ]}
           hitSlop={8}
           accessibilityLabel="Edit habit">
-          <MaterialCommunityIcons name="dots-vertical" size={20} color={theme.onSecondaryContainer} />
+          <MaterialCommunityIcons
+            name="dots-vertical"
+            size={20}
+            color={theme.onSecondaryContainer}
+          />
         </Pressable>
         <Pressable
           onPress={onDateEditorOpen}
-          style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+          style={({pressed}) => [
+            styles.iconButton,
+            pressed && styles.iconButtonPressed,
+          ]}
           hitSlop={8}
           accessibilityLabel="Edit dates">
-          <MaterialCommunityIcons name="calendar-range" size={20} color={theme.onSecondaryContainer} />
+          <MaterialCommunityIcons
+            name="calendar-range"
+            size={20}
+            color={theme.onSecondaryContainer}
+          />
         </Pressable>
       </View>
 
       <Text style={styles.subtitle}>
         {currentStreak === 0
           ? t(doneToday ? 'habitCurrentTodayDoneZero' : 'habitCurrentZero')
-          : t(doneToday ? 'habitCurrentTodayDone' : 'habitCurrent', {count: currentStreak})}
+          : t(doneToday ? 'habitCurrentTodayDone' : 'habitCurrent', {
+              count: currentStreak,
+            })}
       </Text>
 
       {nextGoal != null && (
@@ -78,12 +98,16 @@ function HeroCard({
             <View
               style={[
                 styles.progressFill,
-                {width: `${Math.round(nextGoalProgress * 100)}%` as `${number}%`},
+                {
+                  width:
+                    `${Math.round(nextGoalProgress * 100)}%` as `${number}%`,
+                },
               ]}
             />
           </View>
           <Text style={styles.progressLabel}>
-            {t('daysCount', {count: longestStreak})} / {t('daysCount', {count: nextGoal})}
+            {t('daysCount', {count: longestStreak})} /{' '}
+            {t('daysCount', {count: nextGoal})}
           </Text>
         </View>
       )}
@@ -92,7 +116,11 @@ function HeroCard({
         onPress={onToggleDone}
         style={({pressed}) => [
           styles.doneButton,
-          {backgroundColor: doneToday ? theme.secondary : theme.onSecondaryContainer},
+          {
+            backgroundColor: doneToday
+              ? theme.secondary
+              : theme.onSecondaryContainer,
+          },
           pressed && styles.doneButtonPressed,
         ]}
         accessibilityLabel="Toggle done">
@@ -216,29 +244,53 @@ function CompactCard({
     <View style={styles.card}>
       <View style={styles.row}>
         <View style={[styles.indicator, doneToday && styles.indicatorDone]} />
-        <Text style={styles.title} numberOfLines={1}>{habit.name}</Text>
+        <Text style={styles.title} numberOfLines={1}>
+          {habit.name}
+        </Text>
         {displayStreak > 0 && (
           <View style={[styles.streakPill, doneToday && styles.streakPillDone]}>
-            <Text style={[styles.streakPillText, doneToday && styles.streakPillTextDone]}>
+            <Text
+              style={[
+                styles.streakPillText,
+                doneToday && styles.streakPillTextDone,
+              ]}>
               {t('daysCount', {count: displayStreak})}
             </Text>
           </View>
         )}
         <Pressable
           onPress={onEditOpen}
-          style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+          style={({pressed}) => [
+            styles.iconButton,
+            pressed && styles.iconButtonPressed,
+          ]}
           hitSlop={8}
           accessibilityLabel="Edit habit">
-          <MaterialCommunityIcons name="dots-vertical" size={18} color={theme.onSurfaceVariant} />
+          <MaterialCommunityIcons
+            name="dots-vertical"
+            size={18}
+            color={theme.onSurfaceVariant}
+          />
         </Pressable>
         <Pressable
           onPress={onDateEditorOpen}
-          style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+          style={({pressed}) => [
+            styles.iconButton,
+            pressed && styles.iconButtonPressed,
+          ]}
           hitSlop={8}
           accessibilityLabel="Edit dates">
-          <MaterialCommunityIcons name="calendar-range" size={18} color={theme.onSurfaceVariant} />
+          <MaterialCommunityIcons
+            name="calendar-range"
+            size={18}
+            color={theme.onSurfaceVariant}
+          />
         </Pressable>
-        <Checkbox value={doneToday} onValueChange={onToggleDone} style={styles.iconButton} />
+        <Checkbox
+          value={doneToday}
+          onValueChange={onToggleDone}
+          style={styles.iconButton}
+        />
       </View>
       {habit.goals && habit.goals.length > 0 && (
         <View style={styles.dotsRow}>
@@ -285,7 +337,11 @@ const useCompactStyles = createUseStyles(theme => ({
     marginRight: 4,
   },
   streakPillDone: {backgroundColor: theme.primaryContainer},
-  streakPillText: {fontSize: 12, fontWeight: '600', color: theme.onSurfaceVariant},
+  streakPillText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: theme.onSurfaceVariant,
+  },
   streakPillTextDone: {color: theme.onPrimaryContainer},
   iconButton: {padding: 6},
   iconButtonPressed: {opacity: 0.5},
@@ -321,34 +377,57 @@ function StatsCard({
   const theme = useTheme();
   const styles = useStatsStyles();
   const totalDays = habit.recordedDates.length;
-  const goalsReached = (habit.goals ?? []).filter(g => longestStreak >= g).length;
+  const goalsReached = (habit.goals ?? []).filter(
+    g => longestStreak >= g,
+  ).length;
 
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.title} numberOfLines={1}>{habit.name}</Text>
+        <Text style={styles.title} numberOfLines={1}>
+          {habit.name}
+        </Text>
         <Pressable
           onPress={onEditOpen}
-          style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+          style={({pressed}) => [
+            styles.iconButton,
+            pressed && styles.iconButtonPressed,
+          ]}
           hitSlop={8}
           accessibilityLabel="Edit habit">
-          <MaterialCommunityIcons name="dots-vertical" size={20} color={theme.onSurfaceVariant} />
+          <MaterialCommunityIcons
+            name="dots-vertical"
+            size={20}
+            color={theme.onSurfaceVariant}
+          />
         </Pressable>
         <Pressable
           onPress={onDateEditorOpen}
-          style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+          style={({pressed}) => [
+            styles.iconButton,
+            pressed && styles.iconButtonPressed,
+          ]}
           hitSlop={8}
           accessibilityLabel="Edit dates">
-          <MaterialCommunityIcons name="calendar-range" size={20} color={theme.onSurfaceVariant} />
+          <MaterialCommunityIcons
+            name="calendar-range"
+            size={20}
+            color={theme.onSurfaceVariant}
+          />
         </Pressable>
-        <Checkbox value={doneToday} onValueChange={onToggleDone} style={styles.iconButton} />
+        <Checkbox
+          value={doneToday}
+          onValueChange={onToggleDone}
+          style={styles.iconButton}
+        />
       </View>
 
       <View style={styles.divider} />
 
       <View style={styles.statsRow}>
         <View style={styles.statItem}>
-          <Text style={[styles.statNumber, doneToday && styles.statNumberActive]}>
+          <Text
+            style={[styles.statNumber, doneToday && styles.statNumberActive]}>
             {currentStreak}
           </Text>
           <Text style={styles.statLabel}>{t('statsNow')}</Text>
@@ -370,7 +449,8 @@ function StatsCard({
           <View style={styles.divider} />
           <View style={styles.goalsRow}>
             {habit.goals.map((goal, index, goals) => {
-              const isDisabled = goals[index - 1] != null && longestStreak < goals[index - 1];
+              const isDisabled =
+                goals[index - 1] != null && longestStreak < goals[index - 1];
               const reached = longestStreak >= goal;
               return (
                 <View
@@ -383,12 +463,18 @@ function StatsCard({
                   <MaterialCommunityIcons
                     name={reached ? 'trophy-outline' : 'flag-outline'}
                     size={12}
-                    color={reached ? theme.onPrimaryContainer : theme.onSurfaceVariant}
+                    color={
+                      reached
+                        ? theme.onPrimaryContainer
+                        : theme.onSurfaceVariant
+                    }
                   />
                   <Text
                     style={[
                       styles.goalChipText,
-                      reached ? styles.goalChipTextReached : styles.goalChipTextPending,
+                      reached
+                        ? styles.goalChipTextReached
+                        : styles.goalChipTextPending,
                     ]}>
                     {t('daysCount', {count: goal})}
                   </Text>
@@ -525,26 +611,45 @@ function DefaultCard({
         <View style={styles.actions}>
           <Pressable
             onPress={onEditOpen}
-            style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+            style={({pressed}) => [
+              styles.iconButton,
+              pressed && styles.iconButtonPressed,
+            ]}
             hitSlop={8}
             accessibilityLabel="Edit habit">
-            <MaterialCommunityIcons name="dots-vertical" size={20} color={theme.onSurfaceVariant} />
+            <MaterialCommunityIcons
+              name="dots-vertical"
+              size={20}
+              color={theme.onSurfaceVariant}
+            />
           </Pressable>
           <Pressable
             onPress={onDateEditorOpen}
-            style={({pressed}) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+            style={({pressed}) => [
+              styles.iconButton,
+              pressed && styles.iconButtonPressed,
+            ]}
             hitSlop={8}
             accessibilityLabel="Edit dates">
-            <MaterialCommunityIcons name="calendar-range" size={20} color={theme.onSurfaceVariant} />
+            <MaterialCommunityIcons
+              name="calendar-range"
+              size={20}
+              color={theme.onSurfaceVariant}
+            />
           </Pressable>
-          <Checkbox value={doneToday} onValueChange={onToggleDone} style={styles.iconButton} />
+          <Checkbox
+            value={doneToday}
+            onValueChange={onToggleDone}
+            style={styles.iconButton}
+          />
         </View>
       </View>
 
       <View style={styles.goalsRow}>
         {habit.goals && habit.goals.length > 0 ? (
           habit.goals.map((goal, index, goals) => {
-            const isDisabled = goals[index - 1] != null && longestStreak < goals[index - 1];
+            const isDisabled =
+              goals[index - 1] != null && longestStreak < goals[index - 1];
             const reached = longestStreak >= goal;
             const progress = Math.min(longestStreak, goal) / goal;
             return (
@@ -557,18 +662,25 @@ function DefaultCard({
                 ]}>
                 {!reached && (
                   <View
-                    style={[styles.goalTagProgressFill, {width: `${Math.round(progress * 100)}%`}]}
+                    style={[
+                      styles.goalTagProgressFill,
+                      {width: `${Math.round(progress * 100)}%`},
+                    ]}
                   />
                 )}
                 <MaterialCommunityIcons
                   name={reached ? 'star' : 'star-outline'}
                   size={13}
-                  color={reached ? theme.onPrimaryContainer : theme.onSurfaceVariant}
+                  color={
+                    reached ? theme.onPrimaryContainer : theme.onSurfaceVariant
+                  }
                 />
                 <Text
                   style={[
                     styles.goalTagText,
-                    reached ? styles.goalTagTextReached : styles.goalTagTextPending,
+                    reached
+                      ? styles.goalTagTextReached
+                      : styles.goalTagTextPending,
                   ]}>
                   {t('daysCount', {count: goal})}
                 </Text>
@@ -577,7 +689,11 @@ function DefaultCard({
           })
         ) : (
           <Pressable onPress={onEditOpen} style={styles.addGoalsRow}>
-            <MaterialCommunityIcons name="plus-circle-outline" size={14} color={theme.onSurfaceVariant} />
+            <MaterialCommunityIcons
+              name="plus-circle-outline"
+              size={14}
+              color={theme.onSurfaceVariant}
+            />
             <Text style={styles.addGoalsText}>{t('addGoals')}</Text>
           </Pressable>
         )}
@@ -671,7 +787,9 @@ export default function Habit({habit}: {habit: HabitType}) {
   const latestStreak = streaksDateArray[0];
   const lastDoneDate = latestStreak?.dates[0];
   const doneToday = lastDoneDate !== undefined && isToday(lastDoneDate);
-  const currentStreak = latestStreak?.isCurrentStreak ? latestStreak.dates.length : 0;
+  const currentStreak = latestStreak?.isCurrentStreak
+    ? latestStreak.dates.length
+    : 0;
   const longestStreak = useMemo(
     () => streaksDateArray.reduce((max, s) => Math.max(max, s.dates.length), 0),
     [streaksDateArray],
