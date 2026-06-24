@@ -170,6 +170,19 @@ export default function Habits() {
           </Pressable>
         )}
         <Pressable
+          onPress={() => setShowHeaderMenu(true)}
+          style={({pressed}) => [
+            styles.headerButton,
+            pressed && styles.headerButtonPressed,
+          ]}
+          hitSlop={8}>
+          <MaterialCommunityIcons
+            name="tune-variant"
+            size={24}
+            color={theme.onSurfaceVariant}
+          />
+        </Pressable>
+        <Pressable
           onPress={() => router.push('/settings')}
           style={({pressed}) => [
             styles.headerButton,
@@ -178,19 +191,6 @@ export default function Habits() {
           hitSlop={8}>
           <MaterialCommunityIcons
             name="cog-outline"
-            size={24}
-            color={theme.onSurfaceVariant}
-          />
-        </Pressable>
-        <Pressable
-          onPress={() => setShowHeaderMenu(true)}
-          style={({pressed}) => [
-            styles.headerButton,
-            pressed && styles.headerButtonPressed,
-          ]}
-          hitSlop={8}>
-          <MaterialCommunityIcons
-            name="dots-vertical"
             size={24}
             color={theme.onSurfaceVariant}
           />
