@@ -3,7 +3,7 @@ import React, {useMemo, useState} from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {DoneButton} from './DoneButton';
+import {Checkbox} from '../Checkbox';
 import type {Habit as HabitType} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {getStreaks} from '../../utils/calculateStreaks';
@@ -238,7 +238,7 @@ function CompactCard({
           accessibilityLabel="Edit dates">
           <MaterialCommunityIcons name="calendar-range" size={18} color={theme.onSurfaceVariant} />
         </Pressable>
-        <DoneButton done={doneToday} onToggle={onToggleDone} />
+        <Checkbox value={doneToday} onValueChange={onToggleDone} />
       </View>
       {habit.goals && habit.goals.length > 0 && (
         <View style={styles.dotsRow}>
@@ -341,7 +341,7 @@ function StatsCard({
           accessibilityLabel="Edit dates">
           <MaterialCommunityIcons name="calendar-range" size={20} color={theme.onSurfaceVariant} />
         </Pressable>
-        <DoneButton done={doneToday} onToggle={onToggleDone} />
+        <Checkbox value={doneToday} onValueChange={onToggleDone} />
       </View>
 
       <View style={styles.divider} />
@@ -537,7 +537,7 @@ function DefaultCard({
             accessibilityLabel="Edit dates">
             <MaterialCommunityIcons name="calendar-range" size={20} color={theme.onSurfaceVariant} />
           </Pressable>
-          <DoneButton done={doneToday} onToggle={onToggleDone} />
+          <Checkbox value={doneToday} onValueChange={onToggleDone} />
         </View>
       </View>
 
