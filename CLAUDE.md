@@ -25,6 +25,8 @@ yarn install
 
 ## Before Committing
 
+If `node_modules` is missing or a command fails with module-not-found errors, run `yarn install` first and then retry.
+
 Run these checks in order:
 
 ```bash
