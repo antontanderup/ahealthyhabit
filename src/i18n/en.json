@@ -34,7 +34,7 @@
   "cardStyleHero": "Hero",
   "cardStyleCompact": "Compact",
   "cardStyleStats": "Stats",
-  "cardStylePlayful": "Playful",
+  "cardStyleDefault": "Default",
   "settings": "Settings",
   "themeColor": "Theme color",
   "systemColor": "System color"

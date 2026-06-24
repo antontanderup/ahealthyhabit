@@ -293,7 +293,7 @@ export default function Habits() {
             <View style={styles.menuDivider} />
             {(
               [
-                {value: 'playful', label: t('cardStylePlayful'), icon: 'emoticon-outline'},
+                {value: 'default', label: t('cardStyleDefault'), icon: 'emoticon-outline'},
                 {value: 'hero', label: t('cardStyleHero'), icon: 'rocket-launch-outline'},
                 {value: 'compact', label: t('cardStyleCompact'), icon: 'view-list'},
                 {value: 'stats', label: t('cardStyleStats'), icon: 'chart-bar'},
