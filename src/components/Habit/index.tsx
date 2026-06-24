@@ -591,7 +591,7 @@ const useDefaultStyles = createUseStyles(theme => ({
     marginHorizontal: 13,
     marginTop: 15,
     borderRadius: 16,
-    backgroundColor: theme.surfaceContainerLow,
+    backgroundColor: theme.surfaceContainer,
     overflow: 'hidden',
     elevation: 1,
     shadowColor: '#000',

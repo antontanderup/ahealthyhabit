@@ -37,7 +37,7 @@ const useStyles = createUseStyles(theme => ({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: theme.surfaceContainerLow,
+    backgroundColor: theme.surfaceContainer,
   },
   rowActive: {
     backgroundColor: theme.surfaceContainerHigh,
