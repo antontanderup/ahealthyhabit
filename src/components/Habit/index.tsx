@@ -485,10 +485,10 @@ const useStatsStyles = createUseStyles(theme => ({
   },
 }));
 
-// ─── Playful ──────────────────────────────────────────────────────────────────
+// ─── Default ──────────────────────────────────────────────────────────────────
 // Letter avatar + coloured accent strip — friendly and personal.
 
-function PlayfulCard({
+function DefaultCard({
   habit,
   doneToday,
   currentStreak,
@@ -499,7 +499,7 @@ function PlayfulCard({
 }: CardProps) {
   const {t} = useTranslation();
   const theme = useTheme();
-  const styles = usePlayfulStyles();
+  const styles = useDefaultStyles();
   const emojiResult = extractLeadingEmoji(habit.name);
 
   return (
@@ -586,7 +586,7 @@ function PlayfulCard({
   );
 }
 
-const usePlayfulStyles = createUseStyles(theme => ({
+const useDefaultStyles = createUseStyles(theme => ({
   card: {
     marginHorizontal: 13,
     marginTop: 15,
@@ -700,7 +700,7 @@ export default function Habit({habit}: {habit: HabitType}) {
       ) : cardStyle === 'stats' ? (
         <StatsCard {...cardProps} />
       ) : (
-        <PlayfulCard {...cardProps} />
+        <DefaultCard {...cardProps} />
       )}
       <EditHabit
         isOpen={editorOpen}

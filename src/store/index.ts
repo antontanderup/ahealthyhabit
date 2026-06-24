@@ -16,7 +16,7 @@ export const useSettingsStore = create<SettingsStore>()(
   persist(
     set => ({
       sortBy: 'default',
-      cardStyle: 'playful',
+      cardStyle: 'default',
       themeColor: null,
       changeSortBy: sortBy => set({sortBy}),
       changeCardStyle: cardStyle => set({cardStyle}),
