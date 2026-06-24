@@ -105,7 +105,7 @@ export default function Settings() {
 const useStyles = createUseStyles(theme => ({
   container: {
     flex: 1,
-    backgroundColor: theme.surfaceContainerLowest,
+    backgroundColor: theme.background,
   },
   scrollContent: {
     padding: 16,
