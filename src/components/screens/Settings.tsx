@@ -60,7 +60,9 @@ export default function Settings() {
             <MaterialCommunityIcons
               name="palette-outline"
               size={22}
-              color={themeColor === null ? theme.primary : theme.onSurfaceVariant}
+              color={
+                themeColor === null ? theme.primary : theme.onSurfaceVariant
+              }
             />
           </View>
           <Text
@@ -71,7 +73,11 @@ export default function Settings() {
             {t('systemColor')}
           </Text>
           {themeColor === null && (
-            <MaterialCommunityIcons name="check" size={20} color={theme.primary} />
+            <MaterialCommunityIcons
+              name="check"
+              size={20}
+              color={theme.primary}
+            />
           )}
         </Pressable>
 
@@ -91,7 +97,11 @@ export default function Settings() {
                   themeColor === color && styles.colorSwatchSelected,
                 ]}>
                 {themeColor === color && (
-                  <MaterialCommunityIcons name="check" size={22} color="#ffffff" />
+                  <MaterialCommunityIcons
+                    name="check"
+                    size={22}
+                    color="#ffffff"
+                  />
                 )}
               </View>
             </Pressable>

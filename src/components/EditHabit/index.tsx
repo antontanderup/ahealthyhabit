@@ -4,11 +4,7 @@ import {useTranslation} from 'react-i18next';
 import type {Habit} from '../../types';
 import {useHabits} from '../../habits/HabitsContext';
 import {createUseStyles} from '../../theme';
-import {
-  ComposeButton,
-  ComposeTextButton,
-  ComposeTextField,
-} from '../compose';
+import {ComposeButton, ComposeTextButton, ComposeTextField} from '../compose';
 
 const GOAL_OPTIONS = [7, 30, 90, 180, 365] as const;
 

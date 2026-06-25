@@ -84,9 +84,9 @@ export function ThemeProvider({children}: {children: ReactNode}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [themeColor]);
 
-  const colors = (
-    colorScheme === 'dark' ? theme.dark : theme.light
-  ) as unknown as Theme;
+  const colors = (colorScheme === 'dark'
+    ? theme.dark
+    : theme.light) as unknown as Theme;
   return (
     <ThemeContext.Provider value={colors}>{children}</ThemeContext.Provider>
   );

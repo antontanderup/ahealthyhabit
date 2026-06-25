@@ -122,9 +122,7 @@ export default function EditHabitDates({
       animationType="fade"
       onRequestClose={handleDismiss}>
       <Pressable style={styles.overlay} onPress={handleDismiss}>
-        <Pressable
-          style={styles.dialog}
-          onPress={e => e.stopPropagation()}>
+        <Pressable style={styles.dialog} onPress={e => e.stopPropagation()}>
           <View style={styles.header}>
             <Pressable
               onPress={goToPrevious}
