@@ -556,9 +556,10 @@ function DefaultCard({
                   isDisabled && styles.goalTagDisabled,
                 ]}>
                 {!reached && (
-                  <View
-                    style={[styles.goalTagProgressFill, {width: `${Math.round(progress * 100)}%`}]}
-                  />
+                  <View style={styles.goalTagProgressContainer}>
+                    <View style={[styles.goalTagProgressFill, {flex: progress}]} />
+                    <View style={{flex: 1 - progress}} />
+                  </View>
                 )}
                 <MaterialCommunityIcons
                   name={reached ? 'star' : 'star-outline'}
@@ -640,11 +641,11 @@ const useDefaultStyles = createUseStyles(theme => ({
     borderRadius: 20,
     overflow: 'hidden',
   },
+  goalTagProgressContainer: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'row',
+  },
   goalTagProgressFill: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    bottom: 0,
     backgroundColor: theme.primaryContainer,
   },
   goalTagReached: {backgroundColor: theme.primaryContainer},
