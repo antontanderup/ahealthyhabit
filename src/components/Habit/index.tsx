@@ -556,23 +556,24 @@ function DefaultCard({
                   isDisabled && styles.goalTagDisabled,
                 ]}>
                 {!reached && (
-                  <View style={styles.goalTagProgressContainer}>
-                    <View style={[styles.goalTagProgressFill, {flex: progress}]} />
-                    <View style={{flex: 1 - progress}} />
-                  </View>
+                  <View
+                    style={[styles.goalTagProgressFill, {width: `${Math.round(progress * 100)}%`}]}
+                  />
                 )}
-                <MaterialCommunityIcons
-                  name={reached ? 'star' : 'star-outline'}
-                  size={13}
-                  color={reached ? theme.onPrimaryContainer : theme.onSurfaceVariant}
-                />
-                <Text
-                  style={[
-                    styles.goalTagText,
-                    reached ? styles.goalTagTextReached : styles.goalTagTextPending,
-                  ]}>
-                  {t('daysCount', {count: goal})}
-                </Text>
+                <View style={styles.goalTagContent}>
+                  <MaterialCommunityIcons
+                    name={reached ? 'star' : 'star-outline'}
+                    size={13}
+                    color={reached ? theme.onPrimaryContainer : theme.onSurfaceVariant}
+                  />
+                  <Text
+                    style={[
+                      styles.goalTagText,
+                      reached ? styles.goalTagTextReached : styles.goalTagTextPending,
+                    ]}>
+                    {t('daysCount', {count: goal})}
+                  </Text>
+                </View>
               </View>
             );
           })
@@ -633,23 +634,22 @@ const useDefaultStyles = createUseStyles(theme => ({
     gap: 6,
   },
   goalTag: {
+    borderRadius: 20,
+    overflow: 'hidden',
+    alignSelf: 'flex-start',
+  },
+  goalTagContent: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  goalTagProgressContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: 'row',
   },
   goalTagProgressFill: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
     backgroundColor: theme.primaryContainer,
   },
   goalTagReached: {backgroundColor: theme.primaryContainer},
